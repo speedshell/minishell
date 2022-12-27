@@ -1,19 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:43:06 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/05 13:29:18 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/25 07:36:22 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-#include "./libft/libft.h"
-
-
-#endif
+char	*ft_strchr(const char *s, int c)
+{
+	c = c % 256;
+	while (*s && c != *s)
+		s++;
+	if (*s == c)
+		return ((char *)s);
+	return (0);
+}

@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:43:06 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/04 11:04:33 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/19 14:00:49 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include "./libft/libft.h"
-
-
-#endif
+void	ft_bzero(void *s, size_t n)
+{
+	ft_memset(s, 0, n);
+}

@@ -1,19 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_print_uns_decimal.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:43:06 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/06/13 09:03:33 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/07/28 15:30:07 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include "./libft/libft.h"
+int	ft_print_uns_decimal(unsigned int arg)
+{
+	long int	nbr;
 
-
-#endif
+	nbr = arg;
+	if (nbr > 9)
+		ft_print_uns_decimal(nbr / 10);
+	ft_putchar(nbr % 10 + '0');
+	return (countdigits(arg));
+}

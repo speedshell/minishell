@@ -1,19 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:43:06 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/13 11:31:04 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/13 11:35:00 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include "./libft/libft.h"
+int	ft_lstsize(t_list *lst)
+{
+	size_t	i;
 
-
-#endif
+	i = 0;
+	while (lst)
+	{
+		i++;
+		lst = lst->next;
+	}
+	return (i);
+}

@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:43:06 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/04 08:41:36 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/16 11:38:37 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include "./libft/libft.h"
+void	*ft_memset(void *b, int c, size_t len)
+{
+	unsigned char	converted_value;
+	char			*temp;
+	size_t			i;
 
-
-#endif
+	temp = (char *)b;
+	i = 0;
+	converted_value = c;
+	while (len-- > 0)
+		temp[i++] = converted_value;
+	return (temp);
+}

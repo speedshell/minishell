@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_countdigits.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:43:06 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/06/13 09:14:47 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/07/28 15:33:19 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include "./libft/libft.h"
+int	countdigits(long long int arg)
+{
+	int	digits;
 
-
-#endif
+	digits = 1;
+	while (arg >= 10 || arg <= -10)
+	{
+		arg /= 10;
+		digits++;
+	}
+	if (arg < 0)
+		digits++;
+	return (digits);
+}

@@ -1,19 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:43:06 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/04 13:34:00 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/17 14:17:50 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "libft.h"
 
-#include "./libft/libft.h"
+void	*ft_memcpy(void *dst, const void *src, size_t n)
+{
+	size_t	i;
 
-
-#endif
+	i = 0;
+	if ((!dst && !src && n > 0))
+		return (NULL);
+	while (n-- > 0)
+	{
+		((char *)dst)[i] = ((char *)src)[i];
+		i++;
+	}
+	return (dst);
+}

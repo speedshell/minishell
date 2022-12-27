@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:43:06 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/03 15:42:35 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/03 15:50:28 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-#include "./libft/libft.h"
-
-
-#endif
+int	ft_isalnum(int c)
+{
+	if (c >= 'a' && c <= 'z')
+		return (1);
+	else if (c >= 'A' && c <= 'Z')
+		return (1);
+	else if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}

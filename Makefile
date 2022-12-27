@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/27 15:05:35 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/27 16:34:35 by mpinna-l         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC			= 	cc
 
 CFLAGS		=	-Wall -Werror -Wextra -g
 
-LDLIBS		= 	-lreadline
+LDLIBS		= 	-lreadline includes/libft.a
 
 SRC			= 	main.c
 
@@ -30,14 +30,16 @@ INCLUDES	=	-I ./includes
 	@${CC} -c $(CFLAGS) $(INCLUDES) $< -o $@
 
 ${NAME}:   ${OBJS}
+	@make -C ./includes/libft
 	@${CC} -o ${NAME} ${INCLUDES} ${OBJS} ${CFLAGS} ${LDLIBS}
 
 all:    ${NAME}
-
 clean:
+	@make -C ./includes/libft clean
 	@rm -f $(OBJS)
 
 fclean: clean
+	@make -C ./includes/libft fclean
 	@rm -f $(NAME)
 
 re:	fclean all
