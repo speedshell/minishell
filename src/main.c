@@ -18,6 +18,5 @@ int main(int argc, char **argv, char **env)
 	(void)env;
 	if (argc == 1)
 		return (1);
-	ft_printf("Hello World!\n");
 	return (0);
 }
