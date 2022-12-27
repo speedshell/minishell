@@ -1,23 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putchar.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:44:02 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/06/13 08:58:46 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/07/28 15:32:09 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int main(int argc, char **argv, char **env)
+int	ft_putchar(char c)
 {
-	(void)argv;
-	(void)env;
-	if (argc == 1)
-		return (1);
-	ft_printf("Hello World!\n");
-	return (0);
+	write(1, &c, 1);
+	return (1);
 }

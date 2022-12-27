@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:44:02 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/13 14:03:28 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/20 12:29:16 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int main(int argc, char **argv, char **env)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	(void)argv;
-	(void)env;
-	if (argc == 1)
-		return (1);
-	ft_printf("Hello World!\n");
-	return (0);
+	t_list	*save;
+
+	while (*lst)
+	{
+		save = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		*lst = save;
+	}
+	*lst = NULL;
 }

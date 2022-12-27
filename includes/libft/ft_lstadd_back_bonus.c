@@ -1,23 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstadd_back_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:44:02 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/13 13:13:28 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/17 14:20:33 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-int main(int argc, char **argv, char **env)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-	(void)argv;
-	(void)env;
-	if (argc == 1)
-		return (1);
-	ft_printf("Hello World!\n");
-	return (0);
+	t_list	*last_address;
+
+	last_address = ft_lstlast(*lst);
+	if (last_address)
+		last_address->next = new;
+	else
+		*lst = new;
 }

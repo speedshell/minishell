@@ -1,23 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isalnum.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 16:44:02 by mpinna-l         ###   ########.fr       */
+/*   Created: 2022/05/03 15:42:35 by mpinna-l          #+#    #+#             */
+/*   Updated: 2022/05/03 15:50:28 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-
-int main(int argc, char **argv, char **env)
+int	ft_isalnum(int c)
 {
-	(void)argv;
-	(void)env;
-	if (argc == 1)
+	if (c >= 'a' && c <= 'z')
 		return (1);
-	ft_printf("Hello World!\n");
+	else if (c >= 'A' && c <= 'Z')
+		return (1);
+	else if (c >= '0' && c <= '9')
+		return (1);
 	return (0);
 }
