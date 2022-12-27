@@ -1,22 +1,38 @@
-NAME= minishell
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
+#    Updated: 2022/12/27 15:05:35 by lfarias-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-FLAGS= -Wall -Werror -Wextra
+NAME		=	minishell
 
-SRC= main.c
+CC			= 	cc
 
-SRCS= $(addprefix src/,$(SRC))
+CFLAGS		=	-Wall -Werror -Wextra -g
 
-OBJS= $(SRCS:.c=.o)
+LDLIBS		= 	-lreadline
 
-INCLUDES= -lreadline -I ./includes
+SRC			= 	main.c
 
-all:    NAME
+SRCS		= 	$(addprefix src/,$(SRC))
 
-NAME:   ${OBJS}
-	@cc -o ${NAME} ${INCLUDES} ${OBJS} ${FLAGS}
+OBJS		= 	$(SRCS:.c=.o)
+
+INCLUDES	=	-I ./includes
 
 %.o: %.c
-	@cc -c $(FLAGS) $(INCLUDES) $< -o $@
+	@${CC} -c $(CFLAGS) $(INCLUDES) $< -o $@
+
+${NAME}:   ${OBJS}
+	@${CC} -o ${NAME} ${INCLUDES} ${OBJS} ${CFLAGS} ${LDLIBS}
+
+all:    ${NAME}
 
 clean:
 	@rm -f $(OBJS)
