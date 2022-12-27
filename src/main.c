@@ -6,11 +6,15 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/27 08:46:29 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2022/12/27 16:01:18 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-int main(void)
+int main(int argc, char **argv, char **env)
 {
+	(void)argv;
+	(void)env;
+	if (argc == 1)
+		return (1);
 	return (0);
 }
