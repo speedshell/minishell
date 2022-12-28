@@ -9,10 +9,15 @@ void	command_executor(char *cmd_path, char **args, char **env)
 	if (!cmd_path)
 		return ;
 	pid = fork();
+	if (pid == -1)
+	{
+		print_err_msg();
+		return ;
+	}
 	if (pid == 0)
 	{
 		if (execve(cmd_path, args, env) == -1)
-			printf("Command not found\n");
+			print_err_msg();
 		exit(0);
 	}	
 	else
