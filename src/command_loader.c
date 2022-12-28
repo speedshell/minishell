@@ -3,6 +3,7 @@
 
 char	*build_path(char *cmd_name, char *env);
 void	free2d(void **matrix2d);
+void	*clean_buildpath(char **paths, char *aux);
 
 char	**parse_command(char *statement, char **env)
 {
@@ -14,6 +15,8 @@ char	**parse_command(char *statement, char **env)
 	if (!statement || !*statement)
 		return (NULL);
 	cmd_fields = ft_split(statement, ' ');
+	if (cmd_fields == NULL)
+		return (NULL);
 	cmd_name = cmd_fields[0];
 	if (access(cmd_name, X_OK) == 0)
 		return (cmd_fields);
@@ -36,14 +39,16 @@ char	*build_path(char *cmd_name, char *path)
 	char	*aux;	
 	int		i;
 
-	if (!cmd_name || !path)
-		return (NULL);
 	paths = ft_split(path, ':');
+	if (paths == NULL)
+		return (NULL);
 	i = 0;
 	while (paths[i] != NULL)
 	{
 		aux = ft_strjoin(paths[i], "/");
 		cmd_path = ft_strjoin(aux, cmd_name);
+		if (aux == NULL || cmd_path == NULL)
+			return (clean_buildpath(paths, aux));
 		free(aux);
 		if (access(cmd_path, X_OK) == 0)
 			break ;
@@ -60,7 +65,7 @@ void	free2d(void **matrix2d)
 {
 	int	i;
 
-	if (!matrix2d || !*matrix2d)
+	if (!matrix2d)
 		return ;
 	i = 0;
 	while (matrix2d[i] != NULL)
@@ -69,4 +74,11 @@ void	free2d(void **matrix2d)
 		i++;
 	}
 	free(matrix2d);
+}
+
+void	*clean_buildpath(char **paths, char *aux)
+{
+	free2d((void **) paths);
+	free(aux);
+	return (NULL);
 }
