@@ -11,12 +11,12 @@ char	**parse_command(char *statement, char **env)
 	char	*fullpath_cmd;
 	int		i;
 
-	if (!statement || !*statement)
-		return (NULL);
 	cmd_fields = ft_split(statement, ' ');
 	if (cmd_fields == NULL)
 		return (NULL);
 	cmd_name = cmd_fields[0];
+	if (is_builtin(cmd_fields[0]) != -1)
+		return (cmd_fields);
 	if (access(cmd_name, X_OK) == 0)
 		return (cmd_fields);
 	i = 0;

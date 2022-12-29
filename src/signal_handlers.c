@@ -2,7 +2,9 @@
 
 void	sigint_handler(int signo)
 {
-	int i = 42;
+	int	i;
+
+	i = 42;
 	wait(&i);
 	if (signo == SIGINT && (i == 42))
 	{
@@ -26,5 +28,3 @@ void	handle_signals(void)
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, sigint_handler);
 }
-
-
