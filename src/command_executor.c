@@ -1,5 +1,4 @@
 #include "../includes/minishell.h"
-#include <sys/wait.h> 
 
 int	is_builtin(char *cmd_path);
 int	execute_builtin(char **args, int builtin_id);

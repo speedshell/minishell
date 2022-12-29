@@ -14,11 +14,11 @@ NAME		=	minishell
 
 CC			= 	cc
 
-CFLAGS		=	-Wall -Werror -Wextra -g -fsanitize=address
+CFLAGS		=	-Wall -Werror -Wextra
 
 LDLIBS		= 	-lreadline includes/libft.a
 
-SRC			= 	main.c command_executor.c command_loader.c error_handler.c echo.c
+SRC			= 	main.c command_executor.c command_loader.c error_handler.c signal_handlers.c echo.c
 
 SRCS		= 	$(addprefix src/,$(SRC))
 

@@ -1,4 +1,3 @@
-
 #include "../includes/minishell.h"
 #include "errno.h"
 
@@ -19,5 +18,5 @@ int	print_err_msg(void)
 	}
 	ft_putendl_fd(error_string, 2);
 	free(error_string);
-	return(errno);
+	return (errno);
 }

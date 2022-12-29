@@ -1,4 +1,3 @@
-
 #include "../includes/minishell.h"
 
 char	*build_path(char *cmd_name, char *env);

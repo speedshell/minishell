@@ -20,7 +20,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
-
+# include <signal.h>
+# include <sys/wait.h>
 
 char	**parse_command(char *statement, char **env);
 void	command_executor(char *cmd_path, char **args, char **env);
@@ -30,6 +31,9 @@ int		ft_echo(char **args);
 
 // error handling
 int		print_err_msg(void);
+
+// signals handling
+void	handle_signals(void);
 
 // utils
 void	free2d(void **matrix2d);
