@@ -1,10 +1,9 @@
 #include "../includes/minishell.h"
-#include <sys/wait.h>
 
 void	command_executor(char *cmd_path, char **args, char **env)
 {
 	int	pid;
-	int wstatus;
+	int	wstatus;
 
 	if (!cmd_path)
 		return ;
