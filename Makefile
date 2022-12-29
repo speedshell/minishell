@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/29 16:59:52 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/29 18:37:51 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,11 +14,11 @@ NAME		=	minishell
 
 CC			= 	cc
 
-CFLAGS		=	-Wall -Werror -Wextra
+CFLAGS		=	-Wall -Werror -Wextra 
 
 LDLIBS		= 	-lreadline includes/libft.a
 
-SRC			= 	main.c command_executor.c command_loader.c error_handler.c signal_handlers.c echo.c
+SRC			= 	main.c command_executor.c command_loader.c error_handler.c signal_handlers.c echo.c exit.c
 
 SRCS		= 	$(addprefix src/,$(SRC))
 

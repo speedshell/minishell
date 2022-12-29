@@ -43,6 +43,8 @@ int	is_builtin(char *cmd_path)
 {
 	if (strncmp(cmd_path, "echo", 4) == 0)
 		return (ECHO);
+	if (strncmp(cmd_path, "exit", 4) == 0)
+		return (EXIT);
 	return (-1);
 }
 
@@ -59,5 +61,7 @@ int	execute_builtin(char **args, int builtin_id)
 	op_code = 0;
 	if (builtin_id == ECHO)
 		op_code = ft_echo(args);
+	if (builtin_id == EXIT)
+		ft_exit(args);
 	return (op_code);	
 }
