@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/28 13:38:19 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/29 16:59:52 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS		=	-Wall -Werror -Wextra -g -fsanitize=address
 
 LDLIBS		= 	-lreadline includes/libft.a
 
-SRC			= 	main.c command_executor.c command_loader.c error_handler.c
+SRC			= 	main.c command_executor.c command_loader.c error_handler.c echo.c
 
 SRCS		= 	$(addprefix src/,$(SRC))
 
