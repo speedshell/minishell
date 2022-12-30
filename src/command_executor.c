@@ -40,17 +40,19 @@ void	command_executor(char *cmd_path, char **args, t_env *env)
 
 int	is_builtin(char *cmd_path)
 {
-	if (strncmp(cmd_path, "echo", 4) == 0)
+	if (ft_strncmp(cmd_path, "echo", 4) == 0)
 		return (ECHO);
-	if (strncmp(cmd_path, "exit", 4) == 0)
+	if (ft_strncmp(cmd_path, "exit", 4) == 0)
 		return (EXIT);
-	if (strncmp(cmd_path, "env", 3) == 0)
+	if (ft_strncmp(cmd_path, "env", 3) == 0)
 		return (ENV);
-	if (strncmp(cmd_path, "pwd", 3) == 0)
+	if (ft_strncmp(cmd_path, "pwd", 3) == 0)
 		return (PWD);
-	if (strncmp(cmd_path, "export", 6) == 0)
+	if (ft_strncmp(cmd_path, "cd", 2) == 0)
+		return (CD);
+	if (ft_strncmp(cmd_path, "export", 6) == 0)
 		return (EXPORT);
-	if (strncmp(cmd_path, "unset", 5) == 0)
+	if (ft_strncmp(cmd_path, "unset", 5) == 0)
 		return (UNSET);
 	return (-1);
 }
@@ -74,6 +76,8 @@ int	execute_builtin(char **args, t_env *env, int builtin_id)
 		op_code = ft_env(env->env);
 	if (builtin_id == PWD)
 		op_code = ft_pwd(args, env->env);
+	if (builtin_id == CD)
+		op_code = ft_cd(args, env->env);
 	if (builtin_id == EXPORT)
 		op_code = ft_export(args, env);
 	if (builtin_id == UNSET)

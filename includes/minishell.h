@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/30 11:58:11 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2022/12/30 15:01:46 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # define ECHO 1
 # define ENV 2
 # define PWD 3
+# define CD 6
 # define EXIT 21
 # define EXPORT 4
 # define UNSET 5
@@ -41,6 +42,7 @@ int		ft_echo(char **args);
 int		ft_exit(char **args);
 int		ft_env(char **env);
 int		ft_pwd(char **args, char **env);
+int		ft_cd(char **args, char **env);
 int		ft_export(char **args, t_env *env);
 int		ft_unset(char **args, t_env *env);
 
