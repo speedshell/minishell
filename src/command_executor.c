@@ -40,13 +40,15 @@ void	command_executor(char *cmd_path, char **args, char **env)
 
 int	is_builtin(char *cmd_path)
 {
-	if (strncmp(cmd_path, "echo", 4) == 0)
+	if (ft_strncmp(cmd_path, "echo", 4) == 0)
 		return (ECHO);
-	if (strncmp(cmd_path, "exit", 4) == 0)
+	if (ft_strncmp(cmd_path, "exit", 4) == 0)
 		return (EXIT);
-	if (strncmp(cmd_path, "env", 3) == 0)
+	if (ft_strncmp(cmd_path, "env", 3) == 0)
 		return (ENV);
-	if (strncmp(cmd_path, "pwd", 3) == 0)
+	if (ft_strncmp(cmd_path, "pwd", 3) == 0)
+		return (PWD);
+	if (ft_strncmp(cmd_path, "pwd", 3) == 0)
 		return (PWD);
 	return (-1);
 }
