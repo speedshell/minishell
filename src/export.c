@@ -24,6 +24,5 @@ int	ft_export(char **args, t_env *env)
 			new_env[i++] = ft_strdup(args[1]);
 	new_env[i] = NULL;
 	env->env = new_env;
-	i = 0;
 	return (0);
 }	

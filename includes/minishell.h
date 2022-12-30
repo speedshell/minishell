@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/30 10:06:52 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2022/12/30 11:58:11 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define PWD 3
 # define EXIT 21
 # define EXPORT 4
+# define UNSET 5
 
 # include "libft/libft.h"
 # include <stdio.h>
@@ -41,6 +42,7 @@ int		ft_exit(char **args);
 int		ft_env(char **env);
 int		ft_pwd(char **args, char **env);
 int		ft_export(char **args, t_env *env);
+int		ft_unset(char **args, t_env *env);
 
 // error handling
 int		print_err_msg(void);

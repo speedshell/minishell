@@ -50,6 +50,8 @@ int	is_builtin(char *cmd_path)
 		return (PWD);
 	if (strncmp(cmd_path, "export", 6) == 0)
 		return (EXPORT);
+	if (strncmp(cmd_path, "unset", 5) == 0)
+		return (UNSET);
 	return (-1);
 }
 
@@ -74,5 +76,7 @@ int	execute_builtin(char **args, t_env *env, int builtin_id)
 		op_code = ft_pwd(args, env->env);
 	if (builtin_id == EXPORT)
 		op_code = ft_export(args, env);
+	if (builtin_id == UNSET)
+		op_code = ft_unset(args, env);
 	return (op_code);
 }
