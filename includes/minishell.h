@@ -15,6 +15,7 @@
 
 # define ECHO 1
 # define ENV 2
+# define EXIT 21
 
 # include "libft/libft.h"
 # include <stdio.h>
@@ -29,6 +30,7 @@ void	command_executor(char *cmd_path, char **args, char **env);
 
 // builtin
 int		ft_echo(char **args);
+int		ft_exit(char **args);
 int		ft_env(char **env);
 
 // error handling

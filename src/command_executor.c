@@ -42,6 +42,8 @@ int	is_builtin(char *cmd_path)
 {
 	if (strncmp(cmd_path, "echo", 4) == 0)
 		return (ECHO);
+	if (strncmp(cmd_path, "exit", 4) == 0)
+		return (EXIT);
 	if (strncmp(cmd_path, "env", 3) == 0)
 		return (ENV);
 	return (-1);
@@ -59,7 +61,9 @@ int	execute_builtin(char **args, char **env, int builtin_id)
 
 	op_code = 0;
 	if (builtin_id == ECHO)
-		op_code = ft_echo(args);
+		op_code = ft_echo(args)
+	if (builtin_id == EXIT)
+		ft_exit(args);
 	if (builtin_id == ENV)
 		op_code = ft_env(env);
 	return (op_code);
