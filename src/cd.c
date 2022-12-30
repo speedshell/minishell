@@ -1,0 +1,124 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
+/*   Updated: 2022/12/30 14:06:23 by lfarias-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/minishell.h"
+#include <unistd.h>
+
+int		go_home(char **env);
+int		find_env(char *env_name, char **env);
+void	update_env_vars(char **env);
+int		no_pwd(char **env, int pwd_i, int old_pwd_i);
+
+int	ft_cd(char **args, char **env)
+{
+	int		i;
+	int		op_code;
+
+	i = 0;
+	while (args[i])
+		i++;
+	if (i > 2)
+	{
+		printf("cd: too many args\n");
+		return (1);
+	}
+	if (i == 1)
+	{
+		op_code = go_home(env);
+		return (op_code);
+	}
+	op_code = chdir(args[1]);
+	if (op_code != 0)
+		print_err_msg();
+	else
+		update_env_vars(env);
+	return (op_code);
+}
+
+void	update_env_vars(char **env)
+{
+	int		pwd_i;
+	int		old_pwd_i;
+	char	*aux;
+	char	*aux1;
+
+	pwd_i = find_env("PWD=", env);
+	old_pwd_i = find_env("OLDPWD=", env);
+	if (no_pwd(env, pwd_i, old_pwd_i))
+		return ;
+	if (old_pwd_i != -1)
+	{
+		aux = ft_strdup(&env[pwd_i][4]);
+		aux1 = ft_strjoin("OLDPWD=", aux);
+		free(aux);
+		free(env[old_pwd_i]);
+		env[old_pwd_i] = aux1;
+	}
+	if (pwd_i != -1)
+	{
+		aux = getcwd(NULL, 0);
+		aux1 = ft_strjoin("PWD=", aux);
+		free(aux);
+		free(env[pwd_i]);
+		env[pwd_i] = aux1;
+	}
+}
+
+int	go_home(char **env)
+{
+	char	*home_path;
+	int		i;
+	int		op_code;
+
+	i = find_env("HOME=", env);
+	if (i == -1)
+	{
+		// TO-DO: print error message
+		printf("cd: HOME not defined\n");
+		return (1);
+	}
+	home_path = &env[i][5];
+	op_code = chdir(home_path);
+	if (op_code != 0)
+		print_err_msg();
+	else
+		update_env_vars(env);
+	return (op_code);
+}
+
+int	no_pwd(char **env, int pwd_i, int old_pwd_i)
+{
+	char	*aux;
+
+	if (pwd_i == -1 && old_pwd_i != -1)
+	{
+		aux = ft_strdup("OLDPWD=");
+		free(env[old_pwd_i]);
+		env[old_pwd_i] = aux;
+		return (1);
+	}
+	return (0);
+}
+
+int	find_env(char *env_name, char **env)
+{
+	int	i;
+	int	env_name_len;
+
+	env_name_len = ft_strlen(env_name);
+	i = 0;
+	while (env[i] && ft_strncmp(env_name, env[i], env_name_len) != 0)
+		i++;
+	if (env[i] != NULL)
+		return (i);
+	return (-1);
+}

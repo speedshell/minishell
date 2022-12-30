@@ -48,8 +48,8 @@ int	is_builtin(char *cmd_path)
 		return (ENV);
 	if (ft_strncmp(cmd_path, "pwd", 3) == 0)
 		return (PWD);
-	if (ft_strncmp(cmd_path, "pwd", 3) == 0)
-		return (PWD);
+	if (ft_strncmp(cmd_path, "cd", 2) == 0)
+		return (CD);
 	return (-1);
 }
 
@@ -72,5 +72,7 @@ int	execute_builtin(char **args, char **env, int builtin_id)
 		op_code = ft_env(env);
 	if (builtin_id == PWD)
 		op_code = ft_pwd(args, env);
+	if (builtin_id == CD)
+		op_code = ft_cd(args, env);
 	return (op_code);
 }
