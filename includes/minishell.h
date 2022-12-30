@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/29 20:32:56 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2022/12/29 23:05:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # define ECHO 1
 # define ENV 2
+# define PWD 3
 # define EXIT 21
 
 # include "libft/libft.h"
@@ -32,6 +33,7 @@ void	command_executor(char *cmd_path, char **args, char **env);
 int		ft_echo(char **args);
 int		ft_exit(char **args);
 int		ft_env(char **env);
+int		ft_pwd(char **args, char **env);
 
 // error handling
 int		print_err_msg(void);
