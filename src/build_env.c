@@ -8,7 +8,7 @@ char	**build_env(char **env)
 	i = 0;
 	while (env[i])
 		i++;
-	line = malloc(sizeof(char *) * (i + 2));
+	line = malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while (env[i])
 	{
@@ -16,6 +16,5 @@ char	**build_env(char **env)
 		i++;
 	}
 	line[i] = NULL;
-	line[i + 1] = NULL;
 	return (line);
 }
