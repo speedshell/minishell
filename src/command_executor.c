@@ -1,7 +1,6 @@
 #include "../includes/minishell.h"
 
-int	is_builtin(char *cmd_path);
-int	execute_builtin(char **args, int builtin_id);
+int	execute_builtin(char **args, char **env, int builtin_id);
 
 void	command_executor(char *cmd_path, char **args, char **env)
 {
@@ -14,7 +13,7 @@ void	command_executor(char *cmd_path, char **args, char **env)
 	builtin_id = is_builtin(cmd_path);
 	if (builtin_id != -1)
 	{
-		execute_builtin(args, builtin_id);
+		execute_builtin(args, env, builtin_id);
 		return ;
 	}
 	pid = fork();
@@ -45,6 +44,8 @@ int	is_builtin(char *cmd_path)
 		return (ECHO);
 	if (strncmp(cmd_path, "exit", 4) == 0)
 		return (EXIT);
+	if (strncmp(cmd_path, "env", 3) == 0)
+		return (ENV);
 	return (-1);
 }
 
@@ -54,14 +55,16 @@ int	is_builtin(char *cmd_path)
  * return: the builtin functions's return code
 */
 
-int	execute_builtin(char **args, int builtin_id)
+int	execute_builtin(char **args, char **env, int builtin_id)
 {
 	int	op_code;
 
 	op_code = 0;
 	if (builtin_id == ECHO)
-		op_code = ft_echo(args);
+		op_code = ft_echo(args)
 	if (builtin_id == EXIT)
 		ft_exit(args);
-	return (op_code);	
+	if (builtin_id == ENV)
+		op_code = ft_env(env);
+	return (op_code);
 }
