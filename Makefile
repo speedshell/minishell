@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2022/12/30 15:00:54 by lfarias-         ###   ########.fr        #
+#    Updated: 2022/12/30 15:06:59 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,8 @@ NAME		=	minishell
 
 CC			= 	cc
 
-CFLAGS		=	-Wall -Werror -Wextra #-fsanitize=address 
+CFLAGS		=	-Wall -Werror -Wextra 
+#-fsanitize=address 
 
 LDLIBS		= 	-lreadline includes/libft.a
 
