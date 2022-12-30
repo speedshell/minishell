@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/30 14:06:23 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/30 14:48:26 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ int		go_home(char **env);
 int		find_env(char *env_name, char **env);
 void	update_env_vars(char **env);
 int		no_pwd(char **env, int pwd_i, int old_pwd_i);
+
+/*
+*	description: changes directory
+*/
 
 int	ft_cd(char **args, char **env)
 {
@@ -43,6 +47,12 @@ int	ft_cd(char **args, char **env)
 		update_env_vars(env);
 	return (op_code);
 }
+
+/*
+*	description: Will update both PWD and OLDPWD if cd is successeful
+*	notes: PWD and OLDPWD will only be updated if they exist on env
+*	args: the env vars table
+*/
 
 void	update_env_vars(char **env)
 {
@@ -73,6 +83,30 @@ void	update_env_vars(char **env)
 	}
 }
 
+/* 
+*	description: if there's no PWD but OLDPWD exists then OLDPWD will be empty
+*/
+
+int	no_pwd(char **env, int pwd_i, int old_pwd_i)
+{
+	char	*aux;
+
+	if (pwd_i == -1 && old_pwd_i != -1)
+	{
+		aux = ft_strdup("OLDPWD=");
+		free(env[old_pwd_i]);
+		env[old_pwd_i] = aux;
+		return (1);
+	}
+	return (0);
+}
+
+/*
+*	description: cd invoked without arguments should go to HOME directory
+*	notes: will fail if HOME is no present on env
+*	args: the env vars table
+*/
+
 int	go_home(char **env)
 {
 	char	*home_path;
@@ -95,19 +129,10 @@ int	go_home(char **env)
 	return (op_code);
 }
 
-int	no_pwd(char **env, int pwd_i, int old_pwd_i)
-{
-	char	*aux;
-
-	if (pwd_i == -1 && old_pwd_i != -1)
-	{
-		aux = ft_strdup("OLDPWD=");
-		free(env[old_pwd_i]);
-		env[old_pwd_i] = aux;
-		return (1);
-	}
-	return (0);
-}
+/*
+*	description: finds the index of env_name in env
+*	return: if env_name exists on env, return 1, if not return -1
+*/
 
 int	find_env(char *env_name, char **env)
 {
