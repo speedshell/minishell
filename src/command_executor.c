@@ -1,8 +1,8 @@
 #include "../includes/minishell.h"
 
-int	execute_builtin(char **args, char **env, int builtin_id);
+int	execute_builtin(char **args, t_env *env, int builtin_id);
 
-void	command_executor(char *cmd_path, char **args, char **env)
+void	command_executor(char *cmd_path, char **args, t_env *env)
 {
 	int	pid;
 	int	wstatus;
@@ -24,7 +24,7 @@ void	command_executor(char *cmd_path, char **args, char **env)
 	}
 	if (pid == 0)
 	{
-		if (execve(cmd_path, args, env) == -1)
+		if (execve(cmd_path, args, env->env) == -1)
 			print_err_msg();
 		exit(0);
 	}	
@@ -50,6 +50,10 @@ int	is_builtin(char *cmd_path)
 		return (PWD);
 	if (ft_strncmp(cmd_path, "cd", 2) == 0)
 		return (CD);
+	if (ft_strncmp(cmd_path, "export", 6) == 0)
+		return (EXPORT);
+	if (ft_strncmp(cmd_path, "unset", 5) == 0)
+		return (UNSET);
 	return (-1);
 }
 
@@ -59,7 +63,7 @@ int	is_builtin(char *cmd_path)
  * return: the builtin functions's return code
 */
 
-int	execute_builtin(char **args, char **env, int builtin_id)
+int	execute_builtin(char **args, t_env *env, int builtin_id)
 {
 	int	op_code;
 
@@ -69,10 +73,14 @@ int	execute_builtin(char **args, char **env, int builtin_id)
 	if (builtin_id == EXIT)
 		ft_exit(args);
 	if (builtin_id == ENV)
-		op_code = ft_env(env);
+		op_code = ft_env(env->env);
 	if (builtin_id == PWD)
-		op_code = ft_pwd(args, env);
+		op_code = ft_pwd(args, env->env);
 	if (builtin_id == CD)
-		op_code = ft_cd(args, env);
+		op_code = ft_cd(args, env->env);
+	if (builtin_id == EXPORT)
+		op_code = ft_export(args, env);
+	if (builtin_id == UNSET)
+		op_code = ft_unset(args, env);
 	return (op_code);
 }

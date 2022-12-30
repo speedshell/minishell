@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:47:37 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/29 19:01:20 by lfarias-         ###   ########.fr       */
+/*   Updated: 2022/12/30 10:45:37 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	ft_exit(char **args)
 		return (1);
 	}
 	exit_code = convert_to_range(args[1]);
-	exit (exit_code);	
+	exit (exit_code);
 	return (0);
 }
 
@@ -48,7 +48,7 @@ int	ft_exit(char **args)
 int	convert_to_range(char *arg)
 {
 	long	number;
-	
+
 	if (arg == NULL)
 		return (0);
 	number = ft_atoi(arg);
