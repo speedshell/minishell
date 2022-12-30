@@ -4,7 +4,8 @@ int	fallback_pwd(char **env);
 
 /*
 *	description: will print the current directory
-*	args: none
+*	args: args - to see if it was invoked with invalid args
+*		  env - the env table
 *	return: on success 0, on failure 1 (no permission, corrupt dirs, etc)
 */
 
