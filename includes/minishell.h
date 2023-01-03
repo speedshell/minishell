@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/30 15:01:46 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/03 19:36:45 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ char	**build_env(char **env);
 
 // signals handling
 void	handle_signals(void);
+
+// quotes
+char	*quote_resolver(char *str);
+int		update_quote(char *str, int i, int *quote_flag);
 
 // utils
 int		is_builtin(char *cmd_path);

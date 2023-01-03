@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/30 11:57:33 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/03 19:38:20 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int argc, char **argv, char **env)
 {
 	char	*read_line_buffer;
 	char	**cmd;
+	char	*unquoted_line;
 	t_env	env_clone;
 
 	(void)argv;
@@ -39,11 +40,13 @@ int	main(int argc, char **argv, char **env)
 		if (read_line_buffer && *read_line_buffer)
 		{
 			add_history(read_line_buffer);
-			cmd = parse_command(read_line_buffer, env_clone.env);
+			unquoted_line = quote_resolver(read_line_buffer);
+			free(read_line_buffer);
+			cmd = parse_command(unquoted_line, env_clone.env);
 			command_executor(cmd[0], cmd, &env_clone);
 			free2d((void **) cmd);
 		}
-		handle_eof(read_line_buffer);
+		handle_eof(unquoted_line);
 	}
 	rl_clear_history();
 	return (0);
