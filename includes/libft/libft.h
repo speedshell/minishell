@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/12 14:18:21 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/08/08 13:40:27 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/05 12:51:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+int			ft_isspace(int c);
 int			ft_isalpha(int c);
 int			ft_isdigit(int c);
 int			ft_isalnum(int c);
