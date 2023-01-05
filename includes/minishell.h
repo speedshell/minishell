@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/04 23:40:09 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/05 19:07:58 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@
 # define EXIT 21
 # define EXPORT 4
 # define UNSET 5
+
+// SYNTAX tokens defines
+# define WORD 42
+# define PIPE 64 
+# define REDIRECT 128
 
 # include "libft/libft.h"
 # include <stdio.h>
@@ -41,7 +46,7 @@ typedef struct s_env
 
 typedef struct s_lexeme
 {
-	char	*type;
+	int		type;
 	char	*value;
 }	t_token;
 
@@ -51,7 +56,9 @@ typedef struct s_lexeme
 
 typedef struct s_expression
 {
-	t_token **tokens;	
+	char **words;	
+	int	 has_pipe;
+	int	 has_redirection;
 }	t_command;
 
 char	**parse_command(char *statement, char **env);
