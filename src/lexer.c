@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:33:43 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/05 00:53:44 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/05 00:57:55 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,16 @@ int main(void)
 	print_tokens(token_lst);
 
 	cmd = "ls | cat -e";
+	printf("cmd: %s\n", cmd);
+	token_lst = make_tokens(cmd);
+	print_tokens(token_lst);
+
+	cmd = "ls | cat -e | cat -e | cat -e";
+	printf("cmd: %s\n", cmd);
+	token_lst = make_tokens(cmd);
+	print_tokens(token_lst);
+
+	cmd = "ls |||";
 	printf("cmd: %s\n", cmd);
 	token_lst = make_tokens(cmd);
 	print_tokens(token_lst);
