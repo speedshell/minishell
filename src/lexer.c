@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:33:43 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/05 13:19:10 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/05 19:09:00 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,31 +48,23 @@ int	get_token_size(char *str)
 	return (i);
 }
 
-t_token	*create_token(char *str, int i, int token_size, int *is_cmd)
+t_token	*create_token(char *str, int i, int token_size)
 {
 	t_token	*token;
 
 	token = malloc(sizeof(t_token));
 	if (str[i] == '|' && token_size == 1)
-	{
-		token->type = "PIPE";
-		*is_cmd = 0;
-	}
+		token->type = PIPE;
 	else if (str[i] == '<' && token_size == 1)
-		token->type = "INPUT_REDIRECT";
+		token->type = REDIRECT;
 	else if (str[i] == '>' && token_size == 1)
-		token->type = "OUTPUT_REDIRECT";
+		token->type = REDIRECT;
 	else if (token_size == 2 && ft_strncmp(&str[i], "<<", token_size) == 0)
-		token->type = "HERE_DOC";
+		token->type = REDIRECT;
 	else if (token_size == 2 && ft_strncmp(&str[i], ">>", token_size) == 0)
-			token->type = "OUTPUT_APPEND";
-	else if (*is_cmd == 0)
-	{
-		token->type = "COMMAND";
-		*is_cmd = 1;
-	}
+			token->type = REDIRECT;
 	else
-		token->type = "WORD";
+		token->type = WORD;
 	token->value = ft_substr(str, i, token_size);
 	return (token);
 }
@@ -89,13 +81,12 @@ t_list	*make_tokens(char *user_input)
 		return (NULL);
 	i = 0;
 	tokens = NULL;
-	is_cmd = 0;
 	while (user_input[i])
 	{
 		token_length = get_token_size(&user_input[i]);
 		if (token_length != 0)
 		{
-			token = create_token(user_input, i, token_length, &is_cmd);
+			token = create_token(user_input, i, token_length);
 			ft_lstadd_back(&tokens, ft_lstnew(token));
 			i += token_length;
 		}
@@ -105,7 +96,7 @@ t_list	*make_tokens(char *user_input)
 	return (tokens);
 }
 
-void print_tokens(t_list *token_list)
+/*void print_tokens(t_list *token_list)
 {
 	int		token_size;
 	t_token *tkn;
@@ -115,7 +106,7 @@ void print_tokens(t_list *token_list)
 	while (token_list)
 	{
 		tkn = (t_token *) token_list->content;
-		printf("token type: %s\n", tkn->type);
+		printf("token type: %d\n", tkn->type);
 		printf("token value: %s\n", tkn->value);
 		free(tkn->value);
 		free(tkn);
@@ -181,4 +172,4 @@ int main(void)
 	printf("cmd: %s\n", cmd);
 	token_lst = make_tokens(cmd);
 	print_tokens(token_lst);
-}
+}*/
