@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/30 15:01:46 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/04 23:40:09 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,26 @@ typedef struct s_env
 {
 	char **env;
 } t_env;
+
+/* According to the bash grammar
+ *
+ * <, <<, >, >>, | and $ are special characters. except $ all are considered operators
+ */
+
+typedef struct s_lexeme
+{
+	char	*type;
+	char	*value;
+}	t_token;
+
+/* A command is composed of multiple tokens of different types and values
+*	this is what we will give to our executor 
+*/
+
+typedef struct s_expression
+{
+	t_token **tokens;	
+}	t_command;
 
 char	**parse_command(char *statement, char **env);
 void	command_executor(char *cmd_path, char **args, t_env *env);
