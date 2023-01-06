@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:16:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 11:05:59 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/06 17:55:00 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,28 +56,45 @@ void	print_args(char **args, int i)
 	}
 }
 
-int	is_flag(char *str)
+int	is_flag(char **args, int *i)
 {
-	if (*str == '-')
-		str++;
-	while (*str)
+	int		flag;
+	int		j;
+	int		k;
+
+	flag = 0;
+	j = 1;
+	while (args[j])
 	{
-		if (*str != 'n')
-			return (0);
-		str++;
+		k = 0;
+		if (args[j][k] == '-')
+			k++;
+		while (args[j][k])
+		{
+			if (args[j][k] != 'n')
+			{
+				return (flag);
+			}
+			k++;
+		}
+		j++;
+		*i += 1;
+		flag = 1;
 	}
-	return (1);
+	return (flag);
 }
 
 int	ft_echo(char **args)
 {
 	int	is_flag_valid;
+	int	i;
 
+	i = 1;
 	is_flag_valid = 0;
 	if (args[1] && !ft_strncmp(args[1], "-n", 2))
-		is_flag_valid = is_flag(args[1]);
+		is_flag_valid = is_flag(args, &i);
 	if (is_flag_valid)
-		print_args(args, 2);
+		print_args(args, i);
 	else
 	{
 		print_args(args, 1);
