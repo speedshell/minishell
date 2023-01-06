@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/30 14:48:26 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 15:26:00 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ int	no_pwd(char **env, int pwd_i, int old_pwd_i)
 *	args: the env vars table
 */
 
+// TO-DO: print error message
 int	go_home(char **env)
 {
 	char	*home_path;
@@ -116,7 +117,6 @@ int	go_home(char **env)
 	i = find_env("HOME=", env);
 	if (i == -1)
 	{
-		// TO-DO: print error message
 		printf("cd: HOME not defined\n");
 		return (1);
 	}

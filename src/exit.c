@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:47:37 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/30 10:45:37 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/06 15:22:55 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	convert_to_range(char *arg);
 *			on error it doesn't exit and returns 1
 */
 
+// TO-DO: it should actually print to STDERR
 int	ft_exit(char **args)
 {
 	int	i;
@@ -32,7 +33,6 @@ int	ft_exit(char **args)
 	printf("exit\n");
 	if (i > 2)
 	{
-		// TO-DO: it should actually print to STDERR
 		printf("exit: too many arguments\n");
 		return (1);
 	}
