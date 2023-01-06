@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:16:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 00:18:47 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/06 00:41:41 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,16 @@ int	ft_hiddenp(char *str, char *hidden)
 	j = 0;
 	while (str[j] && hidden[i])
 	{
+		if (!ft_isalpha(str[j]) && j > 0)
+			return (0);
 		if (str[j] == hidden[i])
 			i++;
 		j++;
+	}
+	while (str[j])
+	{
+		if (!ft_isalpha(str[j++]))
+			return (0);
 	}
 	if (hidden[i] == '\0')
 		return (1);
