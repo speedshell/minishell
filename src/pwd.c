@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pwd.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/06 15:21:10 by lfarias-          #+#    #+#             */
+/*   Updated: 2023/01/06 15:21:40 by lfarias-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 int	fallback_pwd(char **env);
@@ -9,6 +21,7 @@ int	fallback_pwd(char **env);
 *	return: on success 0, on failure 1 (no permission, corrupt dirs, etc)
 */
 
+// TO-DO: print error on STDERROR
 int	ft_pwd(char **args, char **env)
 {
 	int		i;
@@ -21,7 +34,6 @@ int	ft_pwd(char **args, char **env)
 		i++;
 	if (i > 1)
 	{
-		// TO-DO: print this on STDERROR
 		printf("pwd: too many arguments\n");
 		return (1);
 	}
