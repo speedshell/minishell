@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:10:02 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 20:14:08 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 20:23:48 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,24 +36,27 @@ int	ft_unset(char **args, t_env *env)
 
 char	**del_variable(char *var_name, char **old_env)
 {
-	char	**new_env;
-	int		i;
-	int		j;
+	char		**new_env;
+	int			i;
+	int			j;
+	size_t		var_length;
 
 	if (!var_name || !old_env)
 		return (NULL);
 	i = 0;
 	j = 0;
+	var_length = ft_strlen(var_name);
 	new_env = create_env(old_env);
-	var_name = ft_strjoin(var_name, "=");
 	while (old_env[i])
 	{
-		if (ft_strncmp(var_name, old_env[i], ft_strlen(var_name)))
+		if (ft_strncmp(var_name, old_env[i], var_length) \
+			&& var_length != ft_strlen(old_env[i]))
+		{
 			new_env[j++] = ft_strdup(old_env[i]);
+		}
 		free(old_env[i++]);
 	}			
 	free(old_env);
-	free(var_name);
 	new_env[j] = NULL;
 	return (new_env);
 }
