@@ -9,10 +9,10 @@ int	ft_unset(char **args, t_env *env)
 
 	i = 0;
 	while (env->env[i])
-        i++;
+		i++;
 	if (!args[1])
 		return (0);
-    arg = ft_strjoin(args[1], "=");
+	arg = ft_strjoin(args[1], "=");
 	new_env = malloc(sizeof(char *) * (i));
 	i = 0;
 	j = 0;
