@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:16:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 00:41:41 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/06 11:05:59 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,26 @@ void	print_args(char **args, int i)
 	}
 }
 
+int	is_flag(char *str)
+{
+	if (*str == '-')
+		str++;
+	while (*str)
+	{
+		if (*str != 'n')
+			return (0);
+		str++;
+	}
+	return (1);
+}
+
 int	ft_echo(char **args)
 {
 	int	is_flag_valid;
 
-	if (args[1])
-		is_flag_valid = ft_hiddenp(args[1], "-n");
+	is_flag_valid = 0;
+	if (args[1] && !ft_strncmp(args[1], "-n", 2))
+		is_flag_valid = is_flag(args[1]);
 	if (is_flag_valid)
 		print_args(args, 2);
 	else
