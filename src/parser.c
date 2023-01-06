@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 01:57:10 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 02:28:16 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_command *create_expression(void)
 	cmd = malloc(sizeof(*cmd));
 	if (!cmd)
 		return (NULL);
+	cmd->has_pipe = 0;
 	return (cmd);
 }
 
