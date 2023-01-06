@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/06 14:49:49 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 15:05:04 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,9 @@ int		ft_unset(char **args, t_env *env);
 t_list		*make_tokens(char *user_input);
 t_command	*parse_expression(t_list **token_list);
 int			check_syntax(t_list *token_list);
+
+int			pipe_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn);
+int			redirect_rules(t_token *curr_token, t_token *next_tkn);
 
 // interpreter
 void	eval_tokens(t_list **tokens, t_env *env_clone);

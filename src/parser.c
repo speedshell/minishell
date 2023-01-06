@@ -6,15 +6,69 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 02:28:16 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 15:07:41 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_list	*make_tokens(char *user_input);
+t_list		*make_tokens(char *user_input);
+t_token		*get_next_token(t_list *token_list);
+t_command	*create_expression(void);
+int			count_tokens(t_list *token_list);
 
-t_command *create_expression(void)
+t_command	*parse_expression(t_list **token_list)
+{
+	t_list		*node;
+	t_token		*tkn;
+	t_command	*cmd;
+	int			i;
+	int			token_qty;
+
+	token_qty = count_tokens(*token_list);
+	if (token_qty == 0)
+		return (NULL);
+	cmd = create_expression();
+	cmd->tokens = malloc(sizeof(t_token *) * (token_qty + 1));
+	i = 0;
+	while (i < token_qty && token_list)
+	{
+		tkn = (t_token *)(*token_list)->content;
+		cmd->tokens[i] = tkn;
+		if (tkn->type == PIPE)
+			cmd->has_pipe = 1;
+		node = *token_list;
+		*token_list = (*token_list)->next;
+		free(node);
+		i++;
+	}
+	cmd->tokens[i] = NULL;
+	return (cmd);
+}
+
+int	check_syntax(t_list *token_list)
+{
+	t_token	*tkn;
+	t_token	*prev_tkn;
+	t_token	*next_tkn;
+
+	prev_tkn = NULL;
+	next_tkn = NULL;
+	while (token_list)
+	{
+		tkn = (t_token *) token_list->content;
+		next_tkn = get_next_token(token_list);
+		if (pipe_rules(prev_tkn, tkn, next_tkn) == -1)
+			return (0);
+		if (redirect_rules(tkn, next_tkn) == -1)
+			return (0);
+		prev_tkn = tkn;
+		token_list = token_list->next;
+	}
+	return (1);
+}
+
+t_command	*create_expression(void)
 {
 	t_command	*cmd;
 
@@ -25,9 +79,9 @@ t_command *create_expression(void)
 	return (cmd);
 }
 
-t_token *get_next_token(t_list *token_list)
+t_token	*get_next_token(t_list *token_list)
 {
-	t_token *tkn;
+	t_token	*tkn;
 
 	tkn = NULL;
 	if (token_list->next != NULL)
@@ -35,76 +89,6 @@ t_token *get_next_token(t_list *token_list)
 		tkn = (t_token *) token_list->next->content;
 	}
 	return (tkn);
-}
-
-int	pipe_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
-{
-	int		syntax;
-
-	syntax = 0;
-	if (curr_token->type == PIPE)
-	{
-		if (!(prev_tkn != NULL && next_tkn != NULL))
-		{
-			syntax = -1;
-		}
-		else if ((prev_tkn->type == WORD && (next_tkn->type == WORD || next_tkn->type == REDIRECT)))
-		{
-			syntax = 1;
-		}
-		else
-		{
-			syntax = -1;
-		}
-	}
-	else
-		return (syntax);
-	if (syntax == -1)
-		printf("syntax error near '|'\n");
-	return (syntax);
-}
-
-int	redirect_rules(t_token *curr_token, t_token *next_tkn)
-{
-	int	syntax;
-
-	syntax = 0;
-	if (curr_token->type == REDIRECT)
-	{
-		if (!next_tkn)
-			syntax = -1;
-		else if (next_tkn->type == WORD)
-			syntax = 1;
-		else
-			syntax = -1;
-	}	
-	else
-		return (syntax);
-	if (syntax == -1)
-		printf("syntax error near '<' or '>' \n");
-	return (syntax);
-}
-
-int	check_syntax(t_list *token_list)
-{
-	t_token	*tkn;
-	t_token	*prev_tkn;
-	t_token *next_tkn;
-
-	prev_tkn = NULL;
-	next_tkn = NULL;
-	while (token_list)
-	{
-		tkn = (t_token *) token_list->content;
-		next_tkn = get_next_token(token_list);
-		if (pipe_rules(prev_tkn, tkn, next_tkn) == -1) 
-			return (0);
-		if (redirect_rules(tkn, next_tkn) == -1)
-			return (0);
-		prev_tkn = tkn;
-		token_list = token_list->next;
-	}
-	return (1);
 }
 
 int	count_tokens(t_list *token_list)
@@ -124,36 +108,6 @@ int	count_tokens(t_list *token_list)
 		node = node->next;
 	}
 	return (expression_size);
-}
-
-
-t_command	*parse_expression(t_list **token_list)
-{
-	t_list		*node;
-	t_token		*tkn;
-	t_command	*cmd;
-	int			i;
-	int			token_qty;
-
-	token_qty = count_tokens(*token_list);
-	if (token_qty == 0)
-		return (NULL);
-	cmd = create_expression();
-	cmd->tokens = malloc(sizeof(t_token *) * (token_qty + 1));
-	i = 0;
-	while (i < token_qty && token_list)
-	{
-		tkn = (t_token *) (*token_list)->content;
-		cmd->tokens[i] = tkn;
-		if (tkn->type == PIPE)
-			cmd->has_pipe = 1;
-		node = *token_list;
-		*token_list = (*token_list)->next; 
-		free(node);
-		i++;
-	}
-	cmd->tokens[i] = NULL;
-	return (cmd);
 }
 
 /*void	print_cmd(t_command *cmd)
@@ -365,4 +319,3 @@ int main(void)
 	cmd = "ls | rev | < infile";
 	print_syntax_ok(cmd, OK);
 }*/
-
