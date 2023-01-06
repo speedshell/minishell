@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2022/12/30 15:01:46 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 12:38:32 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,16 @@ typedef struct s_env
 	char **env;
 } t_env;
 
+typedef struct s_kludge
+{
+    char    *str;
+    char    *variable;
+    int     j;
+    char    *temp;
+    int     flag;
+
+}   t_kludge;
+
 char	**parse_command(char *statement, char **env);
 void	command_executor(char *cmd_path, char **args, t_env *env);
 
@@ -55,7 +65,18 @@ char	**build_env(char **env);
 // signals handling
 void	handle_signals(void);
 
+// Expand variables
+char    *expanded_str(char *input, char **env);
+char    *env_search(char *variable, char **env, int *j);
+
+//kludge
+void    init_kludge(t_kludge *kludge, char *input);
+void    expand_variable(t_kludge *kludge, char **env, char *input, int i);
+void    copy_variable(t_kludge *kludge);
+char    *env_search(char *variable, char **env, int *j);
+
 // utils
 int		is_builtin(char *cmd_path);
 void	free2d(void **matrix2d);
+
 #endif
