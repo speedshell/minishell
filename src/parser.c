@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/05 19:39:28 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 01:57:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ t_command *create_expression(void)
 	cmd = malloc(sizeof(*cmd));
 	if (!cmd)
 		return (NULL);
-	cmd->has_pipe = 0;
-	cmd->has_redirection = 0;
-	cmd->words = NULL;
 	return (cmd);
 }
 
@@ -66,7 +63,7 @@ int	pipe_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
 	return (syntax);
 }
 
-int	redirect_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
+int	redirect_rules(t_token *curr_token, t_token *next_tkn)
 {
 	int	syntax;
 
@@ -89,12 +86,10 @@ int	redirect_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
 
 int	check_syntax(t_list *token_list)
 {
-	t_list	*node;
 	t_token	*tkn;
 	t_token	*prev_tkn;
 	t_token *next_tkn;
 
-	node = token_list;
 	prev_tkn = NULL;
 	next_tkn = NULL;
 	while (token_list)
@@ -103,7 +98,7 @@ int	check_syntax(t_list *token_list)
 		next_tkn = get_next_token(token_list);
 		if (pipe_rules(prev_tkn, tkn, next_tkn) == -1) 
 			return (0);
-		if (redirect_rules(prev_tkn, tkn, next_tkn) == -1)
+		if (redirect_rules(tkn, next_tkn) == -1)
 			return (0);
 		prev_tkn = tkn;
 		token_list = token_list->next;
@@ -111,17 +106,85 @@ int	check_syntax(t_list *token_list)
 	return (1);
 }
 
-/*t_command	*parse_expression(t_list *token_list)
+int	count_tokens(t_list *token_list)
+{
+	t_list	*node;
+	t_token	*tkn;
+	int		expression_size;
+
+	node = token_list;
+	expression_size = 0;
+	while (node)
+	{
+		tkn = (t_token *) node->content;
+		if (tkn->type == PIPE)
+			return (++expression_size);
+		expression_size++;
+		node = node->next;
+	}
+	return (expression_size);
+}
+
+
+t_command	*parse_expression(t_list **token_list)
 {
 	t_list		*node;
 	t_token		*tkn;
 	t_command	*cmd;
-	char		**tokens;
+	int			i;
+	int			token_qty;
 
-	return (NULL);
+	token_qty = count_tokens(*token_list);
+	if (token_qty == 0)
+		return (NULL);
+	cmd = create_expression();
+	cmd->tokens = malloc(sizeof(t_token *) * (token_qty + 1));
+	i = 0;
+	while (i < token_qty && token_list)
+	{
+		tkn = (t_token *) (*token_list)->content;
+		cmd->tokens[i] = tkn;
+		if (tkn->type == PIPE)
+			cmd->has_pipe = 1;
+		node = *token_list;
+		*token_list = (*token_list)->next; 
+		free(node);
+		i++;
+	}
+	cmd->tokens[i] = NULL;
+	return (cmd);
+}
+
+/*void	print_cmd(t_command *cmd)
+{
+	t_token	*token;
+	int		i;
+
+	i = 0;
+	while (cmd->tokens[i])
+	{
+		token = cmd->tokens[i];
+		printf("Token type %d\n", token->type);
+		printf("Token value %s\n", token->value);
+		i++;
+	}
+}
+
+int	main(void)
+{
+	char		*input;
+	t_list		*tokens;
+	t_command	*cmd;
+
+	input = "ls -l | cat -e";
+	tokens = make_tokens(input);
+	cmd = parse_expression(&tokens);
+	print_cmd(cmd);
+	cmd = parse_expression(&tokens);
+	print_cmd(cmd);
 }*/
 
-void	print_syntax_ok(char *cmd, int expected)
+/*void	print_syntax_ok(char *cmd, int expected)
 {
 	t_list *token_list;
 	int		syntax_ok;
@@ -300,5 +363,5 @@ int main(void)
 
 	cmd = "ls | rev | < infile";
 	print_syntax_ok(cmd, OK);
-}
+}*/
 

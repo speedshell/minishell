@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/05 19:07:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 01:42:23 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,11 @@ typedef struct s_lexeme
 
 typedef struct s_expression
 {
-	char **words;	
-	int	 has_pipe;
-	int	 has_redirection;
+	t_token **tokens;	
+	int		has_pipe;
 }	t_command;
 
-char	**parse_command(char *statement, char **env);
+char	*parse_command(char *statement, char **env);
 void	command_executor(char *cmd_path, char **args, t_env *env);
 
 // builtin
@@ -72,6 +71,14 @@ int		ft_pwd(char **args, char **env);
 int		ft_cd(char **args, char **env);
 int		ft_export(char **args, t_env *env);
 int		ft_unset(char **args, t_env *env);
+
+// Parser and Lexer
+t_list		*make_tokens(char *user_input);
+t_command	*parse_expression(t_list **token_list);
+int			check_syntax(t_list *token_list);
+
+// interpreter
+void	eval_tokens(t_list **tokens, t_env *env_clone);
 
 // error handling
 int		print_err_msg(void);

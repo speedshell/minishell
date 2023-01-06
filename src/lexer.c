@@ -6,20 +6,11 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:33:43 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/05 19:09:00 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 01:08:51 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	is_redirect(char *str)
-{
-	if (*str == '<' && *(str + 1) == '<')
-		return (1);
-	if (*str == '>' && *(str + 1) == '>')
-		return (1);
-	return (0);
-}
 
 int	is_operator(char c)
 {
@@ -74,7 +65,6 @@ t_list	*make_tokens(char *user_input)
 	t_list	*tokens;
 	int		i;
 	int		token_length;
-	int		is_cmd;
 	t_token	*token;
 
 	if (!user_input)

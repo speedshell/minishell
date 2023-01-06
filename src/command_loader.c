@@ -4,31 +4,27 @@ char	*build_path(char *cmd_name, char *env);
 void	free2d(void **matrix2d);
 void	*clean_buildpath(char **paths, char *aux);
 
-char	**parse_command(char *statement, char **env)
+char	*parse_command(char *statement, char **env)
 {
-	char	**cmd_fields;
 	char	*cmd_name;
 	char	*fullpath_cmd;
 	int		i;
 
-	cmd_fields = ft_split(statement, ' ');
-	if (cmd_fields == NULL)
-		return (NULL);
-	cmd_name = cmd_fields[0];
-	if (is_builtin(cmd_fields[0]) != -1)
-		return (cmd_fields);
+	cmd_name = statement;
+	if (is_builtin(cmd_name) != -1)
+		return (cmd_name);
 	if (access(cmd_name, X_OK) == 0)
-		return (cmd_fields);
+		return (cmd_name);
 	i = 0;
 	while (env[i] && ft_strncmp("PATH=", env[i], 5) != 0)
 		i++;
 	fullpath_cmd = build_path(cmd_name, env[i]);
 	if (fullpath_cmd != NULL)
 	{
-		free(cmd_fields[0]);
-		cmd_fields[0] = fullpath_cmd;
+		free(cmd_name);
+		cmd_name = fullpath_cmd;
 	}
-	return (cmd_fields);
+	return (cmd_name);
 }
 
 char	*build_path(char *cmd_name, char *path)
