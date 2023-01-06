@@ -6,13 +6,11 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:16:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2022/12/29 16:44:11 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 00:41:41 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	check_flag(char *flag);
 
 /* 
  *	description: prints the argument on the STDOUT	
@@ -21,51 +19,55 @@ int	check_flag(char *flag);
  *  return: 0 on success, 1 on failure [wrong args]
  */
 
+int	ft_hiddenp(char *str, char *hidden)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (str[j] && hidden[i])
+	{
+		if (!ft_isalpha(str[j]) && j > 0)
+			return (0);
+		if (str[j] == hidden[i])
+			i++;
+		j++;
+	}
+	while (str[j])
+	{
+		if (!ft_isalpha(str[j++]))
+			return (0);
+	}
+	if (hidden[i] == '\0')
+		return (1);
+	else
+		return (0);
+}
+
+void	print_args(char **args, int i)
+{
+	while (args[i] != NULL)
+	{
+		printf("%s", args[i]);
+		if (args[i + 1])
+			printf(" ");
+		i++;
+	}
+}
+
 int	ft_echo(char **args)
 {
 	int	is_flag_valid;
-	int	i;
 
-	i = 0;
-	is_flag_valid = check_flag(args[i]);
-	i++;
+	if (args[1])
+		is_flag_valid = ft_hiddenp(args[1], "-n");
 	if (is_flag_valid)
-	{
-		while (args[i] != NULL)
-		{
-			if (check_flag(args[i]) != 0 && is_flag_valid != 0)
-				printf("%s ", args[i]);
-			else
-				is_flag_valid = 0;
-			i++;
-		}
-	}
+		print_args(args, 2);
 	else
 	{
-		while (args[i++] != NULL)
-			printf("%s ", args[i]);
+		print_args(args, 1);
 		printf("\n");
 	}
 	return (0);
-}
-
-int	check_flag(char *flag)
-{
-	int	i;
-
-	if (!flag)
-		return (0);
-	i = 0;
-	if (flag[i] == '-')
-		i++;
-	else
-		return (0);
-	while (flag[i] == 'n')
-	{
-		i++;
-	}
-	if (flag[i] != '\0')
-		return (0);
-	else
-		return (1);
 }
