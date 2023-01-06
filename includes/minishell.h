@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/06 14:16:11 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 14:49:49 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,10 @@ char	**build_env(char **env);
 
 // signals handling
 void	handle_signals(void);
+
+// quotes
+char	*quote_resolver(char *str);
+int		update_quote(char *str, int i, int *quote_flag);
 
 // Expand variables
 char    *expanded_str(char *input, char **env);
