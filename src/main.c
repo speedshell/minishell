@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/03 19:38:20 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 14:47:47 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ void	handle_eof(char *input)
 
 int	main(int argc, char **argv, char **env)
 {
-	char	*read_line_buffer;
-	char	**cmd;
-	char	*unquoted_line;
-	t_env	env_clone;
+	char		*read_line_buffer;
+	t_list		*tokens;
+	t_env		env_clone;
+	char		*input;
 
 	(void)argv;
 	if (argc != 1)
@@ -40,13 +40,12 @@ int	main(int argc, char **argv, char **env)
 		if (read_line_buffer && *read_line_buffer)
 		{
 			add_history(read_line_buffer);
-			unquoted_line = quote_resolver(read_line_buffer);
-			free(read_line_buffer);
-			cmd = parse_command(unquoted_line, env_clone.env);
-			command_executor(cmd[0], cmd, &env_clone);
-			free2d((void **) cmd);
+			input = expanded_str(read_line_buffer, env_clone.env);
+			tokens = make_tokens(input);	
+			free(input);
+			eval_tokens(&tokens, &env_clone);
 		}
-		handle_eof(unquoted_line);
+		handle_eof(read_line_buffer);
 	}
 	rl_clear_history();
 	return (0);

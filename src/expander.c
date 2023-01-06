@@ -2,50 +2,79 @@
 
 #define ERR_MALLOC 0
 
-int is_expandable(char c)
+char	*ft_strchr_plus(const char *s, int c)
 {
-    if (ft_isalpha(c) || c == '_')
-        return (1);
-    return (0);
+	c = c % 256;
+	while (*s && c != *s)
+		s++;
+	if (*s == c)
+		return ((char *)(s + 1));
+	return (0);
 }
 
-char *expanded_str(char *input)
+char	*env_search(char *variable, char **env, int *j)
 {
-    char    *str;
-    int     i;
-//  char    *variable;
-    int     j;
+	int		i;
+	char	*temp;
+	int		len;
 
-    str = malloc(sizeof(char) * ft_strlen(input) + 1);
-    if (!str)
-        return (ERR_MALLOC);
-    j = 0;
-    while (*input)
-    {
-        if (*input == '$')
-        {
-            i = 1;
-            while (is_expandable(input[i]))
-                i++;
-    //      variable = ft_substr(input, 0, i);
-            input += i;
-		    }
-        else
-            str[j++] = *input++;
+	i = -1;
+	temp = variable;
+	variable = ft_strjoin(variable, "=");
+	free(temp);
+	if (!variable)
+		return (0);
+	len = ft_strlen(variable);
+	while (env[++i])
+	{
+		if (!ft_strncmp(variable, env[i], len))
+		{
+			free(variable);
+			temp = ft_strdup(ft_strchr_plus(env[i], '='));
+			if (!temp)
+				return (0);
+			*j += ft_strlen(temp);
+			return (temp);
 		}
-    str[j] = 0;
-    return (str);
+	}
+	free(variable);
+	return (ft_strdup(""));
 }
 
-
-int main (int argc, char **argv)
+int	is_expandable(char c, int i)
 {
-    char *teste;
+	if ((ft_isalpha(c) || c == '_') && i == 1)
+		return (1);
+	else if ((ft_isalpha(c) || ft_isdigit(c) || c == '_'))
+		return (1);
+	return (0);
+}
 
-    if (argc == 2 )
-    {
-        teste = expanded_str(argv[1]);
-        printf("%s\n", teste);
-    }
-    return (0);
+char	*expanded_str(char *input, char **env)
+{
+	int			i;
+	t_kludge	kludge;
+
+	init_kludge(&kludge, input);
+	if (!kludge.str)
+		return (ERR_MALLOC);
+	while (*input)
+	{
+		if (*input == '$' && *(input + 1))
+		{
+			i = 1;
+			while (is_expandable(input[i], i))
+				i++;
+			expand_variable(&kludge, env, input, i);
+			input += i;
+		}
+		else
+		{
+			copy_variable(&kludge);
+			kludge.str[kludge.j++] = *input++;
+		}
+	}
+	if (kludge.flag == 0)
+		kludge.str[kludge.j] = 0;
+	return (kludge.str);
 }
