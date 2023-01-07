@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:10:02 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 20:23:48 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 09:20:26 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	ft_unset(char **args, t_env *env)
 	char	**vars;
 
 	vars = args;
+	puts(*vars);
+	vars++;
 	while (*vars)
 	{
 		if (!is_valid_identifier(*vars))
