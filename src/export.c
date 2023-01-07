@@ -6,30 +6,11 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:28:50 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/07 09:28:52 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/07 18:51:42 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	valid_variable(char *c)
-{
-	int	i;
-
-	i = -1;
-	while (c[++i])
-	{
-		if (c[i] == '=' && i == 0)
-			return (0);
-		else if (c[i] == '=' && i != 0)
-			break ;
-		else if ((!ft_isalpha(c[i]) && !(c[i] == '_')) && i == 0)
-			return (0);
-		else if ((!ft_isalpha(c[i]) && !ft_isdigit(c[i]) && !(c[i] == '_')))
-			return (0);
-	}
-	return (1);
-}
 
 void	replace(int i, t_env *env, char *variable, char *value)
 {
