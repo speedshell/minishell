@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/06 15:16:37 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:21:58 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,8 @@ int	main(int argc, char **argv, char **env)
 		if (read_line_buffer && *read_line_buffer)
 		{
 			add_history(read_line_buffer);
-			input = expanded_str(read_line_buffer, env_clone.env);
+			input = read_line_buffer;
 			tokens = make_tokens(input);
-			free(input);
 			eval_tokens(&tokens, &env_clone);
 		}
 		handle_eof(read_line_buffer);

@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/07 19:00:37 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:29:42 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,6 @@ typedef struct s_expression
 	int		return_code;
 }	t_command;
 
-typedef struct s_kludge
-{
-	char	*str;
-	char	*variable;
-	int		j;
-	char	*temp;
-	int		flag;
-}	t_kludge;
-
 char		*parse_command(char *statement, char **env);
 void		command_executor(char **cmd_path, t_command *expr, t_env *env);
 
@@ -116,14 +107,8 @@ char		*quote_resolver(char *str);
 int			update_quote(char *str, int i, int *quote_flag);
 
 // Expand variables
-char		*expanded_str(char *input, char **env);
-char		*env_search(char *variable, char **env, int *j);
-
-//kludge
-void		init_kludge(t_kludge *kludge, char *input);
-void		expand_variable(t_kludge *kludge, char **env, char *input, int i);
-void		copy_variable(t_kludge *kludge);
-char		*env_search(char *variable, char **env, int *j);
+int			valid_variable(char *c);
+char		*expand_variable(char *input, char **env);
 
 // utils
 int			is_builtin(char *cmd_path);

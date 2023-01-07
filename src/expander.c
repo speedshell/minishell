@@ -1,80 +1,77 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expander.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
+/*   Updated: 2023/01/07 19:29:07 by mpinna-l         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
 
 #define ERR_MALLOC 0
 
-char	*ft_strchr_plus(const char *s, int c)
+int	valid_variable(char *c)
 {
-	c = c % 256;
-	while (*s && c != *s)
-		s++;
-	if (*s == c)
-		return ((char *)(s + 1));
-	return (0);
-}
-
-char	*env_search(char *variable, char **env, int *j)
-{
-	int		i;
-	char	*temp;
-	int		len;
+	int	i;
 
 	i = -1;
-	temp = variable;
-	variable = ft_strjoin(variable, "=");
-	free(temp);
-	if (!variable)
-		return (0);
-	len = ft_strlen(variable);
-	while (env[++i])
+	while (c[++i])
 	{
-		if (!ft_strncmp(variable, env[i], len))
-		{
-			free(variable);
-			temp = ft_strdup(ft_strchr_plus(env[i], '='));
-			if (!temp)
-				return (0);
-			*j += ft_strlen(temp);
-			return (temp);
-		}
+		if (c[i] == '=' && i == 0)
+			return (0);
+		else if (c[i] == '=' && i != 0)
+			break ;
+		else if ((!ft_isalpha(c[i]) && !(c[i] == '_')) && i == 0)
+			return (0);
+		else if ((!ft_isalpha(c[i]) && !ft_isdigit(c[i]) && !(c[i] == '_')))
+			return (0);
 	}
-	free(variable);
+	return (1);
+}
+
+char	*expand_variable(char *input, char **env)
+{
+	int		i;
+	char	*variable;
+
+	i = 0;
+	if (!input)
+		return (NULL);
+	if (*input == '$')
+	{
+		input++;
+		if (valid_variable(input))
+		{
+			while (env[++i])
+			{
+				if (!ft_strncmp(input, env[i], ft_strlen(input)))
+				{
+					variable = ft_strdup(ft_strchr(env[i], '=') + 1);
+					return (variable);
+				}
+			}
+		}	
+	}
 	return (ft_strdup(""));
 }
-
-int	is_expandable(char c, int i)
+/*
+int main (int argc, char **argv, char **env)
 {
-	if ((ft_isalpha(c) || c == '_') && i == 1)
-		return (1);
-	else if ((ft_isalpha(c) || ft_isdigit(c) || c == '_'))
-		return (1);
-	return (0);
-}
+	char *var = "$PWD";
+	char *var2 = "$PDW";
+	char *var3 = "$#sp";
+	char *var4 = "$123";
+	char *var5 = "$HOME";
+	char *var6 = "$HOME$";
 
-char	*expanded_str(char *input, char **env)
-{
-	int			i;
-	t_kludge	kludge;
-
-	init_kludge(&kludge, input);
-	if (!kludge.str)
-		return (ERR_MALLOC);
-	while (*input)
-	{
-		if (*input == '$' && *(input + 1))
-		{
-			i = 1;
-			while (is_expandable(input[i], i))
-				i++;
-			expand_variable(&kludge, env, input, i);
-			input += i;
-		}
-		else
-		{
-			copy_variable(&kludge);
-			kludge.str[kludge.j++] = *input++;
-		}
-	}
-	if (kludge.flag == 0)
-		kludge.str[kludge.j] = 0;
-	return (kludge.str);
-}
+	printf("%s expanded -> %s\n", var, expand_variable(var, env));
+	printf("%s expanded -> %s\n", var2, expand_variable(var2, env));
+	printf("%s expanded -> %s\n", var3, expand_variable(var3, env));
+	printf("%s expanded -> %s\n", var4, expand_variable(var4, env));
+	printf("%s expanded -> %s\n", var5, expand_variable(var5, env));
+	printf("%s expanded -> %s\n", var6, expand_variable(var6, env));
+}*/
