@@ -59,10 +59,13 @@ typedef struct s_expression
 {
 	t_token	**tokens;	
 	int		has_pipe;
+	int		in_pipe[2];
+	int		out_pipe[2];
+	int		return_code;
 }	t_command;
 
 char		*parse_command(char *statement, char **env);
-void		command_executor(char *cmd_path, char **args, t_env *env);
+void		command_executor(char **cmd_path, t_command *expr, t_env *env);
 
 // builtin
 int			ft_echo(char **args);
@@ -92,6 +95,12 @@ char		**build_env(char **env);
 
 // signals handling
 void		handle_signals(void);
+
+// Pipes and redirection
+void		pipes_setup(t_command *expr);
+void		pipes_close(t_command *expr);
+void		pipes_builtin_setup(t_command *expr, int *std_backup);
+void		pipes_builtin_close(t_command *expr, int *std_backup);
 
 // quotes
 char		*quote_resolver(char *str);

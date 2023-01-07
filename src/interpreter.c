@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 23:18:28 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 20:02:36 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,11 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 	t_command	*expr;
 	int			syntax;
 	char		**cmd;
+	int			prev_pipe[2];
 
+	prev_pipe[0] = -1;
+	prev_pipe[1] = -1;
 	syntax = check_syntax(*tokens);
-	(void)env_clone;
 	if (syntax == 0)
 		return ;
 	while (*tokens)
@@ -32,11 +34,19 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 		if (expr == NULL)
 			break ;
 		cmd = command_builder(expr);
-		free(expr);
 		if (cmd == NULL)
 			break ;
+		expr->in_pipe[0] = prev_pipe[0];
+		expr->in_pipe[1] = prev_pipe[1];
+		if (expr->has_pipe)
+		{
+			pipe(expr->out_pipe);
+		}
 		cmd[0] = parse_command(cmd[0], env_clone->env);
-		command_executor(cmd[0], cmd, env_clone);
+		command_executor(cmd, expr, env_clone);
+		prev_pipe[0] = expr->out_pipe[0];
+		prev_pipe[1] = expr->out_pipe[1];
+		free(expr);
 		free2d((void **) cmd);
 	}
 }
@@ -68,11 +78,16 @@ char	**command_builder(t_command *expr)
 	if (!cmd)
 		return (NULL);
 	i = 0;
-	while (expr->tokens[i] != NULL)
+	while (expr->tokens[i] != NULL && expr->tokens[i]->type != PIPE)
 	{
 		cmd[i] = expr->tokens[i]->value;
 		free(expr->tokens[i]);
 		i++;
+	}
+	if (expr->tokens[i])
+	{
+		free(expr->tokens[i]->value);
+		free(expr->tokens[i]);
 	}
 	free(expr->tokens);
 	cmd[i] = NULL;

@@ -12,20 +12,22 @@
 
 #include "../includes/minishell.h"
 
-int	execute_builtin(char **args, t_env *env, int builtin_id);
+int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr);
 
-void	command_executor(char *cmd_path, char **args, t_env *env)
+void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 {
-	int	pid;
-	int	wstatus;
-	int	builtin_id;
+	int		pid;
+	int		wstatus;
+	int		builtin_id;
+	char	*cmd_path;
 
+	cmd_path = cmd_and_args[0];
 	if (!cmd_path)
 		return ;
 	builtin_id = is_builtin(cmd_path);
 	if (builtin_id != -1)
 	{
-		execute_builtin(args, env, builtin_id);
+		execute_builtin(cmd_and_args, env, builtin_id, expr);
 		return ;
 	}
 	pid = fork();
@@ -36,12 +38,17 @@ void	command_executor(char *cmd_path, char **args, t_env *env)
 	}
 	if (pid == 0)
 	{
-		if (execve(cmd_path, args, env->env) == -1)
+		pipes_setup(expr);
+		if (execve(cmd_path, cmd_and_args, env->env) == -1)
 			print_err_msg();
 		exit(0);
 	}	
 	else
+	{
+		pipes_close(expr);
 		wait(&wstatus);
+		expr->return_code = wstatus;
+	}
 }
 
 /*
@@ -75,11 +82,13 @@ int	is_builtin(char *cmd_path)
  * return: the builtin functions's return code
 */
 
-int	execute_builtin(char **args, t_env *env, int builtin_id)
+int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr)
 {
 	int	op_code;
+	int	std_backup[2];
 
 	op_code = 0;
+	pipes_builtin_setup(expr, std_backup);
 	if (builtin_id == ECHO)
 		op_code = ft_echo(args);
 	if (builtin_id == EXIT)
@@ -94,5 +103,6 @@ int	execute_builtin(char **args, t_env *env, int builtin_id)
 		op_code = ft_export(args, env);
 	if (builtin_id == UNSET)
 		op_code = ft_unset(args, env);
+	pipes_builtin_close(expr, std_backup);
 	return (op_code);
 }
