@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:28:22 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/06 23:18:28 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,18 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 	(void)env_clone;
 	if (syntax == 0)
 		return ;
-	while (tokens)
+	while (*tokens)
 	{
 		expr = parse_expression(tokens);
 		if (expr == NULL)
 			break ;
 		cmd = command_builder(expr);
+		free(expr);
 		if (cmd == NULL)
 			break ;
 		cmd[0] = parse_command(cmd[0], env_clone->env);
 		command_executor(cmd[0], cmd, env_clone);
+		free2d((void **) cmd);
 	}
 }
 
@@ -69,8 +71,10 @@ char	**command_builder(t_command *expr)
 	while (expr->tokens[i] != NULL)
 	{
 		cmd[i] = expr->tokens[i]->value;
+		free(expr->tokens[i]);
 		i++;
 	}
+	free(expr->tokens);
 	cmd[i] = NULL;
 	return (cmd);
 }
