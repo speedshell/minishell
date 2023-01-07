@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/07 19:12:11 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 20:02:36 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 		{
 			pipe(expr->out_pipe);
 		}
-		command_executor(cmd, expr, env_clone);
 		cmd[0] = parse_command(cmd[0], env_clone->env);
+		command_executor(cmd, expr, env_clone);
 		prev_pipe[0] = expr->out_pipe[0];
 		prev_pipe[1] = expr->out_pipe[1];
 		free(expr);
