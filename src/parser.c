@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:07:41 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 03:11:32 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,10 @@ t_command	*create_expression(void)
 	if (!cmd)
 		return (NULL);
 	cmd->has_pipe = 0;
+	cmd->in_pipe[0] = -1;
+	cmd->in_pipe[1] = -1;
+	cmd->out_pipe[0] = -1;
+	cmd->out_pipe[1] = -1;
 	return (cmd);
 }
 

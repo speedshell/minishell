@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/06 15:46:07 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 19:00:37 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ typedef struct s_expression
 {
 	t_token	**tokens;	
 	int		has_pipe;
+	int		in_pipe[2];
+	int		out_pipe[2];
+	int		return_code;
 }	t_command;
 
 typedef struct s_kludge
@@ -71,7 +74,7 @@ typedef struct s_kludge
 }	t_kludge;
 
 char		*parse_command(char *statement, char **env);
-void		command_executor(char *cmd_path, char **args, t_env *env);
+void		command_executor(char **cmd_path, t_command *expr, t_env *env);
 
 // builtin
 int			ft_echo(char **args);
@@ -101,6 +104,12 @@ char		**build_env(char **env);
 
 // signals handling
 void		handle_signals(void);
+
+// Pipes and redirection
+void		pipes_setup(t_command *expr);
+void		pipes_close(t_command *expr);
+void		pipes_builtin_setup(t_command *expr, int *std_backup);
+void		pipes_builtin_close(t_command *expr, int *std_backup);
 
 // quotes
 char		*quote_resolver(char *str);
