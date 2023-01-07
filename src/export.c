@@ -1,36 +1,5 @@
 #include "../includes/minishell.h"
 
-
-/*
-int	ft_export(char **args, t_env *env)
-{
-	int		i;
-	char	**new_env;
-
-	i = 0;
-	if (!args[1])
-		return (ft_env(env->env));
-	while (env->env[i])
-		i++;
-	new_env = malloc(sizeof(char *) * (i + 2));
-	i = 0;
-	while (env->env[i])
-	{
-		new_env[i] = ft_strdup(env->env[i]);
-		free(env->env[i++]);
-	}
-	free(env->env[i]);
-	free(env->env);
-	if (args[1])
-		if (!ft_isdigit(args[1][0]))
-			new_env[i++] = ft_strdup(args[1]);
-	new_env[i] = NULL;
-	env->env = new_env;
-	return (0);
-}	*/
-
-// export 1=
-
 int valid_variable (char *c)
 {
 	int	i;
@@ -64,7 +33,7 @@ void	search_and_replace(char *variable, t_env *env, char *value)
         if (!ft_strncmp(variable, env->env[i], len))
         {
 			temp = env->env[i];
-			env->env[i] = value;
+			env->env[i] = ft_strjoin(variable, value);
 			free(temp);
             return ;
         }
@@ -96,18 +65,28 @@ int ft_export(char **args, t_env *env)
 		return (ft_env(env->env));
 	while (args[++j])
 	{
-		if (valid_variable(args[j]))
+		if (valid_variable(args[j]) && (ft_strchr(args[j], '=')))
+		{
+			i = 0;
+			while (args[j][i++] != '=');
+			variable = ft_substr(args[j], 0, i);
+			value = ft_strdup(ft_strchr(args[j], '=') + 1);
+			search_and_replace(variable, env, value);
+			free(variable);
+			free(value);
+		}
+		else
 		{
 			if (ft_strchr(args[j], '='))
 			{
 				i = 0;
 				while (args[j][i++] != '=');
 				variable = ft_substr(args[j], 0, i);
-				value = ft_strdup(ft_strchr(args[j], '=') + 1);
-			   	search_and_replace(variable, env, value);
+				printf("Minishell: export: `%s': not a valid identifier\n", variable);
 				free(variable);
-				free(value);
 			}
+			else
+				printf("Minishell: export: `%s': not a valid identifier\n", args[j]);
 		}
 	}
 	return (0);
