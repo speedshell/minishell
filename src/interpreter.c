@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/07 22:44:49 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/08 00:00:28 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,12 @@ char	*args_eval(char *arg, char **env)
 
 	(void)env;
 	temp = quote_resolver(arg);
+	if (temp != NULL)
+	{
+		free(arg);
+		arg = temp;
+	}
+	temp = expand_str(arg, env);
 	if (temp != NULL)
 	{
 		free(arg);
