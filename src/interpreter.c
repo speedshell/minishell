@@ -6,13 +6,14 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/07 20:02:36 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 22:44:49 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	**command_builder(t_command *expr);
+char	**command_builder(t_command *expr, char **env);
+char	*args_eval(char *arg, char **env);
 int		count_fields(t_command *expr);
 
 //printf("token value: %s\n", ((t_token *) (*tokens)->content)->value);
@@ -33,7 +34,7 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 		expr = parse_expression(tokens);
 		if (expr == NULL)
 			break ;
-		cmd = command_builder(expr);
+		cmd = command_builder(expr, env_clone->env);
 		if (cmd == NULL)
 			break ;
 		expr->in_pipe[0] = prev_pipe[0];
@@ -65,7 +66,7 @@ int	count_fields(t_command *expr)
 	return (i);
 }
 
-char	**command_builder(t_command *expr)
+char	**command_builder(t_command *expr, char **env)
 {
 	char	**cmd;
 	int		field_count;
@@ -80,7 +81,7 @@ char	**command_builder(t_command *expr)
 	i = 0;
 	while (expr->tokens[i] != NULL && expr->tokens[i]->type != PIPE)
 	{
-		cmd[i] = expr->tokens[i]->value;
+		cmd[i] = args_eval(expr->tokens[i]->value, env);
 		free(expr->tokens[i]);
 		i++;
 	}
@@ -92,4 +93,18 @@ char	**command_builder(t_command *expr)
 	free(expr->tokens);
 	cmd[i] = NULL;
 	return (cmd);
+}
+
+char	*args_eval(char *arg, char **env)
+{
+	char	*temp;
+
+	(void)env;
+	temp = quote_resolver(arg);
+	if (temp != NULL)
+	{
+		free(arg);
+		arg = temp;
+	}
+	return (arg);
 }
