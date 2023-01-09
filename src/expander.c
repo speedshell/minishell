@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/08 19:22:06 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/08 21:13:48 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,54 +15,62 @@
 #define ERR_MALLOC 0
 
 char	*expand_variable(char *input, char **env, int *variable_size);
-void	add_var_value(t_list **str_nds, char *input, int *i, char **env);
+int		add_var_value(t_list **str_nds, char *input, int *expand, char **env);
 char	*str_nodes_join(t_list *str_nodes);
+int		is_expandable(char *input, int i, int *expand);
 
 char	*expand_str(char *input, char **env)
 {
 	t_list	*str_nodes;
 	int		str_size;
 	int		i;
+	int		expand;
 
-	str_size = ft_strlen(input);
-	i = 0;
+	expand = 2;
 	str_nodes = NULL;
+	i = 0;
+	str_size = ft_strlen(input);
 	while (i < str_size)
 	{
 		if (input[i] && input[i] != '$')
 		{
+			is_expandable(input, i, &expand);
 			ft_lstadd_back(&str_nodes, ft_lstnew(ft_substr(input, i, 1)));
 			i++;
 			continue ;
 		}
-		add_var_value(&str_nodes, input, &i, env);
+		i += add_var_value(&str_nodes, &input[i], &expand, env);
 	}
-	if (!str_nodes)
-		return (NULL);
 	return (str_nodes_join(str_nodes));
 }
 
-void	add_var_value(t_list **str_nodes, char *input, int *i, char **env)
+int	add_var_value(t_list **str_nds, char *input, int *expand, char **env)
 {
 	char	*variable;
-	int		variable_size;
+	int		vsize;
 	int		str_size;
+	int		i;
 
 	str_size = ft_strlen(input);
-	variable_size = 0;
+	vsize = 0;
 	variable = NULL;
-	if (*i < str_size)
+	i = 0;
+	if (i < str_size)
 	{
-		variable = expand_variable(&input[*i], env, &variable_size);
-		ft_lstadd_back(str_nodes, ft_lstnew(variable));
-		if (input[*i] == '$' && variable_size == 0)
-			ft_lstadd_back(str_nodes, ft_lstnew(ft_substr(input, *i, 1)));
-		if (variable_size != 0)
-			*i = *i + variable_size + 2;
+		variable = expand_variable(&input[i], env, &vsize);
+		if (is_expandable(input, i, expand))
+			ft_lstadd_back(str_nds, ft_lstnew(variable));
 		else
-			*i = *i + 1;
-		variable_size = 0;
+			ft_lstadd_back(str_nds, ft_lstnew(ft_substr(input, i, vsize + 2)));
+		if (input[i] == '$' && vsize == 0)
+			ft_lstadd_back(str_nds, ft_lstnew(ft_substr(input, i, 1)));
+		if (vsize != 0)
+			i = i + vsize + 2;
+		else
+			i = i + 1;
+		vsize = 0;
 	}
+	return (i);
 }
 
 char	*expand_variable(char *input, char **env, int *variable_size)
@@ -92,6 +100,27 @@ char	*expand_variable(char *input, char **env, int *variable_size)
 	return (ft_strdup(""));
 }
 
+int	is_expandable(char *input, int i, int *expand)
+{
+	if (input[i] == '\'' && *expand == 2)
+	{
+		*expand = 0;
+	}
+	else if (input[i] == '\'' && *expand == 0)
+	{
+		*expand = 2;
+	}
+	else if (input[i] == '"' && *expand == 2)
+	{
+		*expand = 4;
+	}
+	else if (input[i] == '"' && *expand == 4)
+	{
+		*expand = 2;
+	}
+	return (*expand);
+}
+
 int	valid_variable(char *c)
 {
 	int	i;
@@ -102,6 +131,8 @@ int	valid_variable(char *c)
 		if (c[i + 1] && c[i + 1] == '$')
 			return (i);
 		if (c[i + 1] && c[i + 1] == ' ')
+			return (i);
+		if ((c[i + 1] && c[i + 1] == '"') || (c[i + 1] && c[i + 1] == '\''))
 			return (i);
 		if (c[i] == '=' && i == 0)
 			return (0);
@@ -114,30 +145,6 @@ int	valid_variable(char *c)
 		i++;
 	}
 	return (i);
-}
-
-char	*str_nodes_join(t_list *str_nodes)
-{
-	int		str_size;
-	t_list	*node;
-	char	*expanded_str;
-
-	node = str_nodes;
-	while (node)
-	{
-		str_size += ft_strlen(((char *) node->content));
-		node = node->next;
-	}
-	expanded_str = ft_calloc(sizeof(char), (str_size + 1));
-	while (str_nodes)
-	{
-		ft_strlcat(expanded_str, (char *) str_nodes->content, str_size);
-		node = str_nodes;
-		str_nodes = str_nodes->next;
-		free(node->content);
-		free(node);
-	}
-	return (expanded_str);
 }
 
 /*int main (int argc, char **argv, char **env)

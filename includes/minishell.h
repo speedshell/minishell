@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/07 23:57:56 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/08 20:59:21 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int			update_quote(char *str, int i, int *quote_flag);
 // Expand variables
 int			valid_variable(char *c);
 char		*expand_str(char *input, char **env);
+char		*str_nodes_join(t_list *str_nodes);
 
 // utils
 int			is_builtin(char *cmd_path);
