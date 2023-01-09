@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:33:43 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 01:08:51 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/07 22:47:07 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,24 @@ int	is_operator(char c)
 	return (0);
 }
 
+void quote_interruptor(char c, int *is_on)
+{
+	if (c == '\'' && *is_on == 0)
+		*is_on = 1;
+	else if (c == '\'' && *is_on == 1)
+		*is_on = 0;
+	else if (c == '"' && *is_on == 0)
+		*is_on = 2;
+	else if (c == '"' && *is_on == 2)
+		*is_on = 0;
+}
+
 int	get_token_size(char *str)
 {
 	int	i;
+	int	quote_on;
 
+	quote_on = 0;
 	i = 0;
 	if (str[i] && is_operator(str[i]))
 	{	
@@ -34,8 +48,12 @@ int	get_token_size(char *str)
 		i++;
 		return (i);
 	}
-	while (str[i] && (!is_operator(str[i]) && !ft_isspace(str[i])))
+	while (str[i] && \
+		(quote_on || (!is_operator(str[i]) && !ft_isspace(str[i]))))
+	{
+		quote_interruptor(str[i], &quote_on);
 		i++;
+	}
 	return (i);
 }
 
