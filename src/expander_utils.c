@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 20:55:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/08 20:56:53 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 11:31:27 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*str_nodes_join(t_list *str_nodes)
 	t_list	*node;
 	char	*expanded_str;
 
+	str_size = 0;
 	node = str_nodes;
 	while (node)
 	{
@@ -27,7 +28,7 @@ char	*str_nodes_join(t_list *str_nodes)
 	expanded_str = ft_calloc(sizeof(char), (str_size + 1));
 	while (str_nodes)
 	{
-		ft_strlcat(expanded_str, (char *) str_nodes->content, str_size);
+		ft_strlcat(expanded_str, (char *) str_nodes->content, str_size + 1);
 		node = str_nodes;
 		str_nodes = str_nodes->next;
 		free(node->content);
