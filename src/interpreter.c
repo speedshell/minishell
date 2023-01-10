@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 14:47:57 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 17:01:02 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,11 +123,15 @@ int	redirect_open(t_command *expr, int *redirect, int *i)
 	}
 	if (token_size == 1 && *token_value == '>')	
 	{
-		op_code = file_open_write(filename, redirect);
+		op_code = file_open_trunc(filename, redirect);
+	}
+	if (token_size == 2 && ft_strncmp(token_value, ">>", 2) == 0)
+	{
+		op_code = file_open_append(filename, redirect);
 	}
 	if (op_code == -1)
 		return (op_code);
-	*i = *i + token_size + 1;
+	*i = *i + 2;
 	return (0);
 }
 

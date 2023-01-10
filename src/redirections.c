@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:30:54 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 15:13:29 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 17:01:24 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,49 +14,58 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-/*int	open_file_append(char *filename)
-{
-	
-}*/
-
-/*int	open_file_write()
-{
-
-}*/
+int	file_open_write(char *filename, int *redirect, int mode);
 
 int	file_open_read(char *filename, int *redirect)
 {
 	int	fd;
 
-	fd = open(filename, O_RDONLY);
-	if (fd == -1)
+	fd = -1;
+	if (access(filename, F_OK | R_OK) == -1)
 	{
-		print_err_msg();	
+		print_err_msg();
 		return (-1);
 	}
+	fd = open(filename, O_RDONLY);
 	redirect[0] = fd;
 	return (0);
 }
 
-int	file_open_write(char *filename, int *redirect)
+int	file_open_trunc(char *filename, int *redirect)
 {
-	int	op_code;
+	int	fd;
+
+	fd = file_open_write(filename, redirect, O_TRUNC);
+	return (fd);
+}
+
+int	file_open_append(char *filename, int *redirect)
+{
+	int	fd;
+
+	fd = file_open_write(filename, redirect, O_APPEND);
+	return (fd);
+}
+
+int	file_open_write(char *filename, int *redirect, int flag)
+{
+	int	exists;
 	int	fd;
 
 	fd = 0;
-	op_code = access(filename, F_OK); 
-	if (op_code != -1)
+	exists = access(filename, F_OK);
+	if (exists != -1)
 	{
-		fd = open(filename, O_WRONLY | O_TRUNC);
+		fd = open(filename, O_WRONLY | flag);
 	}
 	else
 	{
-		fd = open(filename, O_CREAT | O_WRONLY\
-			| S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+		fd = open(filename, O_WRONLY | O_CREAT, \
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	}
 	if (fd != -1)
 	   redirect[1] = fd;
 	else
 		print_err_msg();
-	return (fd);
+	return (fd);	
 }
