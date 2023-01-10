@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/08 20:59:21 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 14:45:31 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_expression
 }	t_command;
 
 char		*parse_command(char *statement, char **env);
-void		command_executor(char **cmd_path, t_command *expr, t_env *env);
+void		command_executor(char **cmd_path, t_command *expr, t_env *env, int *redirect);
 
 // builtin
 int			ft_echo(char **args);
@@ -96,11 +96,15 @@ char		**build_env(char **env);
 // signals handling
 void		handle_signals(void);
 
-// Pipes and redirection
+// pipes
 void		pipes_setup(t_command *expr);
 void		pipes_close(t_command *expr);
 void		pipes_builtin_setup(t_command *expr, int *std_backup);
 void		pipes_builtin_close(t_command *expr, int *std_backup);
+
+// redirection
+int			file_open_read(char *filename, int *redirect);
+int			file_open_write(char *filename, int *redirect);
 
 // quotes
 char		*quote_resolver(char *str);

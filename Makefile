@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2023/01/10 11:36:56 by lfarias-         ###   ########.fr        #
+#    Updated: 2023/01/10 15:14:13 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,8 @@ LDFLAGS 	=   -L  /Users/lfarias-/.brew/Cellar/readline/8.2.1/lib
 SRC			= 	main.c command_executor.c command_loader.c error_handler.c \
 				signal_handlers.c echo.c exit.c build_env.c env.c pwd.c cd.c \
 				export.c expander.c expander_utils.c unset.c quote_resolver.c \
-				lexer.c parser.c parser_rules.c interpreter.c pipes.c
+				lexer.c parser.c parser_rules.c interpreter.c pipes.c \
+				redirections.c
 
 SRCS		= 	$(addprefix src/,$(SRC))
 

@@ -6,15 +6,16 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 11:32:43 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 15:14:24 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr);
+void	redirect_setup(int *redirect);
 
-void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
+void	command_executor(char **cmd_and_args, t_command *expr, t_env *env, int *redirect)
 {
 	int		pid;
 	int		wstatus;
@@ -39,6 +40,7 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 	if (pid == 0)
 	{
 		pipes_setup(expr);
+		redirect_setup(redirect);
 		if (execve(cmd_path, cmd_and_args, env->env) == -1)
 			print_err_msg();
 		exit(0);
@@ -49,6 +51,14 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 		wait(&wstatus);
 		expr->return_code = wstatus;
 	}
+}
+
+void	redirect_setup(int *redirect)
+{
+	if (redirect[0] != -1)
+		dup2(redirect[0], STDIN_FILENO);
+	if (redirect[1] != -1)
+		dup2(redirect[1], STDOUT_FILENO);
 }
 
 /*

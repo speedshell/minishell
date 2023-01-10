@@ -6,15 +6,17 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/08 19:59:34 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 14:47:57 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <fcntl.h>
 
-char	**command_builder(t_command *expr, char **env);
+char	**command_builder(t_command *expr, char **env, int *redirect);
 char	*args_eval(char *arg, char **env);
 int		count_fields(t_command *expr);
+int		redirect_open(t_command *expr, int *redirect, int *i);
 
 //printf("token value: %s\n", ((t_token *) (*tokens)->content)->value);
 void	eval_tokens(t_list **tokens, t_env *env_clone)
@@ -23,6 +25,7 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 	int			syntax;
 	char		**cmd;
 	int			prev_pipe[2];
+	int			redirect[2];
 
 	prev_pipe[0] = -1;
 	prev_pipe[1] = -1;
@@ -31,10 +34,12 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 		return ;
 	while (*tokens)
 	{
+		redirect[0] = -1;
+		redirect[1] = -1;
 		expr = parse_expression(tokens);
 		if (expr == NULL)
 			break ;
-		cmd = command_builder(expr, env_clone->env);
+		cmd = command_builder(expr, env_clone->env, redirect);
 		if (cmd == NULL)
 			break ;
 		expr->in_pipe[0] = prev_pipe[0];
@@ -44,7 +49,7 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 			pipe(expr->out_pipe);
 		}
 		cmd[0] = parse_command(cmd[0], env_clone->env);
-		command_executor(cmd, expr, env_clone);
+		command_executor(cmd, expr, env_clone, redirect);
 		prev_pipe[0] = expr->out_pipe[0];
 		prev_pipe[1] = expr->out_pipe[1];
 		free(expr);
@@ -66,11 +71,12 @@ int	count_fields(t_command *expr)
 	return (i);
 }
 
-char	**command_builder(t_command *expr, char **env)
+char	**command_builder(t_command *expr, char **env, int *redirect)
 {
 	char	**cmd;
 	int		field_count;
 	int		i;
+	int		j;
 
 	field_count = count_fields(expr);
 	if (field_count == 0)
@@ -79,11 +85,16 @@ char	**command_builder(t_command *expr, char **env)
 	if (!cmd)
 		return (NULL);
 	i = 0;
-	while (expr->tokens[i] != NULL && expr->tokens[i]->type != PIPE)
+	j = 0;
+	while (i < field_count && expr->tokens[i]->type != PIPE)
 	{
-		cmd[i] = args_eval(expr->tokens[i]->value, env);
-		free(expr->tokens[i]);
-		i++;
+		if (expr->tokens[i]->type == REDIRECT)
+			redirect_open(expr, redirect, &i);
+		else
+		{
+			cmd[j++] = args_eval(expr->tokens[i]->value, env);
+			free(expr->tokens[i++]);
+		}
 	}
 	if (expr->tokens[i])
 	{
@@ -91,8 +102,33 @@ char	**command_builder(t_command *expr, char **env)
 		free(expr->tokens[i]);
 	}
 	free(expr->tokens);
-	cmd[i] = NULL;
+	cmd[j] = NULL;
 	return (cmd);
+}
+
+int	redirect_open(t_command *expr, int *redirect, int *i)
+{
+	char	*token_value;
+	char	*filename;
+	int		token_size;
+	int		op_code;
+
+	op_code = 0;
+	token_value = expr->tokens[*i]->value;
+	token_size = ft_strlen(token_value);
+	filename = expr->tokens[*i + 1]->value; 
+	if (token_size == 1 && *token_value == '<')	
+	{
+		op_code = file_open_read(filename, redirect);
+	}
+	if (token_size == 1 && *token_value == '>')	
+	{
+		op_code = file_open_write(filename, redirect);
+	}
+	if (op_code == -1)
+		return (op_code);
+	*i = *i + token_size + 1;
+	return (0);
 }
 
 char	*args_eval(char *arg, char **env)
