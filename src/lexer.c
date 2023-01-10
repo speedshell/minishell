@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:33:43 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/07 22:47:07 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:07:09 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	is_operator(char c)
 	return (0);
 }
 
-void quote_interruptor(char c, int *is_on)
+void	quote_interruptor(char c, int *is_on)
 {
 	if (c == '\'' && *is_on == 0)
 		*is_on = 1;
