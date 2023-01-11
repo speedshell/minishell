@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/08 20:59:21 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:36:31 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <sys/wait.h>
+
+/* highlander global 
+* we are not initializing the variable yet to be norm compliant
+*/
+int	g_exit_code;
 
 typedef struct s_env
 {
@@ -87,13 +92,11 @@ int			redirect_rules(t_token *curr_token, t_token *next_tkn);
 // interpreter
 void		eval_tokens(t_list **tokens, t_env *env_clone);
 
-// error handling
+// Error handling
 int			print_err_msg(void);
+int			set_error(char *error_message, int error_code);
 
-// clone env
-char		**build_env(char **env);
-
-// signals handling
+// Signals handling
 void		handle_signals(void);
 
 // Pipes and redirection
@@ -102,7 +105,7 @@ void		pipes_close(t_command *expr);
 void		pipes_builtin_setup(t_command *expr, int *std_backup);
 void		pipes_builtin_close(t_command *expr, int *std_backup);
 
-// quotes
+// Quotes
 char		*quote_resolver(char *str);
 int			update_quote(char *str, int i, int *quote_flag);
 
@@ -110,8 +113,12 @@ int			update_quote(char *str, int i, int *quote_flag);
 int			valid_variable(char *c);
 char		*expand_str(char *input, char **env);
 char		*str_nodes_join(t_list *str_nodes);
+char		*expand_exit_variable(int *variable_size);
 
-// utils
+// Utils
 int			is_builtin(char *cmd_path);
 void		free2d(void **matrix2d);
+char		**build_env(char **env);
+
+// Error handling
 #endif

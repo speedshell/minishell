@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 11:32:56 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:36:25 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*expand_variable(char *input, char **env, int *variable_size);
 int		add_var_value(t_list **str_nds, char *input, int *expand, char **env);
 char	*str_nodes_join(t_list *str_nodes);
 int		is_expandable(char *input, int i, int *expand);
+char	*get_exit_str(char *input, int *variable_size);
 
 char	*expand_str(char *input, char **env)
 {
@@ -83,6 +84,8 @@ char	*expand_variable(char *input, char **env, int *variable_size)
 		return (NULL);
 	if (*input == '$')
 	{
+		if (*(input + 1) == '?')
+			return (expand_exit_variable(variable_size));
 		input++;
 		*variable_size = valid_variable(input);
 		if (*variable_size != 0 && *input)
@@ -99,6 +102,7 @@ char	*expand_variable(char *input, char **env, int *variable_size)
 	}
 	return (ft_strdup(""));
 }
+
 
 int	is_expandable(char *input, int i, int *expand)
 {
