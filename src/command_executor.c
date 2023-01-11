@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 23:13:57 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 23:19:24 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,6 @@ int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr, in
 	op_code = 0;
 	std_backup[0] = -1;
 	std_backup[1] = -1;
-	printf("std_backup[0]: %d\n", std_backup[0]);
 	pipes_builtin_setup(expr, std_backup);
 	redirection_builtin_setup(redirection, std_backup);
 	printf("executing builtin\n");
