@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 11:32:43 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/11 19:26:42 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,22 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 
 int	is_builtin(char *cmd_path)
 {
-	if (ft_strncmp(cmd_path, "echo", 4) == 0)
+	int	cmd_size;
+
+	cmd_size = ft_strlen(cmd_path);
+	if (ft_strncmp(cmd_path, "echo", cmd_size) == 0)
 		return (ECHO);
-	if (ft_strncmp(cmd_path, "exit", 4) == 0)
+	if (ft_strncmp(cmd_path, "exit", cmd_size) == 0)
 		return (EXIT);
-	if (ft_strncmp(cmd_path, "env", 3) == 0)
+	if (ft_strncmp(cmd_path, "env", cmd_size) == 0)
 		return (ENV);
-	if (ft_strncmp(cmd_path, "pwd", 3) == 0)
+	if (ft_strncmp(cmd_path, "pwd", cmd_size) == 0)
 		return (PWD);
-	if (ft_strncmp(cmd_path, "cd", 2) == 0)
+	if (ft_strncmp(cmd_path, "cd", cmd_size) == 0)
 		return (CD);
-	if (ft_strncmp(cmd_path, "export", 6) == 0)
+	if (ft_strncmp(cmd_path, "export", cmd_size) == 0)
 		return (EXPORT);
-	if (ft_strncmp(cmd_path, "unset", 5) == 0)
+	if (ft_strncmp(cmd_path, "unset", cmd_size) == 0)
 		return (UNSET);
 	return (-1);
 }
