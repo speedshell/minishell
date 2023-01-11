@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2023/01/10 15:14:13 by lfarias-         ###   ########.fr        #
+#    Updated: 2023/01/10 21:52:31 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,7 @@ NAME		=	minishell
 
 CC			= 	cc	
 
-CFLAGS		=	-Wall -Werror -Wextra -g 
-#-fsanitize=address 
+CFLAGS		=	-Wall -Werror -Wextra -g -fsanitize=address 
 
 LDLIBS		= 	-lreadline includes/libft.a
 
@@ -26,8 +25,8 @@ LDFLAGS 	=   -L  /Users/lfarias-/.brew/Cellar/readline/8.2.1/lib
 SRC			= 	main.c command_executor.c command_loader.c error_handler.c \
 				signal_handlers.c echo.c exit.c build_env.c env.c pwd.c cd.c \
 				export.c expander.c expander_utils.c unset.c quote_resolver.c \
-				lexer.c parser.c parser_rules.c interpreter.c pipes.c \
-				redirections.c
+				lexer.c parser.c parser_rules.c interpreter.c interpreter_utils.c \
+				pipes.c redirections.c here_doc.c
 
 SRCS		= 	$(addprefix src/,$(SRC))
 

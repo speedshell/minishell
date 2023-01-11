@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 17:01:02 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 21:51:55 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 char	**command_builder(t_command *expr, char **env, int *redirect);
 char	*args_eval(char *arg, char **env);
-int		count_fields(t_command *expr);
+int		alloc_fields(t_command *expr, int *field_count, char ***cmd);
 int		redirect_open(t_command *expr, int *redirect, int *i);
 
 //printf("token value: %s\n", ((t_token *) (*tokens)->content)->value);
@@ -57,18 +57,24 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 	}
 }
 
-int	count_fields(t_command *expr)
+int	alloc_fields(t_command *expr, int *field_count, char ***cmd)
 {
-	int		i;
+	int	i;
 
 	if (!expr || expr->tokens == NULL)
 		return (0);
 	i = 0;
 	while (expr->tokens[i] != NULL)
 	{
-		i++;
+		*field_count = ++i;
 	}
-	return (i);
+	if (field_count == 0)
+		return (0);
+	*cmd = malloc(sizeof(char *) * (*field_count + 1));
+	if (!cmd)
+		return (0);
+	else
+		return (1);
 }
 
 char	**command_builder(t_command *expr, char **env, int *redirect)
@@ -78,14 +84,12 @@ char	**command_builder(t_command *expr, char **env, int *redirect)
 	int		i;
 	int		j;
 
-	field_count = count_fields(expr);
-	if (field_count == 0)
-		return (NULL);
-	cmd = malloc(sizeof(char *) * (field_count + 1));
-	if (!cmd)
-		return (NULL);
 	i = 0;
 	j = 0;
+	field_count = 0;
+	cmd = NULL;
+	if (alloc_fields(expr, &field_count, &cmd) == 0)
+		return (NULL);
 	while (i < field_count && expr->tokens[i]->type != PIPE)
 	{
 		if (expr->tokens[i]->type == REDIRECT)
@@ -96,11 +100,7 @@ char	**command_builder(t_command *expr, char **env, int *redirect)
 			free(expr->tokens[i++]);
 		}
 	}
-	if (expr->tokens[i])
-	{
-		free(expr->tokens[i]->value);
-		free(expr->tokens[i]);
-	}
+	free_token(expr->tokens[i]);
 	free(expr->tokens);
 	cmd[j] = NULL;
 	return (cmd);
@@ -116,23 +116,21 @@ int	redirect_open(t_command *expr, int *redirect, int *i)
 	op_code = 0;
 	token_value = expr->tokens[*i]->value;
 	token_size = ft_strlen(token_value);
-	filename = expr->tokens[*i + 1]->value; 
-	if (token_size == 1 && *token_value == '<')	
-	{
+	filename = expr->tokens[*i + 1]->value;
+	if (token_size == 1 && *token_value == '<')
 		op_code = file_open_read(filename, redirect);
-	}
-	if (token_size == 1 && *token_value == '>')	
-	{
+	if (token_size == 1 && *token_value == '>')
 		op_code = file_open_trunc(filename, redirect);
-	}
 	if (token_size == 2 && ft_strncmp(token_value, ">>", 2) == 0)
-	{
 		op_code = file_open_append(filename, redirect);
-	}
+	if (token_size == 2 && ft_strncmp(token_value, "<<", 2) == 0)
+		op_code = here_doc(filename, redirect);
 	if (op_code == -1)
 		return (op_code);
+	free_token(expr->tokens[*i]);
+	free_token(expr->tokens[*i + 1]);
 	*i = *i + 2;
-	return (0);
+	return (op_code);
 }
 
 char	*args_eval(char *arg, char **env)

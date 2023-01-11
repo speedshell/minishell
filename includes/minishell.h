@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 16:19:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 21:51:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define WORD 42
 # define PIPE 64 
 # define REDIRECT 128
+# define HERE_DOC 256
 
 # include "libft/libft.h"
 # include <stdio.h>
@@ -106,6 +107,7 @@ void		pipes_builtin_close(t_command *expr, int *std_backup);
 int			file_open_read(char *filename, int *redirect);
 int			file_open_trunc(char *filename, int *redirect);
 int			file_open_append(char *filename, int *redirect);
+int			here_doc(char *delimiter, int *redirect);
 
 // quotes
 char		*quote_resolver(char *str);
@@ -119,4 +121,5 @@ char		*str_nodes_join(t_list *str_nodes);
 // utils
 int			is_builtin(char *cmd_path);
 void		free2d(void **matrix2d);
+void		free_token(t_token *token);
 #endif
