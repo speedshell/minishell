@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 21:51:55 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 23:13:12 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,10 @@ char	**command_builder(t_command *expr, char **env, int *redirect)
 	while (i < field_count && expr->tokens[i]->type != PIPE)
 	{
 		if (expr->tokens[i]->type == REDIRECT)
-			redirect_open(expr, redirect, &i);
+		{
+			if (redirect_open(expr, redirect, &i) == -1)
+				return (NULL);
+		}
 		else
 		{
 			cmd[j++] = args_eval(expr->tokens[i]->value, env);
@@ -120,9 +123,9 @@ int	redirect_open(t_command *expr, int *redirect, int *i)
 	if (token_size == 1 && *token_value == '<')
 		op_code = file_open_read(filename, redirect);
 	if (token_size == 1 && *token_value == '>')
-		op_code = file_open_trunc(filename, redirect);
+		op_code = file_open_write(filename, redirect, O_TRUNC);
 	if (token_size == 2 && ft_strncmp(token_value, ">>", 2) == 0)
-		op_code = file_open_append(filename, redirect);
+		op_code = file_open_write(filename, redirect, O_APPEND);
 	if (token_size == 2 && ft_strncmp(token_value, "<<", 2) == 0)
 		op_code = here_doc(filename, redirect);
 	if (op_code == -1)

@@ -6,13 +6,13 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 22:05:12 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 23:13:57 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		execute_builtin(char **args, t_env *env, int b_id, t_command *expr);
+int		execute_builtin(char **args, t_env *env, int b_id, t_command *expr, int *redirect);
 void	redirect_setup(int *redirect);
 void	fds_close(int *redirect);
 
@@ -29,7 +29,7 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env, int *red
 	builtin_id = is_builtin(cmd_path);
 	if (builtin_id != -1)
 	{
-		execute_builtin(cmd_and_args, env, builtin_id, expr);
+		execute_builtin(cmd_and_args, env, builtin_id, expr, redirect);
 		return ;
 	}
 	pid = fork();
@@ -102,13 +102,18 @@ int	is_builtin(char *cmd_path)
  * return: the builtin functions's return code
 */
 
-int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr)
+int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr, int *redirection)
 {
 	int	op_code;
 	int	std_backup[2];
 
 	op_code = 0;
+	std_backup[0] = -1;
+	std_backup[1] = -1;
+	printf("std_backup[0]: %d\n", std_backup[0]);
 	pipes_builtin_setup(expr, std_backup);
+	redirection_builtin_setup(redirection, std_backup);
+	printf("executing builtin\n");
 	if (builtin_id == ECHO)
 		op_code = ft_echo(args);
 	if (builtin_id == EXIT)
@@ -124,5 +129,7 @@ int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr)
 	if (builtin_id == UNSET)
 		op_code = ft_unset(args, env);
 	pipes_builtin_close(expr, std_backup);
+	redirection_builtin_close(redirection, std_backup);
 	return (op_code);
 }
+

@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 21:51:10 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 22:29:21 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,10 @@ void		pipes_builtin_close(t_command *expr, int *std_backup);
 
 // redirection
 int			file_open_read(char *filename, int *redirect);
-int			file_open_trunc(char *filename, int *redirect);
-int			file_open_append(char *filename, int *redirect);
+int			file_open_write(char *filename, int *redirect, int mode);
 int			here_doc(char *delimiter, int *redirect);
+void		redirection_builtin_setup(int *redirection, int *std_backup);
+void		redirection_builtin_close(int *redirection, int *std_backup);
 
 // quotes
 char		*quote_resolver(char *str);
