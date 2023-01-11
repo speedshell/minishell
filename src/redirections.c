@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:30:54 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 18:33:46 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 21:56:13 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ int	file_open_write(char *filename, int *redirect, int flag)
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	}
 	if (fd != -1)
-	   redirect[1] = fd;
+		redirect[1] = fd;
 	else
 		print_err_msg();
-	return (fd);	
+	return (fd);
 }

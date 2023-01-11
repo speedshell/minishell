@@ -6,13 +6,13 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 17:37:17 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 22:05:12 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr);
+int		execute_builtin(char **args, t_env *env, int b_id, t_command *expr);
 void	redirect_setup(int *redirect);
 void	fds_close(int *redirect);
 
@@ -62,6 +62,7 @@ void	fds_close(int *redirect)
 	if (redirect[1] != -1)
 		close (redirect[1]);
 }
+
 void	redirect_setup(int *redirect)
 {
 	if (redirect[0] != -1)

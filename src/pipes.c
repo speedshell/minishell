@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 18:20:24 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/07 18:27:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 21:58:07 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,4 @@ void	pipes_builtin_close(t_command *expr, int *std_backup)
 		dup2(std_backup[0], 0);
 		dup2(std_backup[1], 1);
 	}
-
 }
-

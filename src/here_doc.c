@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:26:54 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 21:22:44 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/10 22:03:58 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,14 @@ int	here_doc(char *delimiter, int *redirect)
 	char	*temp;
 
 	text = NULL;
-	line = NULL;
 	temp = NULL;
 	while (42)
 	{
 		line = get_line();
 		if (line == NULL || (*line != '\n' && \
-			ft_strncmp(delimiter, line, ft_strlen(line) - 1) == 0))
+				ft_strncmp(delimiter, line, ft_strlen(line) - 1) == 0))
 		{
-			if (line != NULL)
-				free(line);
+			free(line);
 			write_to_heredoc(text);
 			return (get_heredoc_fd(redirect));
 		}
