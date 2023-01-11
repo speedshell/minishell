@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/10 18:38:49 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/11 16:36:31 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,11 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <sys/wait.h>
+
+/* highlander global 
+* we are not initializing the variable yet to be norm compliant
+*/
+int	g_exit_code;
 
 typedef struct s_env
 {
@@ -108,6 +113,7 @@ int			update_quote(char *str, int i, int *quote_flag);
 int			valid_variable(char *c);
 char		*expand_str(char *input, char **env);
 char		*str_nodes_join(t_list *str_nodes);
+char		*expand_exit_variable(int *variable_size);
 
 // Utils
 int			is_builtin(char *cmd_path);
