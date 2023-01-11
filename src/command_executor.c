@@ -6,17 +6,17 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/11 13:47:10 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/11 20:17:48 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		execute_builtin(char **args, t_env *env, int b_id, t_command *expr, int *redirect);
+int		execute_builtin(char **args, t_env *env, int b_id, t_command *expr);
 void	redirect_setup(int *redirect);
 void	fds_close(int *redirect);
 
-void	command_executor(char **cmd_and_args, t_command *expr, t_env *env, int *redirect)
+void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 {
 	int		pid;
 	int		wstatus;
@@ -29,7 +29,7 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env, int *red
 	builtin_id = is_builtin(cmd_path);
 	if (builtin_id != -1)
 	{
-		execute_builtin(cmd_and_args, env, builtin_id, expr, redirect);
+		execute_builtin(cmd_and_args, env, builtin_id, expr, cmd->redirect);
 		return ;
 	}
 	pid = fork();
@@ -41,7 +41,7 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env, int *red
 	if (pid == 0)
 	{
 		pipes_setup(expr);
-		redirect_setup(redirect);
+		redirect_setup(expr);
 		if (execve(cmd_path, cmd_and_args, env->env) == -1)
 			print_err_msg();
 		exit(0);
