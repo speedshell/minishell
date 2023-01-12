@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:26:54 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 22:03:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:44:19 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	get_heredoc_fd(int *redirect)
 	int	fd;
 
 	fd = open(".here_doc", O_RDONLY);
+	if (redirect[0] != -1)
+		close(redirect[0]);
 	redirect[0] = fd;
 	if (fd == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/12 16:25:57 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/12 17:59:54 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	fds_close(t_command *expr);
 void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 {
 	int		pid;
-	int		wstatus;
 	int		builtin_id;
 	char	*cmd_path;
 
@@ -49,9 +48,7 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 	else
 	{
 		pipes_close(expr);
-		wait(&wstatus);
 		fds_close(expr);
-		expr->return_code = wstatus;
 	}
 }
 

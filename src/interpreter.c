@@ -6,32 +6,34 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/12 16:34:57 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/12 20:22:47 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <fcntl.h>
+#include <stdlib.h>
 
 char	**command_builder(t_command *expr, char **env, int *redirect);
 char	*args_eval(char *arg, char **env);
 int		alloc_fields(t_command *expr, int *field_count, char ***cmd);
 int		redirect_open(t_command *expr, int *redirect, int *i);
+int		wait_pipes(void);
+void	copy_pipes_fds(int *dest, int *src);
+int		init_pipe(t_command *expr);
+int		destroy_resources(t_command *expr, char **cmd);
 
 //printf("token value: %s\n", ((t_token *) (*tokens)->content)->value);
-void	eval_tokens(t_list **tokens, t_env *env_clone)
+int	eval_tokens(t_list **tokens, t_env *env_clone)
 {
 	t_command	*expr;
-	int			syntax;
 	char		**cmd;
 	int			prev_pipe[2];
-	int			w_status;
 
 	prev_pipe[0] = -1;
 	prev_pipe[1] = -1;
-	syntax = check_syntax(*tokens);
-	if (syntax == 0)
-		return ;
+	if (check_syntax(*tokens) != 0)
+		return (-1);
 	while (*tokens)
 	{
 		expr = parse_expression(tokens);
@@ -40,25 +42,59 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 		cmd = command_builder(expr, env_clone->env, expr->redirect);
 		if (cmd == NULL)
 			break ;
-		expr->in_pipe[0] = prev_pipe[0];
-		expr->in_pipe[1] = prev_pipe[1];
-		if (expr->has_pipe)
+		copy_pipes_fds(expr->in_pipe, prev_pipe);
+		if (init_pipe(expr) == -1)
 		{
-			pipe(expr->out_pipe);
+			destroy_resources(expr, cmd);
+			return (-1);	
 		}
 		cmd[0] = parse_command(cmd[0], env_clone->env);
 		command_executor(cmd, expr, env_clone);
-		prev_pipe[0] = expr->out_pipe[0];
-		prev_pipe[1] = expr->out_pipe[1];
-		free(expr);
-		free2d((void **) cmd);
+		copy_pipes_fds(prev_pipe, expr->out_pipe);
+		destroy_resources(expr, cmd);
 	}
+	return (wait_pipes());
+}
+
+int	wait_pipes(void)
+{
+	int	w_status;
+
+	w_status = 0;
 	while (42)
 	{
 		w_status = wait(&w_status);
 		if (w_status <= 0)
 			break ;
 	}
+	return (0); // will return the value of the global return code;
+}
+
+int	init_pipe(t_command *expr)
+{
+	int op_code;
+
+	op_code = 0;
+	if (!expr->has_pipe)
+		return (op_code);
+	op_code = pipe(expr->out_pipe);
+	if (op_code == -1)
+	{
+		print_err_msg();
+		return (-1);
+	}
+	return (0);
+}
+
+int	destroy_resources(t_command *expr, char **cmd)
+{
+return (0);	
+}
+
+void	copy_pipes_fds(int *dest, int *src)
+{
+	dest[0] = src[0];
+	dest[1] = src[1];
 }
 
 int	alloc_fields(t_command *expr, int *field_count, char ***cmd)
