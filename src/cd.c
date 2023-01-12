@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:26:00 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:11:13 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int	ft_cd(char **args, char **env)
 		i++;
 	if (i > 2)
 	{
-		printf("cd: too many args\n");
-		return (1);
+		set_error("Minishell: cd: too many arguments\n", 1, NULL);
+		return (g_exit_code);
 	}
 	if (i == 1)
 	{
@@ -42,10 +42,13 @@ int	ft_cd(char **args, char **env)
 	}
 	op_code = chdir(args[1]);
 	if (op_code != 0)
-		print_err_msg();
+		set_error("Minishell: cd: ", 1, args);
 	else
+	{
 		update_env_vars(env);
-	return (op_code);
+		g_exit_code = op_code;
+	}
+	return (g_exit_code);
 }
 
 /*
@@ -117,8 +120,8 @@ int	go_home(char **env)
 	i = find_env("HOME=", env);
 	if (i == -1)
 	{
-		printf("cd: HOME not defined\n");
-		return (1);
+		set_error("Minishell: cd: HOME not set\n", 1, NULL);
+		return (g_exit_code);
 	}
 	home_path = &env[i][5];
 	op_code = chdir(home_path);

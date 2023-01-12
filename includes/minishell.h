@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/11 16:36:31 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/12 18:32:20 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <errno.h>
 
 /* highlander global 
 * we are not initializing the variable yet to be norm compliant
@@ -94,7 +95,7 @@ void		eval_tokens(t_list **tokens, t_env *env_clone);
 
 // Error handling
 int			print_err_msg(void);
-int			set_error(char *error_message, int error_code);
+int			set_error(char *error_message, int error_code, char **args);
 
 // Signals handling
 void		handle_signals(void);
