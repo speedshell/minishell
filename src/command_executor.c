@@ -6,15 +6,15 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/11 20:17:48 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/12 16:25:57 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 int		execute_builtin(char **args, t_env *env, int b_id, t_command *expr);
-void	redirect_setup(int *redirect);
-void	fds_close(int *redirect);
+void	redirect_setup(t_command *expr);
+void	fds_close(t_command *expr);
 
 void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 {
@@ -29,7 +29,7 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 	builtin_id = is_builtin(cmd_path);
 	if (builtin_id != -1)
 	{
-		execute_builtin(cmd_and_args, env, builtin_id, expr, cmd->redirect);
+		execute_builtin(cmd_and_args, env, builtin_id, expr);
 		return ;
 	}
 	pid = fork();
@@ -50,25 +50,28 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 	{
 		pipes_close(expr);
 		wait(&wstatus);
-		fds_close(redirect);
+		fds_close(expr);
 		expr->return_code = wstatus;
 	}
 }
 
-void	fds_close(int *redirect)
+void	fds_close(t_command *expr)
 {
+	int	*redirect;
+
+	redirect = expr->redirect;
 	if (redirect[0] != -1)
 		close(redirect[0]);
 	if (redirect[1] != -1)
 		close (redirect[1]);
 }
 
-void	redirect_setup(int *redirect)
+void	redirect_setup(t_command *expr)
 {
-	if (redirect[0] != -1)
-		dup2(redirect[0], STDIN_FILENO);
-	if (redirect[1] != -1)
-		dup2(redirect[1], STDOUT_FILENO);
+	if (expr->redirect[0] != -1)
+		dup2(expr->redirect[0], STDIN_FILENO);
+	if (expr->redirect[1] != -1)
+		dup2(expr->redirect[1], STDOUT_FILENO);
 }
 
 /*
@@ -102,7 +105,7 @@ int	is_builtin(char *cmd_path)
  * return: the builtin functions's return code
 */
 
-int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr, int *redirection)
+int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr)
 {
 	int	op_code;
 	int	std_backup[2];
@@ -111,7 +114,7 @@ int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr, in
 	std_backup[0] = -1;
 	std_backup[1] = -1;
 	pipes_builtin_setup(expr, std_backup);
-	redirection_builtin_setup(redirection, std_backup);
+	redirection_builtin_setup(expr, std_backup);
 	if (builtin_id == ECHO)
 		op_code = ft_echo(args);
 	if (builtin_id == EXIT)
@@ -127,7 +130,7 @@ int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr, in
 	if (builtin_id == UNSET)
 		op_code = ft_unset(args, env);
 	pipes_builtin_close(expr, std_backup);
-	redirection_builtin_close(redirection, std_backup);
+	redirection_builtin_close(expr, std_backup);
 	return (op_code);
 }
 

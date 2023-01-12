@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 23:13:12 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/12 16:34:57 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 	int			syntax;
 	char		**cmd;
 	int			prev_pipe[2];
-	int			redirect[2];
+	int			w_status;
 
 	prev_pipe[0] = -1;
 	prev_pipe[1] = -1;
@@ -34,12 +34,10 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 		return ;
 	while (*tokens)
 	{
-		redirect[0] = -1;
-		redirect[1] = -1;
 		expr = parse_expression(tokens);
 		if (expr == NULL)
 			break ;
-		cmd = command_builder(expr, env_clone->env, redirect);
+		cmd = command_builder(expr, env_clone->env, expr->redirect);
 		if (cmd == NULL)
 			break ;
 		expr->in_pipe[0] = prev_pipe[0];
@@ -49,11 +47,17 @@ void	eval_tokens(t_list **tokens, t_env *env_clone)
 			pipe(expr->out_pipe);
 		}
 		cmd[0] = parse_command(cmd[0], env_clone->env);
-		command_executor(cmd, expr, env_clone, redirect);
+		command_executor(cmd, expr, env_clone);
 		prev_pipe[0] = expr->out_pipe[0];
 		prev_pipe[1] = expr->out_pipe[1];
 		free(expr);
 		free2d((void **) cmd);
+	}
+	while (42)
+	{
+		w_status = wait(&w_status);
+		if (w_status <= 0)
+			break ;
 	}
 }
 

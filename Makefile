@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2023/01/10 21:52:31 by lfarias-         ###   ########.fr        #
+#    Updated: 2023/01/12 16:27:16 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,8 +39,7 @@ INCLUDES	=	-I ./includes
 
 ${NAME}:   ${OBJS}
 	@make -C ./includes/libft bonus
-	@${CC} ${INCLUDES} ${CFLAGS} ${OBJS} -o ${NAME} ${LDLIBS} 
-#${CPPFLAGS} ${LDFLAGS} 
+	@${CC} ${INCLUDES} ${CFLAGS} ${OBJS} -o ${NAME} ${LDLIBS} ${CPPFLAGS} ${LDFLAGS} 
 
 all:    ${NAME}
 
