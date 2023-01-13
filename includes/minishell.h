@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 11:18:22 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:15:05 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_expression
 	int		return_code;
 }	t_command;
 
-char		*parse_command(char *statement, char **env);
+char		*command_find_path(char *statement, char **env);
 void		command_executor(char **cmd_path, t_command *expr, t_env *env);
 
 // builtin

@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2023/01/13 11:42:03 by lfarias-         ###   ########.fr        #
+#    Updated: 2023/01/13 13:15:41 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ CPPFLAGS 	=   -I /Users/lfarias-/.brew/Cellar/readline/8.2.1/include
 
 LDFLAGS 	=   -L  /Users/lfarias-/.brew/Cellar/readline/8.2.1/lib
 
-SRC			= 	main.c command_executor.c command_loader.c error_handler.c \
+SRC			= 	main.c command_executor.c command_pathfinder.c error_handler.c \
 				signal_handlers.c echo.c exit.c build_env.c env.c pwd.c cd.c \
 				export.c expander.c expander_utils.c unset.c quote_resolver.c \
 				lexer.c parser.c parser_rules.c interpreter.c cleaner.c \

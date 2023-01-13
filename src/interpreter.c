@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 13:05:20 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:09:55 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	eval_tokens(t_list **tokens, t_env *env_clone)
 			destroy_resources(expr, cmd);
 			return (-1);	
 		}
-		cmd[0] = parse_command(cmd[0], env_clone->env);
+		cmd[0] = command_find_path(cmd[0], env_clone->env);
 		command_executor(cmd, expr, env_clone);
 		copy_pipes_fds(prev_pipe, expr->out_pipe);
 		destroy_resources(expr, cmd);

@@ -1,22 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   command_loader.c                                   :+:      :+:    :+:   */
+/*   command_pathfinder.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:24:36 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 11:26:04 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:16:22 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-char	*build_path(char *cmd_name, char *env);
-void	free2d(void **matrix2d);
-void	*clean_buildpath(char **paths, char *aux);
+char	*build_cmd_path(char *cmd_name, char *env);
+void	*clean_cmd_path(char **paths, char *aux);
 
-char	*parse_command(char *statement, char **env)
+char	*command_find_path(char *statement, char **env)
 {
 	char	*cmd_name;
 	char	*fullpath_cmd;
@@ -30,7 +29,7 @@ char	*parse_command(char *statement, char **env)
 	i = 0;
 	while (env[i] && ft_strncmp("PATH=", env[i], 5) != 0)
 		i++;
-	fullpath_cmd = build_path(cmd_name, env[i]);
+	fullpath_cmd = build_cmd_path(cmd_name, env[i]);
 	if (fullpath_cmd != NULL)
 	{
 		free(cmd_name);
@@ -39,7 +38,7 @@ char	*parse_command(char *statement, char **env)
 	return (cmd_name);
 }
 
-char	*build_path(char *cmd_name, char *path)
+char	*build_cmd_path(char *cmd_name, char *path)
 {
 	char	**paths;
 	char	*cmd_path;	
@@ -55,7 +54,7 @@ char	*build_path(char *cmd_name, char *path)
 		aux = ft_strjoin(paths[i], "/");
 		cmd_path = ft_strjoin(aux, cmd_name);
 		if (aux == NULL || cmd_path == NULL)
-			return (clean_buildpath(paths, aux));
+			return (clean_cmd_path(paths, aux));
 		free(aux);
 		if (access(cmd_path, X_OK) == 0)
 			break ;
@@ -68,7 +67,7 @@ char	*build_path(char *cmd_name, char *path)
 	return (cmd_path);
 }
 
-void	*clean_buildpath(char **paths, char *aux)
+void	*clean_cmd_path(char **paths, char *aux)
 {
 	free2d((void **) paths);
 	free(aux);
