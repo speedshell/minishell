@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:24:36 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 13:16:22 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 15:43:18 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ char	*command_find_path(char *statement, char **env)
 	cmd_name = statement;
 	if (is_builtin(cmd_name) != -1)
 		return (cmd_name);
-	if (access(cmd_name, X_OK) == 0)
+	if (ft_strncmp(cmd_name, "./", 2) == 0)
+		return (cmd_name);
+	if (access(cmd_name, F_OK | X_OK) == 0)
 		return (cmd_name);
 	i = 0;
 	while (env[i] && ft_strncmp("PATH=", env[i], 5) != 0)
