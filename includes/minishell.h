@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/12 19:54:51 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:18:22 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ char		*str_nodes_join(t_list *str_nodes);
 
 // utils
 int			is_builtin(char *cmd_path);
+
+// cleaner
 void		free2d(void **matrix2d);
-void		free_token(t_token *token);
+void		free_token(void *tk);
 #endif

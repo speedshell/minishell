@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/12 17:59:54 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 12:24:58 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ void	redirect_setup(t_command *expr)
 
 int	is_builtin(char *cmd_path)
 {
+	if (!cmd_path)
+		return (-1);
 	if (ft_strncmp(cmd_path, "echo", 4) == 0)
 		return (ECHO);
 	if (ft_strncmp(cmd_path, "exit", 4) == 0)

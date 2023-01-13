@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:24:36 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:24:38 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 11:26:04 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,21 +66,6 @@ char	*build_path(char *cmd_name, char *path)
 		cmd_path = NULL;
 	free2d((void **) paths);
 	return (cmd_path);
-}
-
-void	free2d(void **matrix2d)
-{
-	int	i;
-
-	if (!matrix2d)
-		return ;
-	i = 0;
-	while (matrix2d[i] != NULL)
-	{
-		free(matrix2d[i]);
-		i++;
-	}
-	free(matrix2d);
 }
 
 void	*clean_buildpath(char **paths, char *aux)

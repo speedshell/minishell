@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/12 20:22:47 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:05:20 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,25 +18,27 @@ char	**command_builder(t_command *expr, char **env, int *redirect);
 char	*args_eval(char *arg, char **env);
 int		alloc_fields(t_command *expr, int *field_count, char ***cmd);
 int		redirect_open(t_command *expr, int *redirect, int *i);
-int		wait_pipes(void);
+int		wait_children(void);
 void	copy_pipes_fds(int *dest, int *src);
 int		init_pipe(t_command *expr);
 int		destroy_resources(t_command *expr, char **cmd);
 
-//printf("token value: %s\n", ((t_token *) (*tokens)->content)->value);
 int	eval_tokens(t_list **tokens, t_env *env_clone)
 {
 	t_command	*expr;
 	char		**cmd;
 	int			prev_pipe[2];
+	t_list		*token_list;
 
+	if (check_syntax(*tokens) != 1)
+		return (-1);
+	expr = NULL;
 	prev_pipe[0] = -1;
 	prev_pipe[1] = -1;
-	if (check_syntax(*tokens) != 0)
-		return (-1);
-	while (*tokens)
+	token_list = *tokens;
+	while (token_list != NULL)
 	{
-		expr = parse_expression(tokens);
+		expr = parse_expression(&token_list);
 		if (expr == NULL)
 			break ;
 		cmd = command_builder(expr, env_clone->env, expr->redirect);
@@ -53,10 +55,10 @@ int	eval_tokens(t_list **tokens, t_env *env_clone)
 		copy_pipes_fds(prev_pipe, expr->out_pipe);
 		destroy_resources(expr, cmd);
 	}
-	return (wait_pipes());
+	return (wait_children());
 }
 
-int	wait_pipes(void)
+int	wait_children()
 {
 	int	w_status;
 
@@ -88,7 +90,10 @@ int	init_pipe(t_command *expr)
 
 int	destroy_resources(t_command *expr, char **cmd)
 {
-return (0);	
+	free(expr->tokens);
+	free(expr);
+	free2d((void **) cmd);
+	return (0);
 }
 
 void	copy_pipes_fds(int *dest, int *src)
@@ -140,11 +145,10 @@ char	**command_builder(t_command *expr, char **env, int *redirect)
 		else
 		{
 			cmd[j++] = args_eval(expr->tokens[i]->value, env);
-			free(expr->tokens[i++]);
+			expr->tokens[i]->value = NULL;
+			i++;
 		}
 	}
-	free_token(expr->tokens[i]);
-	free(expr->tokens);
 	cmd[j] = NULL;
 	return (cmd);
 }
@@ -170,8 +174,6 @@ int	redirect_open(t_command *expr, int *redirect, int *i)
 		op_code = here_doc(filename, redirect);
 	if (op_code == -1)
 		return (op_code);
-	free_token(expr->tokens[*i]);
-	free_token(expr->tokens[*i + 1]);
 	*i = *i + 2;
 	return (op_code);
 }
@@ -180,6 +182,8 @@ char	*args_eval(char *arg, char **env)
 {
 	char	*temp;
 
+	if (!arg)
+		return (NULL);
 	temp = expand_str(arg, env);
 	if (temp != NULL)
 	{

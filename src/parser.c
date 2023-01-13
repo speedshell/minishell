@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/11 20:16:18 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 12:58:18 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int			count_tokens(t_list *token_list);
 
 t_command	*parse_expression(t_list **token_list)
 {
-	t_list		*node;
 	t_token		*tkn;
 	t_command	*cmd;
 	int			i;
@@ -31,15 +30,15 @@ t_command	*parse_expression(t_list **token_list)
 	cmd = create_expression();
 	cmd->tokens = malloc(sizeof(t_token *) * (token_qty + 1));
 	i = 0;
-	while (i < token_qty && token_list)
+	while (i < token_qty && *token_list)
 	{
 		tkn = (t_token *)(*token_list)->content;
 		cmd->tokens[i] = tkn;
 		if (tkn->type == PIPE)
 			cmd->has_pipe = 1;
-		node = *token_list;
+		if (tkn->type == REDIRECT)
+			cmd->has_redirect = 1;
 		*token_list = (*token_list)->next;
-		free(node);
 		i++;
 	}
 	cmd->tokens[i] = NULL;
