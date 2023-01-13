@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 13:54:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 15:08:31 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,11 @@ void	command_executor(char **cmd_and_args, t_command *expr, t_env *env)
 		pipes_setup(expr);
 		redirect_setup(expr);
 		if (execve(cmd_path, cmd_and_args, env->env) == -1)
+		{
 			print_err_msg();
-		exit(0);
+			pipes_close(expr);
+			exit(0);
+		}
 	}	
 	else
 	{
