@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 13:53:40 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:52:40 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ int	eval_tokens(t_list **tokens, t_env *env_clone)
 		expr = parse_expression(&token_list);
 		cmd = command_builder(expr, env_clone->env, expr->redirect);
 		if (cmd == NULL)
+		{
+			destroy_resources(expr, NULL);
 			break ;
+		}
 		copy_pipes_fds(expr->in_pipe, prev_pipe);
 		if (init_pipe(expr) == -1)
 		{
@@ -74,11 +77,16 @@ char	**command_builder(t_command *expr, char **env, int *redirect)
 	field_count = 0;
 	if (alloc_fields(expr, &field_count, &cmd) == 0)
 		return (NULL);
-	while (i < field_count && expr->tokens[i]->type != PIPE)
+	while ((i < field_count && cmd[j] == NULL) && expr->tokens[i]->type != PIPE)
 	{
-		if (expr->tokens[i]->type == REDIRECT \
-			&& redirect_open(expr, redirect, &i) == -1)
-			return (NULL);
+		if (expr->tokens[i]->type == REDIRECT) 
+		{
+			if (redirect_open(expr, redirect, &i) == -1)
+			{
+				free2d((void **) cmd);
+				return (NULL);
+			}
+		}
 		else
 		{
 			cmd[j++] = args_eval(expr->tokens[i]->value, env);

@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 21:49:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 13:54:39 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:54:08 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	alloc_fields(t_command *expr, int *field_count, char ***cmd)
 	}
 	if (field_count == 0)
 		return (0);
-	*cmd = malloc(sizeof(char *) * (*field_count + 1));
+	*cmd = ft_calloc(sizeof(char *), (*field_count + 1));
 	if (!cmd)
 		return (0);
 	else
