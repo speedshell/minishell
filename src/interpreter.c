@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 13:09:55 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:53:40 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,8 @@
 #include <stdlib.h>
 
 char	**command_builder(t_command *expr, char **env, int *redirect);
-char	*args_eval(char *arg, char **env);
-int		alloc_fields(t_command *expr, int *field_count, char ***cmd);
 int		redirect_open(t_command *expr, int *redirect, int *i);
 int		wait_children(void);
-void	copy_pipes_fds(int *dest, int *src);
-int		init_pipe(t_command *expr);
 int		destroy_resources(t_command *expr, char **cmd);
 
 int	eval_tokens(t_list **tokens, t_env *env_clone)
@@ -32,15 +28,10 @@ int	eval_tokens(t_list **tokens, t_env *env_clone)
 
 	if (check_syntax(*tokens) != 1)
 		return (-1);
-	expr = NULL;
-	prev_pipe[0] = -1;
-	prev_pipe[1] = -1;
-	token_list = *tokens;
+	token_list = init_vars(&expr, &cmd, prev_pipe, tokens);
 	while (token_list != NULL)
 	{
 		expr = parse_expression(&token_list);
-		if (expr == NULL)
-			break ;
 		cmd = command_builder(expr, env_clone->env, expr->redirect);
 		if (cmd == NULL)
 			break ;
@@ -48,9 +39,8 @@ int	eval_tokens(t_list **tokens, t_env *env_clone)
 		if (init_pipe(expr) == -1)
 		{
 			destroy_resources(expr, cmd);
-			return (-1);	
+			return (-1);
 		}
-		cmd[0] = command_find_path(cmd[0], env_clone->env);
 		command_executor(cmd, expr, env_clone);
 		copy_pipes_fds(prev_pipe, expr->out_pipe);
 		destroy_resources(expr, cmd);
@@ -58,7 +48,7 @@ int	eval_tokens(t_list **tokens, t_env *env_clone)
 	return (wait_children());
 }
 
-int	wait_children()
+int	wait_children(void)
 {
 	int	w_status;
 
@@ -69,57 +59,7 @@ int	wait_children()
 		if (w_status <= 0)
 			break ;
 	}
-	return (0); // will return the value of the global return code;
-}
-
-int	init_pipe(t_command *expr)
-{
-	int op_code;
-
-	op_code = 0;
-	if (!expr->has_pipe)
-		return (op_code);
-	op_code = pipe(expr->out_pipe);
-	if (op_code == -1)
-	{
-		print_err_msg();
-		return (-1);
-	}
 	return (0);
-}
-
-int	destroy_resources(t_command *expr, char **cmd)
-{
-	free(expr->tokens);
-	free(expr);
-	free2d((void **) cmd);
-	return (0);
-}
-
-void	copy_pipes_fds(int *dest, int *src)
-{
-	dest[0] = src[0];
-	dest[1] = src[1];
-}
-
-int	alloc_fields(t_command *expr, int *field_count, char ***cmd)
-{
-	int	i;
-
-	if (!expr || expr->tokens == NULL)
-		return (0);
-	i = 0;
-	while (expr->tokens[i] != NULL)
-	{
-		*field_count = ++i;
-	}
-	if (field_count == 0)
-		return (0);
-	*cmd = malloc(sizeof(char *) * (*field_count + 1));
-	if (!cmd)
-		return (0);
-	else
-		return (1);
 }
 
 char	**command_builder(t_command *expr, char **env, int *redirect)
@@ -132,23 +72,20 @@ char	**command_builder(t_command *expr, char **env, int *redirect)
 	i = 0;
 	j = 0;
 	field_count = 0;
-	cmd = NULL;
 	if (alloc_fields(expr, &field_count, &cmd) == 0)
 		return (NULL);
 	while (i < field_count && expr->tokens[i]->type != PIPE)
 	{
-		if (expr->tokens[i]->type == REDIRECT)
-		{
-			if (redirect_open(expr, redirect, &i) == -1)
-				return (NULL);
-		}
+		if (expr->tokens[i]->type == REDIRECT \
+			&& redirect_open(expr, redirect, &i) == -1)
+			return (NULL);
 		else
 		{
 			cmd[j++] = args_eval(expr->tokens[i]->value, env);
-			expr->tokens[i]->value = NULL;
-			i++;
+			expr->tokens[i++]->value = NULL;
 		}
 	}
+	cmd[0] = command_find_path(cmd[0], env);
 	cmd[j] = NULL;
 	return (cmd);
 }
@@ -178,23 +115,10 @@ int	redirect_open(t_command *expr, int *redirect, int *i)
 	return (op_code);
 }
 
-char	*args_eval(char *arg, char **env)
+int	destroy_resources(t_command *expr, char **cmd)
 {
-	char	*temp;
-
-	if (!arg)
-		return (NULL);
-	temp = expand_str(arg, env);
-	if (temp != NULL)
-	{
-		free(arg);
-		arg = temp;
-	}
-	temp = quote_resolver(arg);
-	if (temp != NULL)
-	{
-		free(arg);
-		arg = temp;
-	}
-	return (arg);
+	free(expr->tokens);
+	free(expr);
+	free2d((void **) cmd);
+	return (0);
 }

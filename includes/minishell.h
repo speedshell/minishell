@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 13:15:05 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:43:23 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,11 @@ int			redirect_rules(t_token *curr_token, t_token *next_tkn);
 
 // interpreter
 int			eval_tokens(t_list **tokens, t_env *env_clone);
+t_list		*init_vars(t_command **expr, char ***cmd, int *pp, t_list **tks);
+int			init_pipe(t_command *expr);
+void		copy_pipes_fds(int *dest, int *src);
+char		*args_eval(char *arg, char **env);
+int			alloc_fields(t_command *expr, int *field_count, char ***cmd);
 
 // error handling
 int			print_err_msg(void);

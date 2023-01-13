@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 12:24:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:54:58 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,4 +132,3 @@ int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr)
 	redirection_builtin_close(expr, std_backup);
 	return (op_code);
 }
-
