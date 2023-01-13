@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2023/01/10 18:50:05 by mpinna-l         ###   ########.fr        #
+#    Updated: 2023/01/13 13:44:30 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME		=	minishell
 
 CC			= 	cc	
 
-CFLAGS		=	-Wall -Werror -Wextra -g 
+CFLAGS		=	-Wall -Wextra -g 
 #-fsanitize=address 
 
 LDLIBS		= 	-lreadline includes/libft.a
@@ -23,10 +23,11 @@ CPPFLAGS 	=   -I /Users/lfarias-/.brew/Cellar/readline/8.2.1/include
 
 LDFLAGS 	=   -L  /Users/lfarias-/.brew/Cellar/readline/8.2.1/lib
 
-SRC			= 	main.c command_executor.c command_loader.c error_handler.c \
+SRC			= 	main.c command_executor.c command_pathfinder.c error_handler.c \
 				signal_handlers.c echo.c exit.c build_env.c env.c pwd.c cd.c \
 				export.c expander.c expander_utils.c unset.c quote_resolver.c \
-				lexer.c parser.c parser_rules.c interpreter.c pipes.c error.c
+				lexer.c parser.c parser_rules.c interpreter.c interpreter_utils.c \
+				cleaner.c pipes.c redirections.c here_doc.c error.c
 
 SRCS		= 	$(addprefix src/,$(SRC))
 
@@ -39,8 +40,7 @@ INCLUDES	=	-I ./includes
 
 ${NAME}:   ${OBJS}
 	@make -C ./includes/libft bonus
-	@${CC} ${INCLUDES} ${CFLAGS} ${OBJS} -o ${NAME} ${LDLIBS} 
-#${CPPFLAGS} ${LDFLAGS} 
+	@${CC} ${INCLUDES} ${CFLAGS} ${OBJS} -o ${NAME} ${LDLIBS} ${CPPFLAGS} ${LDFLAGS} 
 
 all:    ${NAME}
 

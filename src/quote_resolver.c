@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 18:25:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/03 19:22:11 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:22:21 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,35 @@ int	update_quote(char *str, int i, int *quote_flag)
 	return (0);
 }
 
+int	check_for_quotes(char *input)
+{
+	int	i;
+	int	quote;
+	int	valid_quote;
+
+	i = -1;
+	quote = 0;
+	valid_quote = 0;
+	while (input[++i])
+	{
+		if (input[i] == '\'' && quote == 0)
+			quote = 1;
+		if (input[i] == '\'' && quote == 1)
+		{
+			quote = 0;
+			valid_quote += 1;
+		}
+		if (input[i] == '\"' && quote == 0)
+			quote = 1;
+		if (input[i] == '\"' && quote == 1)
+		{
+			quote = 0;
+			valid_quote += 1;
+		}
+	}
+	return (valid_quote);
+}
+
 char	*quote_resolver(char *str)
 {
 	char	*parsed_str;
@@ -46,10 +75,10 @@ char	*quote_resolver(char *str)
 	int		i;
 	int		j;
 
-	if (!str)
+	if (check_for_quotes(str) == 0)
 		return (NULL);
-	parsed_str = malloc(sizeof(char) * ft_strlen(str) + 1);
-	if (!str)
+	parsed_str = ft_calloc(sizeof(char), ft_strlen(str) + 1);
+	if (!parsed_str)
 		return (NULL);
 	quote_flag = 0;
 	i = 0;

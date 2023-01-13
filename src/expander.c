@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/12 19:47:28 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/13 12:23:31 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ char	*expand_str(char *input, char **env)
 	expand = 2;
 	str_nodes = NULL;
 	i = 0;
+	if (!input)
+		return (NULL);
 	str_size = ft_strlen(input);
 	while (i < str_size)
 	{

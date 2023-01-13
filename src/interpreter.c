@@ -6,110 +6,127 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/08 19:59:34 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 14:52:40 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <fcntl.h>
+#include <stdlib.h>
 
-char	**command_builder(t_command *expr, char **env);
-char	*args_eval(char *arg, char **env);
-int		count_fields(t_command *expr);
+char	**command_builder(t_command *expr, char **env, int *redirect);
+int		redirect_open(t_command *expr, int *redirect, int *i);
+int		wait_children(void);
+int		destroy_resources(t_command *expr, char **cmd);
 
-//printf("token value: %s\n", ((t_token *) (*tokens)->content)->value);
-void	eval_tokens(t_list **tokens, t_env *env_clone)
+int	eval_tokens(t_list **tokens, t_env *env_clone)
 {
 	t_command	*expr;
-	int			syntax;
 	char		**cmd;
 	int			prev_pipe[2];
+	t_list		*token_list;
 
-	prev_pipe[0] = -1;
-	prev_pipe[1] = -1;
-	syntax = check_syntax(*tokens);
-	if (syntax == 0)
-		return ;
-	while (*tokens)
+	if (check_syntax(*tokens) != 1)
+		return (-1);
+	token_list = init_vars(&expr, &cmd, prev_pipe, tokens);
+	while (token_list != NULL)
 	{
-		expr = parse_expression(tokens);
-		if (expr == NULL)
-			break ;
-		cmd = command_builder(expr, env_clone->env);
+		expr = parse_expression(&token_list);
+		cmd = command_builder(expr, env_clone->env, expr->redirect);
 		if (cmd == NULL)
-			break ;
-		expr->in_pipe[0] = prev_pipe[0];
-		expr->in_pipe[1] = prev_pipe[1];
-		if (expr->has_pipe)
 		{
-			pipe(expr->out_pipe);
+			destroy_resources(expr, NULL);
+			break ;
 		}
-		cmd[0] = parse_command(cmd[0], env_clone->env);
+		copy_pipes_fds(expr->in_pipe, prev_pipe);
+		if (init_pipe(expr) == -1)
+		{
+			destroy_resources(expr, cmd);
+			return (-1);
+		}
 		command_executor(cmd, expr, env_clone);
-		prev_pipe[0] = expr->out_pipe[0];
-		prev_pipe[1] = expr->out_pipe[1];
-		free(expr);
-		free2d((void **) cmd);
+		copy_pipes_fds(prev_pipe, expr->out_pipe);
+		destroy_resources(expr, cmd);
 	}
+	return (wait_children());
 }
 
-int	count_fields(t_command *expr)
+int	wait_children(void)
 {
-	int		i;
+	int	w_status;
 
-	if (!expr || expr->tokens == NULL)
-		return (0);
-	i = 0;
-	while (expr->tokens[i] != NULL)
+	w_status = 0;
+	while (42)
 	{
-		i++;
+		w_status = wait(&w_status);
+		if (w_status <= 0)
+			break ;
 	}
-	return (i);
+	return (0);
 }
 
-char	**command_builder(t_command *expr, char **env)
+char	**command_builder(t_command *expr, char **env, int *redirect)
 {
 	char	**cmd;
 	int		field_count;
 	int		i;
+	int		j;
 
-	field_count = count_fields(expr);
-	if (field_count == 0)
-		return (NULL);
-	cmd = malloc(sizeof(char *) * (field_count + 1));
-	if (!cmd)
-		return (NULL);
 	i = 0;
-	while (expr->tokens[i] != NULL && expr->tokens[i]->type != PIPE)
+	j = 0;
+	field_count = 0;
+	if (alloc_fields(expr, &field_count, &cmd) == 0)
+		return (NULL);
+	while ((i < field_count && cmd[j] == NULL) && expr->tokens[i]->type != PIPE)
 	{
-		cmd[i] = args_eval(expr->tokens[i]->value, env);
-		free(expr->tokens[i]);
-		i++;
+		if (expr->tokens[i]->type == REDIRECT) 
+		{
+			if (redirect_open(expr, redirect, &i) == -1)
+			{
+				free2d((void **) cmd);
+				return (NULL);
+			}
+		}
+		else
+		{
+			cmd[j++] = args_eval(expr->tokens[i]->value, env);
+			expr->tokens[i++]->value = NULL;
+		}
 	}
-	if (expr->tokens[i])
-	{
-		free(expr->tokens[i]->value);
-		free(expr->tokens[i]);
-	}
-	free(expr->tokens);
-	cmd[i] = NULL;
+	cmd[0] = command_find_path(cmd[0], env);
+	cmd[j] = NULL;
 	return (cmd);
 }
 
-char	*args_eval(char *arg, char **env)
+int	redirect_open(t_command *expr, int *redirect, int *i)
 {
-	char	*temp;
+	char	*token_value;
+	char	*filename;
+	int		token_size;
+	int		op_code;
 
-	temp = expand_str(arg, env);
-	if (temp != NULL)
-	{
-		free(arg);
-		arg = temp;
-	}
-	temp = quote_resolver(arg);
-	if (temp != NULL)
-	{
-		free(arg);
-		arg = temp;
-	}
-	return (arg);
+	op_code = 0;
+	token_value = expr->tokens[*i]->value;
+	token_size = ft_strlen(token_value);
+	filename = expr->tokens[*i + 1]->value;
+	if (token_size == 1 && *token_value == '<')
+		op_code = file_open_read(filename, redirect);
+	if (token_size == 1 && *token_value == '>')
+		op_code = file_open_write(filename, redirect, O_TRUNC);
+	if (token_size == 2 && ft_strncmp(token_value, ">>", 2) == 0)
+		op_code = file_open_write(filename, redirect, O_APPEND);
+	if (token_size == 2 && ft_strncmp(token_value, "<<", 2) == 0)
+		op_code = here_doc(filename, redirect);
+	if (op_code == -1)
+		return (op_code);
+	*i = *i + 2;
+	return (op_code);
+}
+
+int	destroy_resources(t_command *expr, char **cmd)
+{
+	free(expr->tokens);
+	free(expr);
+	free2d((void **) cmd);
+	return (0);
 }

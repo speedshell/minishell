@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/12 18:32:20 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/13 13:43:23 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define WORD 42
 # define PIPE 64 
 # define REDIRECT 128
+# define HERE_DOC 256
 
 # include "libft/libft.h"
 # include <stdio.h>
@@ -65,12 +66,14 @@ typedef struct s_expression
 {
 	t_token	**tokens;	
 	int		has_pipe;
+	int		has_redirect;
+	int		redirect[2];
 	int		in_pipe[2];
 	int		out_pipe[2];
 	int		return_code;
 }	t_command;
 
-char		*parse_command(char *statement, char **env);
+char		*command_find_path(char *statement, char **env);
 void		command_executor(char **cmd_path, t_command *expr, t_env *env);
 
 // builtin
@@ -91,7 +94,12 @@ int			pipe_rules(t_token *p_tkn, t_token *curr_token, t_token *nxt_tkn);
 int			redirect_rules(t_token *curr_token, t_token *next_tkn);
 
 // interpreter
-void		eval_tokens(t_list **tokens, t_env *env_clone);
+int			eval_tokens(t_list **tokens, t_env *env_clone);
+t_list		*init_vars(t_command **expr, char ***cmd, int *pp, t_list **tks);
+int			init_pipe(t_command *expr);
+void		copy_pipes_fds(int *dest, int *src);
+char		*args_eval(char *arg, char **env);
+int			alloc_fields(t_command *expr, int *field_count, char ***cmd);
 
 // Error handling
 int			print_err_msg(void);
@@ -100,11 +108,18 @@ int			set_error(char *error_message, int error_code, char **args);
 // Signals handling
 void		handle_signals(void);
 
-// Pipes and redirection
+// pipes
 void		pipes_setup(t_command *expr);
 void		pipes_close(t_command *expr);
 void		pipes_builtin_setup(t_command *expr, int *std_backup);
 void		pipes_builtin_close(t_command *expr, int *std_backup);
+
+// redirection
+int			file_open_read(char *filename, int *redirect);
+int			file_open_write(char *filename, int *redirect, int mode);
+int			here_doc(char *delimiter, int *redirect);
+void		redirection_builtin_setup(t_command *expr, int *std_backup);
+void		redirection_builtin_close(t_command *expr, int *std_backup);
 
 // Quotes
 char		*quote_resolver(char *str);
@@ -118,8 +133,9 @@ char		*expand_exit_variable(int *variable_size);
 
 // Utils
 int			is_builtin(char *cmd_path);
-void		free2d(void **matrix2d);
 char		**build_env(char **env);
 
-// Error handling
+// cleaner
+void		free2d(void **matrix2d);
+void		free_token(void *tk);
 #endif
