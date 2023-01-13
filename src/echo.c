@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:16:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 17:55:00 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/12 18:22:17 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,32 +18,6 @@
  *  options: -n [removes the trailing new line]
  *  return: 0 on success, 1 on failure [wrong args]
  */
-
-int	ft_hiddenp(char *str, char *hidden)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (str[j] && hidden[i])
-	{
-		if (!ft_isalpha(str[j]) && j > 0)
-			return (0);
-		if (str[j] == hidden[i])
-			i++;
-		j++;
-	}
-	while (str[j])
-	{
-		if (!ft_isalpha(str[j++]))
-			return (0);
-	}
-	if (hidden[i] == '\0')
-		return (1);
-	else
-		return (0);
-}
 
 void	print_args(char **args, int i)
 {
@@ -100,5 +74,6 @@ int	ft_echo(char **args)
 		print_args(args, 1);
 		printf("\n");
 	}
-	return (0);
+	g_exit_code = 0;
+	return (g_exit_code);
 }
