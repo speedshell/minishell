@@ -18,6 +18,7 @@ char	*expand_variable(char *input, char **env, int *variable_size);
 int		add_var_value(t_list **str_nds, char *input, int *expand, char **env);
 char	*str_nodes_join(t_list *str_nodes);
 int		is_expandable(char *input, int i, int *expand);
+char	*get_exit_str(char *input, int *variable_size);
 
 char	*expand_str(char *input, char **env)
 {
@@ -85,6 +86,8 @@ char	*expand_variable(char *input, char **env, int *variable_size)
 		return (NULL);
 	if (*input == '$')
 	{
+		if (*(input + 1) == '?')
+			return (expand_exit_variable(variable_size));
 		input++;
 		*variable_size = valid_variable(input);
 		if (*variable_size != 0 && *input)

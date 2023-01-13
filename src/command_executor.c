@@ -82,21 +82,24 @@ void	redirect_setup(t_command *expr)
 
 int	is_builtin(char *cmd_path)
 {
+	int	cmd_size;
+
 	if (!cmd_path)
 		return (-1);
-	if (ft_strncmp(cmd_path, "echo", 4) == 0)
+	cmd_size = ft_strlen(cmd_path);
+	if (ft_strncmp(cmd_path, "echo", cmd_size) == 0)
 		return (ECHO);
-	if (ft_strncmp(cmd_path, "exit", 4) == 0)
+	if (ft_strncmp(cmd_path, "exit", cmd_size) == 0)
 		return (EXIT);
-	if (ft_strncmp(cmd_path, "env", 3) == 0)
+	if (ft_strncmp(cmd_path, "env", cmd_size) == 0)
 		return (ENV);
-	if (ft_strncmp(cmd_path, "pwd", 3) == 0)
+	if (ft_strncmp(cmd_path, "pwd", cmd_size) == 0)
 		return (PWD);
-	if (ft_strncmp(cmd_path, "cd", 2) == 0)
+	if (ft_strncmp(cmd_path, "cd", cmd_size) == 0)
 		return (CD);
-	if (ft_strncmp(cmd_path, "export", 6) == 0)
+	if (ft_strncmp(cmd_path, "export", cmd_size) == 0)
 		return (EXPORT);
-	if (ft_strncmp(cmd_path, "unset", 5) == 0)
+	if (ft_strncmp(cmd_path, "unset", cmd_size) == 0)
 		return (UNSET);
 	return (-1);
 }

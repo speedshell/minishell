@@ -34,6 +34,12 @@
 # include <stdlib.h>
 # include <signal.h>
 # include <sys/wait.h>
+# include <errno.h>
+
+/* highlander global 
+* we are not initializing the variable yet to be norm compliant
+*/
+int	g_exit_code;
 
 typedef struct s_env
 {
@@ -95,13 +101,11 @@ void		copy_pipes_fds(int *dest, int *src);
 char		*args_eval(char *arg, char **env);
 int			alloc_fields(t_command *expr, int *field_count, char ***cmd);
 
-// error handling
+// Error handling
 int			print_err_msg(void);
+int			set_error(char *error_message, int error_code, char **args);
 
-// clone env
-char		**build_env(char **env);
-
-// signals handling
+// Signals handling
 void		handle_signals(void);
 
 // pipes
@@ -117,7 +121,7 @@ int			here_doc(char *delimiter, int *redirect);
 void		redirection_builtin_setup(t_command *expr, int *std_backup);
 void		redirection_builtin_close(t_command *expr, int *std_backup);
 
-// quotes
+// Quotes
 char		*quote_resolver(char *str);
 int			update_quote(char *str, int i, int *quote_flag);
 
@@ -125,9 +129,11 @@ int			update_quote(char *str, int i, int *quote_flag);
 int			valid_variable(char *c);
 char		*expand_str(char *input, char **env);
 char		*str_nodes_join(t_list *str_nodes);
+char		*expand_exit_variable(int *variable_size);
 
-// utils
+// Utils
 int			is_builtin(char *cmd_path);
+char		**build_env(char **env);
 
 // cleaner
 void		free2d(void **matrix2d);

@@ -27,7 +27,7 @@ SRC			= 	main.c command_executor.c command_pathfinder.c error_handler.c \
 				signal_handlers.c echo.c exit.c build_env.c env.c pwd.c cd.c \
 				export.c expander.c expander_utils.c unset.c quote_resolver.c \
 				lexer.c parser.c parser_rules.c interpreter.c interpreter_utils.c \
-				cleaner.c pipes.c redirections.c here_doc.c
+				cleaner.c pipes.c redirections.c here_doc.c error.c
 
 SRCS		= 	$(addprefix src/,$(SRC))
 

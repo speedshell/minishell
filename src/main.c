@@ -30,10 +30,11 @@ int	main(int argc, char **argv, char **env)
 	t_list		*tokens;
 	t_env		env_clone;
 
+	g_exit_code = 0;
 	(void)argv;
 	read_line_buffer = NULL;
 	if (argc != 1)
-		return (1);
+		return (set_error("Too many args. Usage: ./minishell\n", 1, NULL));
 	handle_signals();
 	env_clone.env = build_env(env);
 	while (42)
