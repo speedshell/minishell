@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:08:21 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 15:57:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:26:13 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,3 @@ void	destroy_shell(t_info *shell_data)
 	free2d((void **) shell_data->env);
 	rl_clear_history();
 }
-
