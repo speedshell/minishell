@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 14:00:43 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:58:43 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,16 @@
 
 int		g_exit_code;
 
-void	destroy_info(t_info *shell_data)
-{
-	ft_lstclear(&shell_data->token_list, free_token);
-	shell_data->token_list = NULL;
-	free(shell_data->expr);
-	shell_data->expr = NULL;
-	free2d((void **) shell_data->cmd);
-	shell_data->cmd = NULL;
-	if (shell_data->read_line_buffer)
-		free(shell_data->read_line_buffer);
-}
-
 void	handle_eof(t_info *shell_data)
 {
-	destroy_info(shell_data);
 	if (!shell_data->read_line_buffer)
 	{
+		destroy_shell(shell_data);
 		printf("exit\n");
 		exit(0);
 	}
+	else
+		reset_state(shell_data);
 }
 
 void	init_shell(t_info *shell_data, char **env)
@@ -55,7 +45,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	if (argc != 1)
 		return (set_error("Too many args. Usage: ./minishell\n", 1, NULL));
-	init_shell(&shell_data, env);	
+	init_shell(&shell_data, env);
 	while (42)
 	{
 		shell_data.read_line_buffer = readline("Minishell> ");

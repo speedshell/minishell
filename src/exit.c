@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:47:37 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:22:55 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:13:06 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@ int	convert_to_range(char *arg);
 */
 
 // TO-DO: it should actually print to STDERR
-int	ft_exit(char **args)
+int	ft_exit(t_info *shell_data)
 {
-	int	i;
-	int	exit_code;
+	int		i;
+	int		exit_code;
+	char	**args;
 
+	args = shell_data->cmd;
 	i = 1;
 	while (args[i] != NULL)
 		i++;
@@ -37,6 +39,7 @@ int	ft_exit(char **args)
 		return (1);
 	}
 	exit_code = convert_to_range(args[1]);
+	destroy_shell(shell_data);
 	exit (exit_code);
 	return (0);
 }

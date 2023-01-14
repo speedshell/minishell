@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 12:58:44 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:13:35 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void		command_executor(t_info *shell_data);
 
 // builtin
 int			ft_echo(char **args);
-int			ft_exit(char **args);
+int			ft_exit(t_info *shell_data);
 int			ft_env(char **env);
 int			ft_pwd(char **args, char **env);
 int			ft_cd(char **args, char **env);
@@ -147,5 +147,7 @@ char		**build_env(char **env);
 // cleaner
 void		free2d(void **matrix2d);
 void		free_token(void *tk);
+void		reset_state(t_info *shell_data);
 void		destroy_info(t_info *shell_data);
+void		destroy_shell(t_info *shell_data);
 #endif

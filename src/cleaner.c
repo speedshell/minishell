@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:08:21 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 11:18:13 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 15:57:58 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,25 @@ void	free_token(void *tk)
 		free(token);
 	}
 }
+
+void	reset_state(t_info *shell_data)
+{
+	ft_lstclear(&shell_data->token_list, free_token);
+	shell_data->token_list = NULL;
+	if (shell_data->expr)
+		free(shell_data->expr->tokens);
+	free(shell_data->expr);
+	shell_data->expr = NULL;
+	free2d((void **) shell_data->cmd);
+	shell_data->cmd = NULL;
+	if (shell_data->read_line_buffer)
+		free(shell_data->read_line_buffer);
+}
+
+void	destroy_shell(t_info *shell_data)
+{
+	reset_state(shell_data);
+	free2d((void **) shell_data->env);
+	rl_clear_history();
+}
+

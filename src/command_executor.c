@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 12:04:50 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:14:11 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	command_executor(t_info *shell_data)
 			print_err_msg();
 			pipes_close(shell_data->expr);
 			fds_close(shell_data->expr);
+			destroy_shell(shell_data);
 			exit(0);
 		}
 	}	
@@ -124,7 +125,7 @@ int	execute_builtin(t_info *shell_data, int builtin_id)
 	if (builtin_id == ECHO)
 		op_code = ft_echo(shell_data->cmd);
 	if (builtin_id == EXIT)
-		ft_exit(shell_data->cmd);
+		ft_exit(shell_data);
 	if (builtin_id == ENV)
 		op_code = ft_env(shell_data->env);
 	if (builtin_id == PWD)
