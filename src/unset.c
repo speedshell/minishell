@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:10:02 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 18:58:26 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:05:43 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int		is_valid_identifier(char *identifier);
 char	**create_env(char **env);
 char	**del_variable(char *var_name, char **old_env);
 
-int	ft_unset(char **args, t_env *env)
+int	ft_unset(t_info *shell_data)
 {
 	char	**vars;
 
-	vars = args;
+	vars = shell_data->cmd;
 	vars++;
 	while (*vars)
 	{
@@ -30,7 +30,7 @@ int	ft_unset(char **args, t_env *env)
 			vars++;
 			continue ;
 		}
-		env->env = del_variable(*vars, env->env);
+		shell_data->env = del_variable(*vars, shell_data->env);
 		vars++;
 	}
 	return (0);

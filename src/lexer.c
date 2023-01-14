@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:33:43 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/10 22:11:32 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 13:15:47 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ t_token	*create_token(char *str, int i, int token_size)
 	else if (token_size == 2 && ft_strncmp(&str[i], "<<", token_size) == 0)
 		token->type = REDIRECT;
 	else if (token_size == 2 && ft_strncmp(&str[i], ">>", token_size) == 0)
-			token->type = REDIRECT;
+		token->type = REDIRECT;
 	else
 		token->type = WORD;
 	token->value = ft_substr(str, i, token_size);

@@ -6,7 +6,8 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:47:37 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 11:55:25 by mpinna-l         ###   ########.fr       */
+  <<<<<<< 66-centralizar-os-vários-mallocs-da-aplicação-em-uma-struct
+/*   Updated: 2023/01/14 16:13:06 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +22,14 @@ void	verification(char **args);
 *			on error it doesn't exit and returns 1
 */
 
-int	ft_exit(char **args)
+// TO-DO: it should actually print to STDERR
+int	ft_exit(t_info *shell_data)
 {
-	int	i;
+	int		i;
+	int		exit_code;
+	char	**args;
 
+	args = shell_data->cmd;
 	i = 1;
 	verification(args);
 	while (args[i] != NULL)
@@ -36,7 +41,8 @@ int	ft_exit(char **args)
 	g_exit_code = 0;
 	if (args[1])
 		g_exit_code = (int)ft_atoi(args[1]) % 256;
-	exit(g_exit_code);
+  destroy_shell(shell_data);	
+  exit(g_exit_code);
 	return (0);
 }
 
@@ -49,6 +55,10 @@ void	exit_error(char **args, int i)
 		set_error(": numeric argument required\n", 2, NULL);
 		exit(g_exit_code);
 	}
+	exit_code = convert_to_range(args[1]);
+	destroy_shell(shell_data);
+	exit (exit_code);
+	return (0);
 }
 
 void	verification(char **args)

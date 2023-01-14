@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 16:29:15 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:52:54 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,47 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-char	**command_builder(t_command *expr, char **env, int *redirect);
-int		redirect_open(t_command *expr, int *redirect, int *i);
+char	**command_builder(t_info *shell_data);
 int		wait_children(void);
-int		destroy_resources(t_command *expr, char **cmd);
+int		get_next_command(t_list **token_list, t_info *shell_data, int *p_pipe);
 
-int	eval_tokens(t_list **tokens, t_env *env_clone)
+int	eval_tokens(t_info *shell_data)
 {
-	t_command	*expr;
-	char		**cmd;
 	int			prev_pipe[2];
 	t_list		*token_list;
 
-	if (check_syntax(*tokens) != 1)
-		return (-1);
-	token_list = init_vars(&expr, &cmd, prev_pipe, tokens);
+	if (check_syntax(shell_data->token_list) != 1)
+		return (2);
+	token_list = shell_data->token_list;
+	prev_pipe[0] = -1;
+	prev_pipe[1] = -1;
 	while (token_list != NULL)
 	{
-		expr = parse_expression(&token_list);
-		cmd = command_builder(expr, env_clone->env, expr->redirect);
-		if (cmd == NULL)
-		{
-			destroy_resources(expr, NULL);
-			break ;
-		}
-		copy_pipes_fds(expr->in_pipe, prev_pipe);
-		if (init_pipe(expr) == -1)
-		{
-			destroy_resources(expr, cmd);
-			return (-1);
-		}
-		command_executor(cmd, expr, env_clone);
-		copy_pipes_fds(prev_pipe, expr->out_pipe);
-		destroy_resources(expr, cmd);
+		if (get_next_command(&token_list, shell_data, prev_pipe) == -1)
+			continue ;
+		command_executor(shell_data);
+		copy_pipes_fds(prev_pipe, shell_data->expr->out_pipe);
+		destroy_resources(shell_data);
 	}
 	return (wait_children());
+}	
+
+int	get_next_command(t_list **token_list, t_info *shell_data, int *prev_pipe)
+{
+	shell_data->expr = parse_expression(token_list);
+	shell_data->cmd = command_builder(shell_data);
+	if (shell_data->cmd == NULL)
+	{
+		destroy_resources(shell_data);
+		return (-1);
+	}
+	copy_pipes_fds(shell_data->expr->in_pipe, prev_pipe);
+	if (init_pipe(shell_data->expr) == -1)
+	{
+		destroy_resources(shell_data);
+		return (-1);
+	}
+	return (0);
 }
 
 int	wait_children(void)
@@ -62,71 +68,5 @@ int	wait_children(void)
 		if (w_status <= 0)
 			break ;
 	}
-	return (0);
-}
-
-char	**command_builder(t_command *expr, char **env, int *redirect)
-{
-	char	**cmd;
-	int		field_count;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	field_count = 0;
-	if (alloc_fields(expr, &field_count, &cmd) == 0)
-		return (NULL);
-	while ((i < field_count && cmd[j] == NULL) && expr->tokens[i]->type != PIPE)
-	{
-		if (expr->tokens[i]->type == REDIRECT)
-		{
-			if (redirect_open(expr, redirect, &i) == -1)
-			{
-				free2d((void **) cmd);
-				return (NULL);
-			}
-		}
-		else
-		{
-			cmd[j++] = args_eval(expr->tokens[i]->value, env);
-			expr->tokens[i++]->value = NULL;
-		}
-	}
-	cmd[0] = command_find_path(cmd[0], env);
-	cmd[j] = NULL;
-	return (cmd);
-}
-
-int	redirect_open(t_command *expr, int *redirect, int *i)
-{
-	char	*token_value;
-	char	*filename;
-	int		token_size;
-	int		op_code;
-
-	op_code = 0;
-	token_value = expr->tokens[*i]->value;
-	token_size = ft_strlen(token_value);
-	filename = expr->tokens[*i + 1]->value;
-	if (token_size == 1 && *token_value == '<')
-		op_code = file_open_read(filename, redirect);
-	if (token_size == 1 && *token_value == '>')
-		op_code = file_open_write(filename, redirect, O_TRUNC);
-	if (token_size == 2 && ft_strncmp(token_value, ">>", 2) == 0)
-		op_code = file_open_write(filename, redirect, O_APPEND);
-	if (token_size == 2 && ft_strncmp(token_value, "<<", 2) == 0)
-		op_code = here_doc(filename, redirect);
-	if (op_code == -1)
-		return (op_code);
-	*i = *i + 2;
-	return (op_code);
-}
-
-int	destroy_resources(t_command *expr, char **cmd)
-{
-	free(expr->tokens);
-	free(expr);
-	free2d((void **) cmd);
 	return (0);
 }
