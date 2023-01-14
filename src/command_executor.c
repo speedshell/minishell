@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 15:08:31 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 10:26:02 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	execute_builtin(char **args, t_env *env, int builtin_id, t_command *expr)
 	if (builtin_id == EXIT)
 		ft_exit(args);
 	if (builtin_id == ENV)
-		op_code = ft_env(env->env);
+		op_code = ft_env(env->env, args);
 	if (builtin_id == PWD)
 		op_code = ft_pwd(args, env->env);
 	if (builtin_id == CD)

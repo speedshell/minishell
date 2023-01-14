@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:28:50 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/07 18:51:42 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:19:11 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,11 @@ void	extract(t_env *env, char *args, int flag)
 	if (flag == 0)
 		search_and_replace(variable, env, value);
 	if (flag == 1)
-		printf("Minishell: export: `%s': not a valid identifier\n", variable);
+	{
+		ft_putstr_fd("Minishell: export: `", 2);
+		ft_putstr_fd(variable, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+	}
 	free(variable);
 	free(value);
 }
@@ -77,7 +81,7 @@ int	ft_export(char **args, t_env *env)
 
 	j = 0;
 	if (!args[1])
-		return (ft_env(env->env));
+		return (ft_env(env->env, args));
 	while (args[++j])
 	{
 		if (valid_variable(args[j]) && (ft_strchr(args[j], '=')))
@@ -87,8 +91,11 @@ int	ft_export(char **args, t_env *env)
 			if (ft_strchr(args[j], '='))
 				extract(env, args[j], 1);
 			else
-				printf("Minishell: export: `%s':"
-					" not a valid identifier\n", args[j]);
+			{
+				ft_putstr_fd("Minishell: export: `", 2);
+				ft_putstr_fd(args[j], 2);
+				ft_putstr_fd("': not a valid identifier\n", 2);
+			}
 		}
 	}
 	return (0);

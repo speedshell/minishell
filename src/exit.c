@@ -6,13 +6,13 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:47:37 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:22:55 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 11:55:25 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	convert_to_range(char *arg);
+void	verification(char **args);
 
 /*
 *	description: will exit the shell and return a value in the 256 range
@@ -21,37 +21,50 @@ int	convert_to_range(char *arg);
 *			on error it doesn't exit and returns 1
 */
 
-// TO-DO: it should actually print to STDERR
 int	ft_exit(char **args)
 {
 	int	i;
-	int	exit_code;
 
 	i = 1;
+	verification(args);
 	while (args[i] != NULL)
 		i++;
 	printf("exit\n");
 	if (i > 2)
-	{
-		printf("exit: too many arguments\n");
-		return (1);
-	}
-	exit_code = convert_to_range(args[1]);
-	exit (exit_code);
+		return (set_error("exit: too many arguments\n", 1, NULL));
+	i = 0;
+	g_exit_code = 0;
+	if (args[1])
+		g_exit_code = (int)ft_atoi(args[1]) % 256;
+	exit(g_exit_code);
 	return (0);
 }
 
-/*
-*	description: aux function, takes a valid argument and converts it
-*				to a range
-*/
-int	convert_to_range(char *arg)
+void	exit_error(char **args, int i)
 {
-	long	number;
+	if (args[1][i])
+	{
+		ft_putstr_fd("exit\nMinishell: exit: ", 2);
+		ft_putstr_fd(args[1], 2);
+		set_error(": numeric argument required\n", 2, NULL);
+		exit(g_exit_code);
+	}
+}
 
-	if (arg == NULL)
-		return (0);
-	number = ft_atoi(arg);
-	number = number % 256;
-	return (number);
+void	verification(char **args)
+{
+	int	i;
+
+	i = 0;
+	if (!args[1])
+		return ;
+	while (ft_isdigit(args[1][i]) || args[1][0] == '-' || args[1][0] == '+')
+	{
+		if ((args[1][0] == '-' && args[1][1] == 0)
+				|| (args[1][0] == '+' && args[1][1] == 0))
+			exit_error(args, i);
+		if (!args[1][++i])
+			break ;
+	}
+	exit_error(args, i);
 }

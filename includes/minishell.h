@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 21:13:31 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 10:26:25 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void		command_executor(char **cmd_path, t_command *expr, t_env *env);
 // builtin
 int			ft_echo(char **args);
 int			ft_exit(char **args);
-int			ft_env(char **env);
+int			ft_env(char **env, char **args);
 int			ft_pwd(char **args, char **env);
 int			ft_cd(char **args, char **env);
 int			ft_export(char **args, t_env *env);
