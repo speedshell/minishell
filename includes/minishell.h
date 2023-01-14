@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 21:13:31 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:04:26 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,16 @@ typedef struct s_expression
 	int		return_code;
 }	t_command;
 
+typedef struct s_shell_info
+{
+	char		**env;
+	t_list		*token_list;
+	t_command	*expr;
+	char		**cmd;
+}	t_info;
+
 char		*command_find_path(char *statement, char **env);
-void		command_executor(char **cmd_path, t_command *expr, t_env *env);
+void		command_executor(t_info *shell_data);
 
 // builtin
 int			ft_echo(char **args);
@@ -82,8 +90,8 @@ int			ft_exit(char **args);
 int			ft_env(char **env);
 int			ft_pwd(char **args, char **env);
 int			ft_cd(char **args, char **env);
-int			ft_export(char **args, t_env *env);
-int			ft_unset(char **args, t_env *env);
+int			ft_export(t_info *shell_data);
+int			ft_unset(t_info *shell_data);
 
 // Parser and Lexer
 t_list		*make_tokens(char *user_input);
@@ -94,12 +102,12 @@ int			pipe_rules(t_token *p_tkn, t_token *curr_token, t_token *nxt_tkn);
 int			redirect_rules(t_token *curr_token, t_token *next_tkn);
 
 // interpreter
-int			eval_tokens(t_list **tokens, t_env *env_clone);
+int			eval_tokens(t_info *shell_data);
 t_list		*init_vars(t_command **expr, char ***cmd, int *pp, t_list **tks);
 int			init_pipe(t_command *expr);
 void		copy_pipes_fds(int *dest, int *src);
 char		*args_eval(char *arg, char **env);
-int			alloc_fields(t_command *expr, int *field_count, char ***cmd);
+int			alloc_cmd_fields(t_info *shell_data, int *field_count);
 
 // Error handling
 int			print_err_msg(void);
@@ -138,4 +146,5 @@ char		**build_env(char **env);
 // cleaner
 void		free2d(void **matrix2d);
 void		free_token(void *tk);
+void		destroy_info(t_info *shell_data);
 #endif

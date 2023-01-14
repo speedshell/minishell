@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 21:49:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 14:54:08 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 11:29:40 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,23 +66,23 @@ char	*args_eval(char *arg, char **env)
 	return (arg);
 }
 
-int	alloc_fields(t_command *expr, int *field_count, char ***cmd)
+int	alloc_cmd_fields(t_info *shell_data, int *field_count)
 {
 	int	i;
 
-	*cmd = NULL;
+	shell_data->cmd = NULL;
 	*field_count = 0;
-	if (!expr || expr->tokens == NULL)
+	if (!shell_data->expr || shell_data->expr->tokens == NULL)
 		return (0);
 	i = 0;
-	while (expr->tokens[i] != NULL)
+	while (shell_data->expr->tokens[i] != NULL)
 	{
 		*field_count = ++i;
 	}
 	if (field_count == 0)
 		return (0);
-	*cmd = ft_calloc(sizeof(char *), (*field_count + 1));
-	if (!cmd)
+	shell_data->cmd = ft_calloc(sizeof(char *), (*field_count + 1));
+	if (!shell_data->cmd)
 		return (0);
 	else
 		return (1);
