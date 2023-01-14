@@ -6,13 +6,13 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:12:46 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 11:56:07 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/14 18:51:50 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_env(char **env, char **args)
+int	ft_env(char **args, char **env)
 {
 	int	i;
 
