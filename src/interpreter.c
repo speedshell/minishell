@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 13:05:44 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:31:32 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	eval_tokens(t_info *shell_data)
 	t_list		*token_list;
 
 	if (check_syntax(shell_data->token_list) != 1)
-		return (-1);
+		return (2);
 	token_list = shell_data->token_list;
 	prev_pipe[0] = -1;
 	prev_pipe[1] = -1;
