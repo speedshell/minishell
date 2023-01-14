@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 17:11:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:52:54 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include <stdlib.h>
 
 char	**command_builder(t_info *shell_data);
-int		redirect_open(t_command *expr, int *redirect, int *i);
 int		wait_children(void);
 int		get_next_command(t_list **token_list, t_info *shell_data, int *p_pipe);
 
@@ -32,7 +31,7 @@ int	eval_tokens(t_info *shell_data)
 	while (token_list != NULL)
 	{
 		if (get_next_command(&token_list, shell_data, prev_pipe) == -1)
-			break ;
+			continue ;
 		command_executor(shell_data);
 		copy_pipes_fds(prev_pipe, shell_data->expr->out_pipe);
 		destroy_resources(shell_data);
