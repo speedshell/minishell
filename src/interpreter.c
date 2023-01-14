@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 14:52:40 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:29:15 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	**command_builder(t_command *expr, char **env, int *redirect)
 		return (NULL);
 	while ((i < field_count && cmd[j] == NULL) && expr->tokens[i]->type != PIPE)
 	{
-		if (expr->tokens[i]->type == REDIRECT) 
+		if (expr->tokens[i]->type == REDIRECT)
 		{
 			if (redirect_open(expr, redirect, &i) == -1)
 			{
