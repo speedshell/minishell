@@ -6,21 +6,26 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 21:49:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 11:29:40 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:35:38 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-t_list	*init_vars(t_command **expr, char ***cmd, int *p_pipe, t_list **tks)
+int	destroy_resources(t_info *shell_data)
 {
-	(void)expr;
-	(void)cmd;
-	expr = NULL;
-	cmd = NULL;
-	p_pipe[0] = -1;
-	p_pipe[1] = -1;
-	return (*tks);
+	if (shell_data->expr->tokens != NULL)
+	{
+		free(shell_data->expr->tokens);
+		free(shell_data->expr);
+		shell_data->expr = NULL;
+	}
+	if (shell_data->cmd != NULL)
+	{
+		free2d((void **) shell_data->cmd);
+		shell_data->cmd = NULL;
+	}
+	return (0);
 }
 
 int	init_pipe(t_command *expr)

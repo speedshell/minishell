@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 16:13:35 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:30:44 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ typedef struct s_shell_info
 	char		**cmd;
 }	t_info;
 
+char		**command_builder(t_info *shell_data);
 char		*command_find_path(char *statement, char **env);
 void		command_executor(t_info *shell_data);
 
@@ -104,11 +105,11 @@ int			redirect_rules(t_token *curr_token, t_token *next_tkn);
 
 // interpreter
 int			eval_tokens(t_info *shell_data);
-t_list		*init_vars(t_command **expr, char ***cmd, int *pp, t_list **tks);
 int			init_pipe(t_command *expr);
 void		copy_pipes_fds(int *dest, int *src);
 char		*args_eval(char *arg, char **env);
 int			alloc_cmd_fields(t_info *shell_data, int *field_count);
+int			destroy_resources(t_info *shell_data);
 
 // Error handling
 int			print_err_msg(void);
