@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:28:50 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 12:03:49 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:19:11 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,11 @@ void	extract(t_info *shell_data, char *args, int flag)
 	if (flag == 0)
 		search_and_replace(variable, shell_data, value);
 	if (flag == 1)
-		printf("Minishell: export: `%s': not a valid identifier\n", variable);
+	{
+		ft_putstr_fd("Minishell: export: `", 2);
+		ft_putstr_fd(variable, 2);
+		ft_putstr_fd("': not a valid identifier\n", 2);
+	}
 	free(variable);
 	free(value);
 }
@@ -89,8 +93,11 @@ int	ft_export(t_info *shell_data)
 			if (ft_strchr(args[j], '='))
 				extract(shell_data, args[j], 1);
 			else
-				printf("Minishell: export: `%s':"
-					" not a valid identifier\n", args[j]);
+			{
+				ft_putstr_fd("Minishell: export: `", 2);
+				ft_putstr_fd(args[j], 2);
+				ft_putstr_fd("': not a valid identifier\n", 2);
+			}
 		}
 	}
 	return (0);
