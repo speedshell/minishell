@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 13:43:23 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:13:31 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 /* highlander global 
 * we are not initializing the variable yet to be norm compliant
 */
-int	g_exit_code;
+extern int	g_exit_code;
 
 typedef struct s_env
 {

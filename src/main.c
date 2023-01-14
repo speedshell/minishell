@@ -6,12 +6,14 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/13 11:03:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/13 21:13:44 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <unistd.h>
+
+int		g_exit_code;
 
 void	handle_eof(char *input)
 {
