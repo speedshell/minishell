@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 12:04:26 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 12:58:44 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ typedef struct s_expression
 typedef struct s_shell_info
 {
 	char		**env;
+	char		*read_line_buffer;
 	t_list		*token_list;
 	t_command	*expr;
 	char		**cmd;
