@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:30:54 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 13:49:29 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 14:36:13 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ int	file_open_read(char *filename, int *redirect)
 	fd = -1;
 	if (access(filename, F_OK | R_OK) == -1)
 	{
-		print_err_msg();
+		g_exit_code = 1;
+		print_err_msg1(filename);
 		return (-1);
 	}
 	fd = open(filename, O_RDONLY);
@@ -41,9 +42,7 @@ int	file_open_write(char *filename, int *redirect, int flag)
 	fd = 0;
 	exists = access(filename, F_OK);
 	if (exists != -1)
-	{
 		fd = open(filename, O_WRONLY | flag);
-	}
 	else
 	{
 		fd = open(filename, O_WRONLY | O_CREAT, \
@@ -56,7 +55,10 @@ int	file_open_write(char *filename, int *redirect, int flag)
 		redirect[1] = fd;
 	}
 	else
-		print_err_msg();
+	{	
+		g_exit_code = 1;
+		print_err_msg1(filename);
+	}
 	return (fd);
 }
 
