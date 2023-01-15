@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 23:19:21 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 10:57:26 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,14 @@ void	fds_close(t_command *expr);
 void	command_executor(t_info *shell_data)
 {
 	int		pid;
-	int		builtin_id;
 	char	*cmd_path;
 
 	cmd_path = shell_data->cmd[0];
 	if (!cmd_path)
 		return ;
-	builtin_id = is_builtin(cmd_path);
-	if (builtin_id != -1)
+	if (shell_data->expr->builtin != -1)
 	{
-		execute_builtin(shell_data, builtin_id);
+		execute_builtin(shell_data, shell_data->expr->builtin);
 		return ;
 	}
 	pid = fork();

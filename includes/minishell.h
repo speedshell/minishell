@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 18:48:48 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 10:50:09 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_lexeme
 typedef struct s_expression
 {
 	t_token	**tokens;	
+	int		builtin;
 	int		has_pipe;
 	int		has_redirect;
 	int		redirect[2];
@@ -83,7 +84,7 @@ typedef struct s_shell_info
 }	t_info;
 
 char		**command_builder(t_info *shell_data);
-char		*command_find_path(char *statement, char **env);
+char		*command_find_path(char *statement, char **env, int *builtin);
 void		command_executor(t_info *shell_data);
 
 // builtin

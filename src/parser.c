@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 12:58:18 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 10:53:29 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_command	*create_expression(void)
 		return (NULL);
 	cmd->has_pipe = 0;
 	cmd->has_redirect = 0;
+	cmd->builtin = 0;
 	cmd->redirect[0] = -1;
 	cmd->redirect[1] = -1;
 	cmd->in_pipe[0] = -1;

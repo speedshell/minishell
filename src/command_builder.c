@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:10:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 17:53:38 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 10:53:04 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	add_next_arg(t_info *shell_data, int *i, int *j);
 int		resolve_redirection(t_command *expr, char **cmd, int *i);
 void	init_vars(char ***cmd, t_command **expr, t_info *shell_data);
 
-char	**command_builder(t_info *shell_data)
+char	**command_builder(t_info *shell)
 {
 	char		**cmd;
 	t_command	*expr;
@@ -26,9 +26,9 @@ char	**command_builder(t_info *shell_data)
 	int			i;
 	int			j;
 
-	if (alloc_cmd_fields(shell_data, &field_count) == 0)
+	if (alloc_cmd_fields(shell, &field_count) == 0)
 		return (NULL);
-	init_vars(&cmd, &expr, shell_data);
+	init_vars(&cmd, &expr, shell);
 	i = 0;
 	j = 0;
 	while ((i < field_count && cmd[j] == NULL) \
@@ -40,9 +40,9 @@ char	**command_builder(t_info *shell_data)
 				return (NULL);
 		}
 		else
-			add_next_arg(shell_data, &i, &j);
+			add_next_arg(shell, &i, &j);
 	}
-	cmd[0] = command_find_path(cmd[0], shell_data->env);
+	cmd[0] = command_find_path(cmd[0], shell->env, &shell->expr->builtin);
 	cmd[j] = NULL;
 	return (cmd);
 }
