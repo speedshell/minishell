@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 18:49:15 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 23:19:21 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,19 +89,19 @@ int	is_builtin(char *cmd_path)
 	if (!cmd_path)
 		return (-1);
 	cmd_size = ft_strlen(cmd_path);
-	if (ft_strncmp(cmd_path, "echo", cmd_size) == 0)
+	if (ft_strncmp(cmd_path, "echo", 4) == 0 && cmd_size == 4)
 		return (ECHO);
-	if (ft_strncmp(cmd_path, "exit", cmd_size) == 0)
+	if (ft_strncmp(cmd_path, "exit", 4) == 0 && cmd_size == 4)
 		return (EXIT);
-	if (ft_strncmp(cmd_path, "env", cmd_size) == 0)
+	if (ft_strncmp(cmd_path, "env", 3) == 0 && cmd_size == 3)
 		return (ENV);
-	if (ft_strncmp(cmd_path, "pwd", cmd_size) == 0)
+	if (ft_strncmp(cmd_path, "pwd", 3) == 0 && cmd_size == 3)
 		return (PWD);
-	if (ft_strncmp(cmd_path, "cd", cmd_size) == 0)
+	if (ft_strncmp(cmd_path, "cd", 2) == 0 && cmd_size == 2)
 		return (CD);
-	if (ft_strncmp(cmd_path, "export", cmd_size) == 0)
+	if (ft_strncmp(cmd_path, "export", 6) == 0 && cmd_size == 6)
 		return (EXPORT);
-	if (ft_strncmp(cmd_path, "unset", cmd_size) == 0)
+	if (ft_strncmp(cmd_path, "unset", 5) == 0 && cmd_size == 5)
 		return (UNSET);
 	return (-1);
 }
