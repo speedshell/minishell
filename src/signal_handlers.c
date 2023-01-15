@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:28:24 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/07 09:28:25 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:25:54 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	sigint_handler(int signo)
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
+		g_exit_code = 128 + SIGINT;
 	}	
 	else if (signo == SIGQUIT)
 		rl_redisplay();

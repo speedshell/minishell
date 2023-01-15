@@ -6,14 +6,14 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 15:58:43 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 21:32:19 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <unistd.h>
 
-int		g_exit_code;
+unsigned char	g_exit_code;
 
 void	handle_eof(t_info *shell_data)
 {
@@ -53,7 +53,7 @@ int	main(int argc, char **argv, char **env)
 		{
 			add_history(shell_data.read_line_buffer);
 			shell_data.token_list = make_tokens(shell_data.read_line_buffer);
-			g_exit_code = eval_tokens(&shell_data);
+			eval_tokens(&shell_data);
 		}
 		handle_eof(&shell_data);
 		if (access(".here_doc", F_OK) == 0)

@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 17:52:54 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:51:23 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int	eval_tokens(t_info *shell_data)
 	t_list		*token_list;
 
 	if (check_syntax(shell_data->token_list) != 1)
+	{
+		g_exit_code = 2;
 		return (2);
+	}
 	token_list = shell_data->token_list;
 	prev_pipe[0] = -1;
 	prev_pipe[1] = -1;
@@ -60,13 +63,20 @@ int	get_next_command(t_list **token_list, t_info *shell_data, int *prev_pipe)
 int	wait_children(void)
 {
 	int	w_status;
+	int	child_pid;
 
 	w_status = 0;
+	child_pid = 0;
 	while (42)
 	{
-		w_status = wait(&w_status);
-		if (w_status <= 0)
+		child_pid = wait(&w_status);
+		if (child_pid <= 0)
 			break ;
+		if (WIFSIGNALED(w_status))
+		{
+			g_exit_code = (int) WTERMSIG(w_status);
+			printf("hey\n");	
+		}
 	}
 	return (0);
 }
