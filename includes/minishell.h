@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/15 10:50:09 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 11:13:44 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct s_expression
 	t_token	**tokens;	
 	int		builtin;
 	int		has_pipe;
+	int		pipe_chain;
 	int		has_redirect;
 	int		redirect[2];
 	int		in_pipe[2];

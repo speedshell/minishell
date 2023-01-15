@@ -6,11 +6,35 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:02:13 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:04:38 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 11:10:08 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+t_token	*get_next_token(t_list *token_list);
+
+int	check_syntax(t_list *token_list)
+{
+	t_token	*tkn;
+	t_token	*prev_tkn;
+	t_token	*next_tkn;
+
+	prev_tkn = NULL;
+	next_tkn = NULL;
+	while (token_list)
+	{
+		tkn = (t_token *) token_list->content;
+		next_tkn = get_next_token(token_list);
+		if (pipe_rules(prev_tkn, tkn, next_tkn) == -1)
+			return (0);
+		if (redirect_rules(tkn, next_tkn) == -1)
+			return (0);
+		prev_tkn = tkn;
+		token_list = token_list->next;
+	}
+	return (1);
+}
 
 int	pipe_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
 {
@@ -59,4 +83,16 @@ int	redirect_rules(t_token *curr_token, t_token *next_tkn)
 	if (syntax == -1)
 		printf("syntax error near '<' or '>' \n");
 	return (syntax);
+}
+
+t_token	*get_next_token(t_list *token_list)
+{
+	t_token	*tkn;
+
+	tkn = NULL;
+	if (token_list->next != NULL)
+	{
+		tkn = (t_token *) token_list->next->content;
+	}
+	return (tkn);
 }
