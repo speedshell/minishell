@@ -6,27 +6,25 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/15 10:57:26 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:57:29 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int		execute_builtin(t_info *shell_data, int builtin_id);
-void	redirect_setup(t_command *expr);
-void	fds_close(t_command *expr);
+int		exec_forked_cmd(t_info *shell_data);
+int		exec_builtin(t_info *shell_data, int builtin_id);
+int		exec_unforked_builtin(t_info *shell_data, int builtin_id);
 
 void	command_executor(t_info *shell_data)
 {
-	int		pid;
-	char	*cmd_path;
+	int			pid;
 
-	cmd_path = shell_data->cmd[0];
-	if (!cmd_path)
+	if (!shell_data->cmd[0])
 		return ;
-	if (shell_data->expr->builtin != -1)
+	if (shell_data->expr->pipe_chain == 0 && shell_data->expr->builtin != -1)
 	{
-		execute_builtin(shell_data, shell_data->expr->builtin);
+		exec_unforked_builtin(shell_data, shell_data->expr->builtin);
 		return ;
 	}
 	pid = fork();
@@ -35,43 +33,42 @@ void	command_executor(t_info *shell_data)
 		print_err_msg();
 		return ;
 	}
-	if (pid == 0)
-	{
-		pipes_setup(shell_data->expr);
-		redirect_setup(shell_data->expr);
-		if (execve(cmd_path, shell_data->cmd, shell_data->env) == -1)
-		{
-			print_err_msg();
-			pipes_close(shell_data->expr);
-			fds_close(shell_data->expr);
-			destroy_shell(shell_data);
-			exit(0);
-		}
-	}	
+	else if (pid == 0)
+		exit(exec_forked_cmd(shell_data));
 	else
 	{
 		pipes_close(shell_data->expr);
-		fds_close(shell_data->expr);
+		redirect_close(shell_data->expr);
 	}
 }
 
-void	fds_close(t_command *expr)
+int	exec_forked_cmd(t_info *shell_data)
 {
-	int	*redirect;
+	char		*cmd_path;
+	t_command	*expr;
+	int			op_code;
 
-	redirect = expr->redirect;
-	if (redirect[0] != -1)
-		close(redirect[0]);
-	if (redirect[1] != -1)
-		close (redirect[1]);
-}
-
-void	redirect_setup(t_command *expr)
-{
-	if (expr->redirect[0] != -1)
-		dup2(expr->redirect[0], STDIN_FILENO);
-	if (expr->redirect[1] != -1)
-		dup2(expr->redirect[1], STDOUT_FILENO);
+	op_code = 0;
+	cmd_path = shell_data->cmd[0];
+	expr = shell_data->expr;
+	pipes_setup(expr);
+	redirect_setup(expr);
+	if (expr->pipe_chain == 1 && expr->builtin != -1)
+	{
+		op_code = exec_builtin(shell_data, expr->builtin);
+	}
+	else if (execve(cmd_path, shell_data->cmd, shell_data->env) == -1)
+	{
+		if (errno == ENOENT)
+			op_code = 127;
+		if (errno == EACCES)
+			op_code = 126;
+		print_err_msg();
+	}
+	pipes_close(expr);
+	redirect_close(expr);
+	destroy_shell(shell_data);
+	return (op_code);
 }
 
 /*
@@ -110,16 +107,26 @@ int	is_builtin(char *cmd_path)
  * return: the builtin functions's return code
 */
 
-int	execute_builtin(t_info *shell_data, int builtin_id)
+int	exec_unforked_builtin(t_info *shell_data, int builtin_id)
 {
 	int	op_code;
 	int	std_backup[2];
 
-	op_code = 0;
 	std_backup[0] = -1;
 	std_backup[1] = -1;
 	pipes_builtin_setup(shell_data->expr, std_backup);
 	redirection_builtin_setup(shell_data->expr, std_backup);
+	op_code = exec_builtin(shell_data, builtin_id);
+	pipes_builtin_close(shell_data->expr, std_backup);
+	redirection_builtin_close(shell_data->expr, std_backup);
+	return (op_code);
+}
+
+int	exec_builtin(t_info *shell_data, int builtin_id)
+{
+	int	op_code;
+
+	op_code = 0;
 	if (builtin_id == ECHO)
 		op_code = ft_echo(shell_data->cmd);
 	if (builtin_id == EXIT)
@@ -134,7 +141,5 @@ int	execute_builtin(t_info *shell_data, int builtin_id)
 		op_code = ft_export(shell_data);
 	if (builtin_id == UNSET)
 		op_code = ft_unset(shell_data);
-	pipes_builtin_close(shell_data->expr, std_backup);
-	redirection_builtin_close(shell_data->expr, std_backup);
 	return (op_code);
 }

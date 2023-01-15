@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:30:54 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/12 19:39:42 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 13:49:29 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,14 @@ int	file_open_write(char *filename, int *redirect, int flag)
 	return (fd);
 }
 
+void	redirect_setup(t_command *expr)
+{
+	if (expr->redirect[0] != -1)
+		dup2(expr->redirect[0], STDIN_FILENO);
+	if (expr->redirect[1] != -1)
+		dup2(expr->redirect[1], STDOUT_FILENO);
+}
+
 void	redirection_builtin_setup(t_command *expr, int *std_backup)
 {
 	int	*redirection;
@@ -79,22 +87,5 @@ void	redirection_builtin_setup(t_command *expr, int *std_backup)
 	if (redirection[1] != -1)
 	{
 		dup2(redirection[1], STDOUT_FILENO);
-	}
-}
-
-void	redirection_builtin_close(t_command *expr, int *std_backup)
-{
-	int	*redirection;
-
-	redirection = expr->redirect;
-	if (std_backup[0] != -1)
-	{
-		dup2(std_backup[0], STDIN_FILENO);
-		close(redirection[0]);
-	}
-	if (std_backup[1] != -1)
-	{
-		dup2(std_backup[1], STDOUT_FILENO);
-		close(redirection[1]);
 	}
 }

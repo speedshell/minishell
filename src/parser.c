@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 11:16:34 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 12:13:38 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_list		*make_tokens(char *user_input);
 t_command	*create_expression(void);
 int			count_tokens(t_list *token_list);
-void		set_expr_attr(t_token *tkn, t_command *cmd, int is_pipe_chain);
+void		set_expr_attr(t_token *tkn, t_command *cmd, int *is_pipe_chain);
 
 t_command	*parse_expression(t_list **token_list)
 {
@@ -35,22 +35,25 @@ t_command	*parse_expression(t_list **token_list)
 	{
 		tkn = (t_token *)(*token_list)->content;
 		cmd->tokens[i] = tkn;
-		set_expr_attr(tkn, cmd, is_pipe_chain);
+		set_expr_attr(tkn, cmd, &is_pipe_chain);
 		*token_list = (*token_list)->next;
 	}
 	cmd->tokens[i] = NULL;
-	if (*token_list == NULL)
+	if (*token_list == NULL || i > token_qty)
 		is_pipe_chain = 0;
 	return (cmd);
 }
 
-void set_expr_attr(t_token *tkn, t_command *cmd, int is_pipe_chain)
+void set_expr_attr(t_token *tkn, t_command *cmd, int *is_pipe_chain)
 {
 	if (tkn->type == PIPE)
+	{
 		cmd->has_pipe = 1;
+		*is_pipe_chain = 1;	
+	}
 	if (tkn->type == REDIRECT)
 		cmd->has_redirect = 1;
-	if (is_pipe_chain)
+	if (*is_pipe_chain)
 		cmd->pipe_chain = 1;
 }
 

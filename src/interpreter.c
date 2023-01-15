@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 22:51:23 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 12:04:49 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,9 @@ int	wait_children(void)
 		child_pid = wait(&w_status);
 		if (child_pid <= 0)
 			break ;
-		if (WIFSIGNALED(w_status))
+		if (WIFEXITED(w_status))
 		{
-			g_exit_code = (int) WTERMSIG(w_status);
-			printf("hey\n");	
+			g_exit_code = (int) WEXITSTATUS(w_status);
 		}
 	}
 	return (0);
