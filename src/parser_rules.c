@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:02:13 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 11:10:08 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:54:47 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	pipe_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
 	else
 		return (syntax);
 	if (syntax == -1)
-		printf("syntax error near '|'\n");
+		print_syntax_err(curr_token->value);
 	return (syntax);
 }
 
@@ -81,7 +81,7 @@ int	redirect_rules(t_token *curr_token, t_token *next_tkn)
 	else
 		return (syntax);
 	if (syntax == -1)
-		printf("syntax error near '<' or '>' \n");
+		print_syntax_err(curr_token->value);
 	return (syntax);
 }
 
