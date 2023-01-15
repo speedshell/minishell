@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 12:13:38 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 15:00:40 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,12 @@ t_command	*parse_expression(t_list **token_list)
 	return (cmd);
 }
 
-void set_expr_attr(t_token *tkn, t_command *cmd, int *is_pipe_chain)
+void	set_expr_attr(t_token *tkn, t_command *cmd, int *is_pipe_chain)
 {
 	if (tkn->type == PIPE)
 	{
 		cmd->has_pipe = 1;
-		*is_pipe_chain = 1;	
+		*is_pipe_chain = 1;
 	}
 	if (tkn->type == REDIRECT)
 		cmd->has_redirect = 1;
