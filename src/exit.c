@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:47:37 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 15:00:06 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:16:49 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	exit_error(char **args, int i, t_info *shell_data)
 {
 	if (args[1][i])
 	{
-		ft_putstr_fd("exit\nMinishell: exit: ", 2);
+		ft_putstr_fd("exit\nminishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		set_error(": numeric argument required\n", 2, NULL);
 		destroy_shell(shell_data);

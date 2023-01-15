@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/15 14:57:17 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:21:17 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	command_executor(t_info *shell_data)
 {
 	int			pid;
 
-	if (!shell_data->cmd[0])
+	if (!shell_data->cmd || !shell_data->cmd[0])
 		return ;
 	if (shell_data->expr->pipe_chain == 0 && shell_data->expr->builtin != -1)
 	{
@@ -63,7 +63,7 @@ int	exec_forked_cmd(t_info *shell_data)
 			op_code = 127;
 		if (errno == EACCES)
 			op_code = 126;
-		print_err_msg1(cmd_path);
+		print_err_str(cmd_path);
 	}
 	pipes_close(expr);
 	redirect_close(expr);

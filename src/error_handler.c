@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:14:28 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 14:34:22 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:18:27 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	print_err_msg(void)
 	return (errno);
 }
 
-void	print_err_msg1(char *err_msg)
+void	print_err_str(char *err_msg)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(err_msg, STDERR_FILENO);

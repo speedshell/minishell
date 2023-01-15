@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 14:30:54 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 14:36:13 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:23:42 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	file_open_read(char *filename, int *redirect)
 	if (access(filename, F_OK | R_OK) == -1)
 	{
 		g_exit_code = 1;
-		print_err_msg1(filename);
+		print_err_str(filename);
 		return (-1);
 	}
 	fd = open(filename, O_RDONLY);
@@ -57,7 +57,7 @@ int	file_open_write(char *filename, int *redirect, int flag)
 	else
 	{	
 		g_exit_code = 1;
-		print_err_msg1(filename);
+		print_err_str(filename);
 	}
 	return (fd);
 }
