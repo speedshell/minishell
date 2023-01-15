@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:32:39 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/12 19:49:19 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/15 14:17:25 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,3 +32,16 @@ int	set_error(char *error_message, int error_code, char **args)
 	}
 	return (g_exit_code);
 }
+
+/*void	set_exit_code(int errno)
+{
+	int	op_code;
+
+	op_code = 0;
+	if (errno == ENOENT)
+		op_code = 127;
+	else if (errno == EACCES)
+		op_code = 126;
+	else
+		op_code = errno;
+}*/

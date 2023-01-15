@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:14:28 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:14:29 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:52:01 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,19 @@ int	print_err_msg(void)
 	ft_putendl_fd(error_string, 2);
 	free(error_string);
 	return (errno);
+}
+
+void	print_err_str(char *err_msg)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(err_msg, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+}
+
+void	print_syntax_err(char *operator)
+{
+	ft_putstr_fd("minishell: syntax error near `", STDERR_FILENO);
+	ft_putstr_fd(operator, STDERR_FILENO);
+	ft_putendl_fd("'", STDERR_FILENO);
 }

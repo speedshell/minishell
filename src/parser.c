@@ -6,16 +6,16 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 13:34:26 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 12:58:18 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 15:00:40 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 t_list		*make_tokens(char *user_input);
-t_token		*get_next_token(t_list *token_list);
 t_command	*create_expression(void);
 int			count_tokens(t_list *token_list);
+void		set_expr_attr(t_token *tkn, t_command *cmd, int *is_pipe_chain);
 
 t_command	*parse_expression(t_list **token_list)
 {
@@ -23,48 +23,38 @@ t_command	*parse_expression(t_list **token_list)
 	t_command	*cmd;
 	int			i;
 	int			token_qty;
+	static int	is_pipe_chain;
 
 	token_qty = count_tokens(*token_list);
 	if (token_qty == 0)
 		return (NULL);
 	cmd = create_expression();
 	cmd->tokens = malloc(sizeof(t_token *) * (token_qty + 1));
-	i = 0;
-	while (i < token_qty && *token_list)
+	i = -1;
+	while (++i < token_qty && *token_list)
 	{
 		tkn = (t_token *)(*token_list)->content;
 		cmd->tokens[i] = tkn;
-		if (tkn->type == PIPE)
-			cmd->has_pipe = 1;
-		if (tkn->type == REDIRECT)
-			cmd->has_redirect = 1;
+		set_expr_attr(tkn, cmd, &is_pipe_chain);
 		*token_list = (*token_list)->next;
-		i++;
 	}
 	cmd->tokens[i] = NULL;
+	if (*token_list == NULL || i > token_qty)
+		is_pipe_chain = 0;
 	return (cmd);
 }
 
-int	check_syntax(t_list *token_list)
+void	set_expr_attr(t_token *tkn, t_command *cmd, int *is_pipe_chain)
 {
-	t_token	*tkn;
-	t_token	*prev_tkn;
-	t_token	*next_tkn;
-
-	prev_tkn = NULL;
-	next_tkn = NULL;
-	while (token_list)
+	if (tkn->type == PIPE)
 	{
-		tkn = (t_token *) token_list->content;
-		next_tkn = get_next_token(token_list);
-		if (pipe_rules(prev_tkn, tkn, next_tkn) == -1)
-			return (0);
-		if (redirect_rules(tkn, next_tkn) == -1)
-			return (0);
-		prev_tkn = tkn;
-		token_list = token_list->next;
+		cmd->has_pipe = 1;
+		*is_pipe_chain = 1;
 	}
-	return (1);
+	if (tkn->type == REDIRECT)
+		cmd->has_redirect = 1;
+	if (*is_pipe_chain)
+		cmd->pipe_chain = 1;
 }
 
 t_command	*create_expression(void)
@@ -75,7 +65,9 @@ t_command	*create_expression(void)
 	if (!cmd)
 		return (NULL);
 	cmd->has_pipe = 0;
+	cmd->pipe_chain = 0;
 	cmd->has_redirect = 0;
+	cmd->builtin = 0;
 	cmd->redirect[0] = -1;
 	cmd->redirect[1] = -1;
 	cmd->in_pipe[0] = -1;
@@ -83,18 +75,6 @@ t_command	*create_expression(void)
 	cmd->out_pipe[0] = -1;
 	cmd->out_pipe[1] = -1;
 	return (cmd);
-}
-
-t_token	*get_next_token(t_list *token_list)
-{
-	t_token	*tkn;
-
-	tkn = NULL;
-	if (token_list->next != NULL)
-	{
-		tkn = (t_token *) token_list->next->content;
-	}
-	return (tkn);
 }
 
 int	count_tokens(t_list *token_list)

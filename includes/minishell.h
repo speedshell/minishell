@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 18:48:48 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:52:41 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,9 @@ typedef struct s_lexeme
 typedef struct s_expression
 {
 	t_token	**tokens;	
+	int		builtin;
 	int		has_pipe;
+	int		pipe_chain;
 	int		has_redirect;
 	int		redirect[2];
 	int		in_pipe[2];
@@ -83,7 +85,7 @@ typedef struct s_shell_info
 }	t_info;
 
 char		**command_builder(t_info *shell_data);
-char		*command_find_path(char *statement, char **env);
+char		*command_find_path(char *statement, char **env, int *builtin);
 void		command_executor(t_info *shell_data);
 
 // builtin
@@ -113,6 +115,8 @@ int			destroy_resources(t_info *shell_data);
 
 // Error handling
 int			print_err_msg(void);
+void		print_err_str(char *err_msg);
+void		print_syntax_err(char *operator);
 int			set_error(char *error_message, int error_code, char **args);
 
 // Signals handling
@@ -128,6 +132,8 @@ void		pipes_builtin_close(t_command *expr, int *std_backup);
 int			file_open_read(char *filename, int *redirect);
 int			file_open_write(char *filename, int *redirect, int mode);
 int			here_doc(char *delimiter, int *redirect);
+void		redirect_setup(t_command *expr);
+void		redirect_close(t_command *expr);
 void		redirection_builtin_setup(t_command *expr, int *std_backup);
 void		redirection_builtin_close(t_command *expr, int *std_backup);
 

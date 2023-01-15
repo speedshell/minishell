@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:47:37 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 18:47:23 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:16:49 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_exit(t_info *shell_data)
 	g_exit_code = 0;
 	if (args[1])
 		g_exit_code = (int)ft_atoi(args[1]) % 256;
-	destroy_shell(shell_data);	
+	destroy_shell(shell_data);
 	exit(g_exit_code);
 	return (0);
 }
@@ -48,10 +48,10 @@ void	exit_error(char **args, int i, t_info *shell_data)
 {
 	if (args[1][i])
 	{
-		ft_putstr_fd("exit\nMinishell: exit: ", 2);
+		ft_putstr_fd("exit\nminishell: exit: ", 2);
 		ft_putstr_fd(args[1], 2);
 		set_error(": numeric argument required\n", 2, NULL);
-		destroy_shell(shell_data);	
+		destroy_shell(shell_data);
 		exit(g_exit_code);
 	}
 }
