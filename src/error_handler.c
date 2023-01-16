@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:14:28 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 18:52:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/15 23:22:35 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,13 @@ void	print_syntax_err(char *operator)
 	ft_putstr_fd("minishell: syntax error near `", STDERR_FILENO);
 	ft_putstr_fd(operator, STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);
+}
+
+void	print_quote_err(int quote)
+{
+	ft_putstr_fd("minishell: syntax error: unclosed `", STDERR_FILENO);
+	if (quote == 1)
+		ft_putendl_fd("''", STDERR_FILENO);
+	else if (quote == 2)
+		ft_putendl_fd("\"'", STDERR_FILENO);
 }

@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/15 18:52:41 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/16 00:45:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 # include <errno.h>
 
 /* highlander global 
-* we are not initializing the variable yet to be norm compliant
+*	this is just the definition 
 */
 extern int	g_exit_code;
 
@@ -117,6 +117,7 @@ int			destroy_resources(t_info *shell_data);
 int			print_err_msg(void);
 void		print_err_str(char *err_msg);
 void		print_syntax_err(char *operator);
+void		print_quote_err(int quote);
 int			set_error(char *error_message, int error_code, char **args);
 
 // Signals handling
