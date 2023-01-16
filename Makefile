@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2023/01/15 16:02:48 by lfarias-         ###   ########.fr        #
+#    Updated: 2023/01/15 20:09:48 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,7 +35,7 @@ OBJS		= 	$(SRCS:.c=.o)
 INCLUDES	=	-I ./includes
 
 %.o: %.c
-	@${CC} -c $(CFLAGS) $(INCLUDES) ${CPPFLAGS} $< -o $@
+	@${CC} -c ${CFLAGS} ${INCLUDES} ${CPPFLAGS} $< -o $@
 
 ${NAME}:   ${OBJS}
 	@make -C ./includes/libft bonus
