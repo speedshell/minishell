@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:02:13 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/16 00:38:40 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/17 20:00:58 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_token		*get_next_token(t_list *token_list);
 void		check_quote(char *str, int *quote);
 
-int	check_syntax(t_list *token_list)
+int	check_syntax(t_list *token_list, t_info *shell_data)
 {
 	t_token	*tkn;
 	t_token	*prev_tkn;
@@ -30,8 +30,8 @@ int	check_syntax(t_list *token_list)
 		tkn = (t_token *) token_list->content;
 		check_quote(tkn->value, &quote);
 		next_tkn = get_next_token(token_list);
-		if (pipe_rules(prev_tkn, tkn, next_tkn) == -1 || \
-				redirect_rules(tkn, next_tkn) == -1)
+		if (pipe_rules(prev_tkn, tkn, next_tkn) < 0 || \
+				redirect_rules(tkn, next_tkn, shell_data) < 0)
 			return (0);
 		prev_tkn = tkn;
 		token_list = token_list->next;
@@ -91,11 +91,13 @@ int	pipe_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
 	return (syntax);
 }
 
-int	redirect_rules(t_token *curr_token, t_token *next_tkn)
+int	redirect_rules(t_token *curr_token, t_token *next_tkn, t_info *shell_data)
 {
-	int	syntax;
+	int		syntax;
+	char	*temp;
 
 	syntax = 0;
+	temp = NULL;
 	if (curr_token->type == REDIRECT)
 	{
 		if (!next_tkn)
@@ -109,6 +111,10 @@ int	redirect_rules(t_token *curr_token, t_token *next_tkn)
 		return (syntax);
 	if (syntax == -1)
 		print_syntax_err(curr_token->value);
+	if (syntax != -1 && \
+		(curr_token->type == REDIRECT \
+		&& ft_strncmp(curr_token->value, "<<", 3) == 0))
+		return (init_here_doc(curr_token, next_tkn, shell_data));
 	return (syntax);
 }
 

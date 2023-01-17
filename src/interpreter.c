@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 17:27:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/17 20:02:04 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,12 @@ int	eval_tokens(t_info *shell_data)
 	int			last_error;	
 
 	last_error = 0;
-	if (check_syntax(shell_data->token_list) != 1)
+	if (check_syntax(shell_data->token_list, shell_data) != 1)
 	{
+		if (g_exit_code == 130)
+			g_exit_code = 1;
 		g_exit_code = 2;
-		return (2);
+		return (g_exit_code);
 	}
 	token_list = shell_data->token_list;
 	prev_pipe[0] = -1;

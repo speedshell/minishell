@@ -6,11 +6,13 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:08:21 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 16:26:13 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/17 20:18:31 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+void	destroy_tmp_file(t_list **tmp_files);
 
 void	free2d(void **matrix2d)
 {
@@ -42,8 +44,10 @@ void	free_token(void *tk)
 
 void	reset_state(t_info *shell_data)
 {
+	destroy_tmp_file(&shell_data->tmp_files);
 	ft_lstclear(&shell_data->token_list, free_token);
 	shell_data->token_list = NULL;
+	shell_data->tmp_files = NULL;
 	if (shell_data->expr)
 		free(shell_data->expr->tokens);
 	free(shell_data->expr);
@@ -59,4 +63,17 @@ void	destroy_shell(t_info *shell_data)
 	reset_state(shell_data);
 	free2d((void **) shell_data->env);
 	rl_clear_history();
+}
+
+void	destroy_tmp_file(t_list **tmp_files)
+{
+	t_list	*node;
+
+	node = *tmp_files;
+	while (node)
+	{
+		if (node->content)
+			unlink((char *) node->content);
+		node = node->next;
+	}
 }

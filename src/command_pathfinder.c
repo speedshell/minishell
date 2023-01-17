@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:24:36 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 10:55:34 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:28:03 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@ char	*command_find_path(char *statement, char **env, int *builtin)
 	char	*fullpath_cmd;
 	int		i;
 
+	if (!statement)
+		return (NULL);
+	// refactor this 
+	if (!*statement)
+	{
+		printf("minishell: :command not found\n");
+		g_exit_code = 127;
+		return (NULL);
+	}
 	cmd_name = statement;
 	*builtin = is_builtin(cmd_name);
 	if (*builtin != -1)
