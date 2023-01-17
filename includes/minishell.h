@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/16 00:45:10 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/16 22:19:15 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@
 *	this is just the definition 
 */
 extern int	g_exit_code;
-
-typedef struct s_env
-{
-	char	**env;
-}	t_env;
 
 /* According to the bash grammar
  *
