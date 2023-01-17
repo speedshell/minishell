@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:28:24 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/14 22:25:54 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/16 21:25:28 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,18 @@ void	sigint_handler(int signo)
 		rl_redisplay();
 		g_exit_code = 128 + SIGINT;
 	}	
-	else if (signo == SIGQUIT)
-		rl_redisplay();
 	else if (i != 42)
 	{
 		write(1, "\n", 1);
 		rl_replace_line("", 0);
 		rl_redisplay();
+		if (WIFSIGNALED(i))
+			g_exit_code = 128 + WTERMSIG(i);
 	}
 }
 
 void	handle_signals(void)
 {
 	signal(SIGINT, sigint_handler);
-	signal(SIGQUIT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }
