@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/18 17:02:16 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:21:01 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int			destroy_resources(t_info *shell_data);
 // Error handling
 int			print_err_msg(void);
 void		print_err_str(char *err_msg);
-void		print_syntax_err(char *op);
+void		print_syntax_err(t_token *curr_token);
 void		print_quote_err(int quote);
 int			set_error(char *error_message, int error_code, char **args);
 

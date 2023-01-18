@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:02:13 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/17 20:00:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:31:33 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ int	pipe_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
 	else
 		return (syntax);
 	if (syntax == -1)
-		print_syntax_err(curr_token->value);
+		print_syntax_err(curr_token);
 	return (syntax);
 }
 
@@ -110,7 +110,7 @@ int	redirect_rules(t_token *curr_token, t_token *next_tkn, t_info *shell_data)
 	else
 		return (syntax);
 	if (syntax == -1)
-		print_syntax_err(curr_token->value);
+		print_syntax_err(next_tkn);
 	if (syntax != -1 && \
 		(curr_token->type == REDIRECT \
 		&& ft_strncmp(curr_token->value, "<<", 3) == 0))

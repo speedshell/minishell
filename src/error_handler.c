@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:14:28 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 23:22:35 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:34:22 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,14 @@ void	print_err_str(char *err_msg)
 	ft_putendl_fd(strerror(errno), STDERR_FILENO);
 }
 
-void	print_syntax_err(char *operator)
+void	print_syntax_err(t_token *token)
 {
-	ft_putstr_fd("minishell: syntax error near `", STDERR_FILENO);
-	ft_putstr_fd(operator, STDERR_FILENO);
+	ft_putstr_fd("minishell: syntax error near unexpected token `", \
+		STDERR_FILENO);
+	if (!token)
+		ft_putstr_fd("newline", STDERR_FILENO);
+	else
+		ft_putstr_fd(token->value, STDERR_FILENO);
 	ft_putendl_fd("'", STDERR_FILENO);
 }
 
