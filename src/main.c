@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/17 19:56:25 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:21:19 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ int	main(int argc, char **argv, char **env)
 			eval_tokens(&shell_data);
 		}
 		handle_eof(&shell_data);
-		if (access(".here_doc", F_OK) == 0)
-			unlink(".here_doc");
 	}
 	return (0);
 }

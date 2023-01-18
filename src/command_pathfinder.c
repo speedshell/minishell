@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:24:36 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/17 18:28:03 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:45:14 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 char	*build_cmd_path(char *cmd_name, char *env);
 void	*clean_cmd_path(char **paths, char *aux);
+int		check_state(char *ment);
 
 char	*command_find_path(char *statement, char **env, int *builtin)
 {
@@ -21,15 +22,8 @@ char	*command_find_path(char *statement, char **env, int *builtin)
 	char	*fullpath_cmd;
 	int		i;
 
-	if (!statement)
+	if (check_state(statement) == 0)
 		return (NULL);
-	// refactor this 
-	if (!*statement)
-	{
-		printf("minishell: :command not found\n");
-		g_exit_code = 127;
-		return (NULL);
-	}
 	cmd_name = statement;
 	*builtin = is_builtin(cmd_name);
 	if (*builtin != -1)
@@ -84,4 +78,17 @@ void	*clean_cmd_path(char **paths, char *aux)
 	free2d((void **) paths);
 	free(aux);
 	return (NULL);
+}
+
+int	check_state(char *ment)
+{
+	if (!ment)
+		return (0);
+	if (!*ment)
+	{
+		ft_putendl_fd("minishell: :command not found", STDOUT_FILENO);
+		g_exit_code = 127;
+		return (0);
+	}
+	return (1);
 }

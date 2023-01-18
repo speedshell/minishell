@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:08:21 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/17 20:18:31 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 14:23:18 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,15 @@ void	destroy_shell(t_info *shell_data)
 void	destroy_tmp_file(t_list **tmp_files)
 {
 	t_list	*node;
+	t_list	*tmp_node;
 
 	node = *tmp_files;
 	while (node)
 	{
 		if (node->content)
 			unlink((char *) node->content);
+		tmp_node = node;
 		node = node->next;
+		free(tmp_node);
 	}
 }
