@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/17 19:50:43 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:02:16 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ typedef struct s_lexeme
 *	this is what we will give to our executor 
 */
 
+typedef struct s_pid_list
+{
+	int					pid;
+	struct s_pid_list	*next;
+} t_pid_l;
+
 typedef struct s_expression
 {
 	t_token	**tokens;	
@@ -78,7 +84,9 @@ typedef struct s_shell_info
 	t_command	*expr;
 	char		**cmd;
 	t_list		*tmp_files;
+	t_pid_l		*child_pids;
 }	t_info;
+
 
 char		**command_builder(t_info *shell_data);
 char		*command_find_path(char *statement, char **env, int *builtin);
@@ -117,6 +125,7 @@ int			set_error(char *error_message, int error_code, char **args);
 
 // Signals handling
 void		handle_signals(void);
+void		handle_child_signals(void);
 
 // pipes
 void		pipes_setup(t_command *expr);
@@ -148,6 +157,7 @@ char		*expand_exit_variable(int *variable_size);
 int			is_builtin(char *cmd_path);
 char		**build_env(char **env);
 char		*gen_name(int id);
+void		lst_pid_add_back(t_pid_l **pid_lst, int pid);
 
 // cleaner
 void		free2d(void **matrix2d);

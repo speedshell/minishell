@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:26:08 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 14:41:07 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 15:37:46 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*here_doc(char *delimiter)
 	char			*line;
 	char			*here_doc_name;
 
-	g_exit_code = 0;
+	g_exit_code = -42;
 	line = NULL;
 	here_doc_name = gen_name(file_id++);
 	fd = open_here_doc(here_doc_name);

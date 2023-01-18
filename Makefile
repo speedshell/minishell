@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2023/01/17 19:23:47 by lfarias-         ###   ########.fr        #
+#    Updated: 2023/01/18 17:16:08 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ SRC			= 	main.c command_executor.c command_pathfinder.c command_builder.c error_
 				export.c expander.c expander_utils.c unset.c quote_resolver.c \
 				lexer.c parser.c parser_rules.c parser_rules2.c interpreter.c interpreter_utils.c \
 				cleaner.c pipes.c redirections.c redirections2.c here_doc.c error.c \
-				name_generator.c
+				name_generator.c pid_list.c
 
 SRCS		= 	$(addprefix src/,$(SRC))
 

@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/15 18:21:17 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:03:22 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,13 @@ void	command_executor(t_info *shell_data)
 		return ;
 	}
 	else if (pid == 0)
+	{
+		handle_child_signals();
 		exit(exec_forked_cmd(shell_data));
+	}
 	else
 	{
+		lst_pid_add_back(&shell_data->child_pids, pid);
 		pipes_close(shell_data->expr);
 		redirect_close(shell_data->expr);
 	}

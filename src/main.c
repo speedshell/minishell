@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/18 14:21:19 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 17:42:53 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	init_shell(t_info *shell_data, char **env)
 	shell_data->cmd = NULL;
 	shell_data->expr = NULL;
 	shell_data->tmp_files = NULL;
+	shell_data->child_pids = NULL;
 	shell_data->env = build_env(env);
-	handle_signals();
 }
 
 int	main(int argc, char **argv, char **env)
@@ -49,6 +49,7 @@ int	main(int argc, char **argv, char **env)
 	init_shell(&shell_data, env);
 	while (42)
 	{
+		handle_signals();
 		shell_data.read_line_buffer = readline("Minishell> ");
 		if (shell_data.read_line_buffer && *shell_data.read_line_buffer)
 		{

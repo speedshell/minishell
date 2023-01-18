@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:08:21 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 14:23:18 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:10:45 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,9 @@ void	free_token(void *tk)
 
 void	reset_state(t_info *shell_data)
 {
+	t_pid_l	*node;
+	t_pid_l	*temp_node;
+
 	destroy_tmp_file(&shell_data->tmp_files);
 	ft_lstclear(&shell_data->token_list, free_token);
 	shell_data->token_list = NULL;
@@ -56,6 +59,15 @@ void	reset_state(t_info *shell_data)
 	shell_data->cmd = NULL;
 	if (shell_data->read_line_buffer)
 		free(shell_data->read_line_buffer);
+	node = shell_data->child_pids;
+	temp_node = NULL;
+	while (node)
+	{
+		temp_node = node;
+		node = node->next;
+		free(temp_node);
+	}
+	shell_data->child_pids = NULL;
 }
 
 void	destroy_shell(t_info *shell_data)
