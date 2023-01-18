@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:26:08 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 15:37:46 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:51:53 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ char	*get_line(void)
 
 	line = readline(">");
 	if (g_exit_code == 130)
+	{
+		free(line);
 		return (NULL);
+	}
 	line = add_line_break(line);
 	add_history(line);
 	return (line);
