@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 18:25:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 23:49:31 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:30:50 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,10 @@ int	search_next_quote(char *str, char c, int quote_flag)
 {
 	int	i;
 
-	i = 1;
-	while (str[i] && quote_flag == 0)
+	i = 0;
+	while (str[i])
 	{
-		if (str[i] == c)
+		if (str[i] == c && quote_flag == 0)
 			return (1);
 		i++;
 	}
