@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 18:26:54 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/12 19:44:19 by lfarias-         ###   ########.fr       */
+/*   Created: 2023/01/18 14:26:08 by lfarias-          #+#    #+#             */
+/*   Updated: 2023/01/18 18:51:53 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,22 @@ char	*get_line(void);
 void	write_to_heredoc(char *text);
 int		get_heredoc_fd(int *redirect);
 char	*add_line_break(char *line);
+int		open_here_doc(char *here_doc_name);
+char	*close_here_doc(char *here_doc_name, int here_doc_fd);
 
-int	here_doc(char *delimiter, int *redirect)
+char	*here_doc(char *delimiter)
 {
-	char	*text;
-	char	*line;
-	char	*temp;
+	int				fd;
+	static int		file_id;
+	char			*line;
+	char			*here_doc_name;
 
-	text = NULL;
-	temp = NULL;
+	g_exit_code = -42;
+	line = NULL;
+	here_doc_name = gen_name(file_id++);
+	fd = open_here_doc(here_doc_name);
+	if (fd == -1)
+		return (NULL);
 	while (42)
 	{
 		line = get_line();
@@ -33,48 +40,12 @@ int	here_doc(char *delimiter, int *redirect)
 				ft_strncmp(delimiter, line, ft_strlen(line) - 1) == 0))
 		{
 			free(line);
-			write_to_heredoc(text);
-			return (get_heredoc_fd(redirect));
+			return (close_here_doc(here_doc_name, fd));
 		}
-		temp = text;
-		if (text == NULL)
-			text = ft_strdup(line);
-		else
-			text = ft_strjoin(text, line);
-		free(temp);
+		write(fd, line, ft_strlen(line));
 		free(line);
 	}
 	return (0);
-}
-
-void	write_to_heredoc(char *text)
-{
-	int	heredoc_fd;
-	int	text_size;
-
-	if (text == NULL)
-		return ;
-	text_size = ft_strlen(text);
-	heredoc_fd = open(".here_doc", O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
-	write(heredoc_fd, text, text_size);
-	close(heredoc_fd);
-	free(text);
-}
-
-int	get_heredoc_fd(int *redirect)
-{
-	int	fd;
-
-	fd = open(".here_doc", O_RDONLY);
-	if (redirect[0] != -1)
-		close(redirect[0]);
-	redirect[0] = fd;
-	if (fd == -1)
-	{
-		print_err_msg();
-		return (-1);
-	}
-	return (HERE_DOC);
 }
 
 char	*add_line_break(char *line)
@@ -96,7 +67,35 @@ char	*get_line(void)
 	char	*line;
 
 	line = readline(">");
+	if (g_exit_code == 130)
+	{
+		free(line);
+		return (NULL);
+	}
 	line = add_line_break(line);
 	add_history(line);
 	return (line);
+}
+
+int	open_here_doc(char *here_doc_name)
+{
+	int	fd;
+
+	fd = open(here_doc_name, O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
+	if (fd == -1)
+		print_err_msg();
+	return (fd);
+}
+
+char	*close_here_doc(char *here_doc_name, int here_doc_fd)
+{
+	if (close(here_doc_fd) == -1)
+		print_err_msg();
+	if (g_exit_code == 130)
+	{
+		unlink(here_doc_name);
+		free(here_doc_name);
+		return (NULL);
+	}
+	return (here_doc_name);
 }

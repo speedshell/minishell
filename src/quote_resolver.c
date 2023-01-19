@@ -6,11 +6,13 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 18:25:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/13 14:22:21 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 20:22:19 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+
+int	search_next_quote(char *str, char c, int quote_flag);
 
 int	update_quote(char *str, int i, int *quote_flag)
 {
@@ -18,8 +20,11 @@ int	update_quote(char *str, int i, int *quote_flag)
 		return (0);
 	if (*quote_flag == 0 && str[i] == '\'')
 	{
-		*quote_flag = 1;
-		return (1);
+		if (search_next_quote(&str[i + 1], str[i], *quote_flag) == 1)
+		{
+			*quote_flag = 1;
+			return (1);
+		}
 	}
 	if (*quote_flag == 1 && str[i] == '\'')
 	{
@@ -28,8 +33,11 @@ int	update_quote(char *str, int i, int *quote_flag)
 	}
 	if (*quote_flag == 0 && str[i] == '"')
 	{
-		*quote_flag = 2;
-		return (1);
+		if (search_next_quote(&str[i + 1], str[i], *quote_flag) == 1)
+		{
+			*quote_flag = 2;
+			return (1);
+		}
 	}
 	if (*quote_flag == 2 && str[i] == '"')
 	{
@@ -94,6 +102,20 @@ char	*quote_resolver(char *str)
 	}
 	parsed_str[j] = '\0';
 	return (parsed_str);
+}
+
+int	search_next_quote(char *str, char c, int quote_flag)
+{
+	int	i;
+
+	i = 1;
+	while (str[i] && quote_flag == 0)
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 /*int	main(void)

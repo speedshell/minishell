@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/16 22:19:15 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:21:01 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,12 @@ typedef struct s_lexeme
 *	this is what we will give to our executor 
 */
 
+typedef struct s_pid_list
+{
+	int					pid;
+	struct s_pid_list	*next;
+} t_pid_l;
+
 typedef struct s_expression
 {
 	t_token	**tokens;	
@@ -77,7 +83,10 @@ typedef struct s_shell_info
 	t_list		*token_list;
 	t_command	*expr;
 	char		**cmd;
+	t_list		*tmp_files;
+	t_pid_l		*child_pids;
 }	t_info;
+
 
 char		**command_builder(t_info *shell_data);
 char		*command_find_path(char *statement, char **env, int *builtin);
@@ -95,10 +104,9 @@ int			ft_unset(t_info *shell_data);
 // Parser and Lexer
 t_list		*make_tokens(char *user_input);
 t_command	*parse_expression(t_list **token_list);
-int			check_syntax(t_list *token_list);
-
+int			check_syntax(t_list *token_list, t_info *shell_data);
 int			pipe_rules(t_token *p_tkn, t_token *curr_token, t_token *nxt_tkn);
-int			redirect_rules(t_token *curr_token, t_token *next_tkn);
+int			redirect_rules(t_token *curr_token, t_token *next_tkn, t_info *shl);
 
 // interpreter
 int			eval_tokens(t_info *shell_data);
@@ -111,12 +119,13 @@ int			destroy_resources(t_info *shell_data);
 // Error handling
 int			print_err_msg(void);
 void		print_err_str(char *err_msg);
-void		print_syntax_err(char *operator);
+void		print_syntax_err(t_token *curr_token);
 void		print_quote_err(int quote);
 int			set_error(char *error_message, int error_code, char **args);
 
 // Signals handling
 void		handle_signals(void);
+void		handle_child_signals(void);
 
 // pipes
 void		pipes_setup(t_command *expr);
@@ -127,7 +136,8 @@ void		pipes_builtin_close(t_command *expr, int *std_backup);
 // redirection
 int			file_open_read(char *filename, int *redirect);
 int			file_open_write(char *filename, int *redirect, int mode);
-int			here_doc(char *delimiter, int *redirect);
+char		*here_doc(char *delimiter);
+int			init_here_doc(t_token *curr_token, t_token *next_tkn, t_info *s_dt);
 void		redirect_setup(t_command *expr);
 void		redirect_close(t_command *expr);
 void		redirection_builtin_setup(t_command *expr, int *std_backup);
@@ -146,6 +156,8 @@ char		*expand_exit_variable(int *variable_size);
 // Utils
 int			is_builtin(char *cmd_path);
 char		**build_env(char **env);
+char		*gen_name(int id);
+void		lst_pid_add_back(t_pid_l **pid_lst, int pid);
 
 // cleaner
 void		free2d(void **matrix2d);

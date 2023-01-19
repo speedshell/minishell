@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 17:27:58 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 18:09:35 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdlib.h>
 
 char	**command_builder(t_info *shell_data);
-int		wait_children(int last_error);
+int		wait_children(t_info *shell_data);
 int		get_next_command(t_list **token_list, t_info *shell_data, int *p_pipe);
 
 int	eval_tokens(t_info *shell_data)
@@ -25,10 +25,13 @@ int	eval_tokens(t_info *shell_data)
 	int			last_error;	
 
 	last_error = 0;
-	if (check_syntax(shell_data->token_list) != 1)
+	if (check_syntax(shell_data->token_list, shell_data) != 1)
 	{
-		g_exit_code = 2;
-		return (2);
+		if (g_exit_code == 130)
+			g_exit_code = 1;
+		else
+			g_exit_code = 2;
+		return (g_exit_code);
 	}
 	token_list = shell_data->token_list;
 	prev_pipe[0] = -1;
@@ -40,7 +43,7 @@ int	eval_tokens(t_info *shell_data)
 		copy_pipes_fds(prev_pipe, shell_data->expr->out_pipe);
 		destroy_resources(shell_data);
 	}
-	return (wait_children(last_error));
+	return (wait_children(shell_data));
 }	
 
 int	get_next_command(t_list **token_list, t_info *shell_data, int *prev_pipe)
@@ -60,24 +63,21 @@ int	get_next_command(t_list **token_list, t_info *shell_data, int *prev_pipe)
 	return (0);
 }
 
-int	wait_children(int last_error)
+int	wait_children(t_info *shell_data)
 {
-	int	w_status;
-	int	child_pid;
+	t_pid_l	*curr_pid_node;
+	int		w_status;
 
 	w_status = 0;
-	child_pid = 0;
-	while (42)
+	curr_pid_node = shell_data->child_pids;
+	while (curr_pid_node)
 	{
-		child_pid = wait(&w_status);
-		if (child_pid <= 0)
-			break ;
-		if (WIFEXITED(w_status) && last_error == 0)
-		{
-			g_exit_code = (int) WEXITSTATUS(w_status);
-		}
+		waitpid(curr_pid_node->pid, &w_status, 0);
+		curr_pid_node = curr_pid_node->next;
+		if (WIFEXITED(w_status))
+			g_exit_code = WEXITSTATUS(w_status);
+		if (WIFSIGNALED(w_status))
+			g_exit_code = WTERMSIG(w_status);
 	}
-	if (last_error != 0)
-		g_exit_code = last_error;
 	return (g_exit_code);
 }
