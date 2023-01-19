@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/19 18:56:56 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/19 19:34:42 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,10 @@ int	ft_cd(t_info *shell_data)
 {
 	int		i;
 	int		op_code;
-	int		pid;
 	int		w_status;
-	char	*folder_path;
 
 	i = 0;
 	op_code = 0;
-	w_status = 0;
-	folder_path = NULL;
 	while (args[i])
 		i++;
 	if (i > 2)
@@ -48,22 +44,7 @@ int	ft_cd(t_info *shell_data)
 		op_code = go_home(env);
 		return (op_code);
 	}
-	pid = fork();
-	if (pid == 0)
-	{
-		op_code = chdir(args[1]);
-		folder_path = getcwd(NULL, 0);
-		if (!folder_path)
-			exit(errno);
-		else
-			exit(0);
-	}
-	else
-	{
-		wait(&w_status);
-		if (WIFEXITED(w_status))
-			w_status = WEXITSTATUS(w_status);
-	}
+	cd_sandbox(shell_data);
 	if (w_status == 0)
 	{
 		chdir(args[1]);
@@ -72,13 +53,40 @@ int	ft_cd(t_info *shell_data)
 		set_cd_error("Minishell: cd: ", w_status, args);
 	else
 	{
-		free(folder_path);
 		update_env_vars(env);
 		g_exit_code = op_code;
 	}
 	return (g_exit_code);
 }
 
+void	cd_sandbox(t_info *shell_data, int *w_status)
+{
+	int		pid;
+	char	*folder_path;
+
+	*w_status = 0;
+	folder_path = NULL;
+	pid = fork();
+	if (pid == 0)
+	{
+		chdir(shell_data->cmd[1]);
+		folder_path = getcwd(NULL, 0);
+		destroy_shell(shell_data);
+		if (!folder_path)
+			exit(errno);
+		else
+		{
+			free(folder_path);
+			exit(0);
+		}
+	}
+	else
+	{
+		wait(w_status);
+		if (WIFEXITED(*w_status))
+			*w_status = WEXITSTATUS(*w_status);
+	}
+}
 /*
 *	description: Will update both PWD and OLDPWD if cd is successeful
 *	notes: PWD and OLDPWD will only be updated if they exist on env

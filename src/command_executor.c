@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/19 00:07:33 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/19 19:21:21 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int	exec_builtin(t_info *shell_data, int builtin_id)
 	if (builtin_id == PWD)
 		op_code = ft_pwd(shell_data->cmd, shell_data->env);
 	if (builtin_id == CD)
-		op_code = ft_cd(shell_data->cmd, shell_data->env);
+		op_code = ft_cd(shell_data);
 	if (builtin_id == EXPORT)
 		op_code = ft_export(shell_data);
 	if (builtin_id == UNSET)
