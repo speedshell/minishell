@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 23:36:53 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:54:52 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	wait_children(t_info *shell_data)
 		if (WIFEXITED(w_status))
 			g_exit_code = WEXITSTATUS(w_status);
 		if (WIFSIGNALED(w_status))
-			g_exit_code = WTERMSIG(w_status);
+			g_exit_code = 128 + WTERMSIG(w_status);
 	}
 	return (g_exit_code);
 }
