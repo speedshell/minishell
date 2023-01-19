@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:14:28 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 18:34:22 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:06:51 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,15 @@ int	print_err_msg(void)
 	return (errno);
 }
 
-void	print_err_str(char *err_msg)
+void	print_err_str(char *err_msg, int error_code)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(err_msg, STDERR_FILENO);
 	ft_putstr_fd(": ", STDERR_FILENO);
-	ft_putendl_fd(strerror(errno), STDERR_FILENO);
+	if (error_code == 127)
+		ft_putendl_fd("command not found", STDERR_FILENO);
+	else
+		ft_putendl_fd(strerror(errno), STDERR_FILENO);
 }
 
 void	print_syntax_err(t_token *token)

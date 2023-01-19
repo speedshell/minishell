@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/18 23:43:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:07:33 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	exec_forked_cmd(t_info *shell_data)
 			op_code = 127;
 		if (errno == EACCES)
 			op_code = 126;
-		print_err_str(cmd_path);
+		print_err_str(cmd_path, op_code);
 	}
 	pipes_close(expr);
 	redirect_close(expr);
