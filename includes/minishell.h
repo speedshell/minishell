@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/18 18:21:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:52:45 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_pid_list
 {
 	int					pid;
 	struct s_pid_list	*next;
-} t_pid_l;
+}	t_pid_l;
 
 typedef struct s_expression
 {
@@ -86,7 +86,6 @@ typedef struct s_shell_info
 	t_list		*tmp_files;
 	t_pid_l		*child_pids;
 }	t_info;
-
 
 char		**command_builder(t_info *shell_data);
 char		*command_find_path(char *statement, char **env, int *builtin);
