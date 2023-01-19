@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/19 00:07:23 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/19 18:32:11 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int			ft_pwd(char **args, char **env);
 int			ft_cd(char **args, char **env);
 int			ft_export(t_info *shell_data);
 int			ft_unset(t_info *shell_data);
+int			cd_arg_check(char **args);
 
 // Parser and Lexer
 t_list		*make_tokens(char *user_input);
@@ -120,6 +121,7 @@ int			print_err_msg(void);
 void		print_err_str(char *err_msg, int error_code);
 void		print_syntax_err(t_token *curr_token);
 void		print_quote_err(int quote);
+int			set_cd_error(char *error_message, int error_code, char **args);
 int			set_error(char *error_message, int error_code, char **args);
 
 // Signals handling

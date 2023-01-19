@@ -6,12 +6,14 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/12 19:11:13 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/19 18:56:56 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <unistd.h>
+#include <sys/stat.h>       
+#include <sys/types.h>
+#include <dirent.h>
 
 int		go_home(char **env);
 int		find_env(char *env_name, char **env);
@@ -22,12 +24,18 @@ int		no_pwd(char **env, int pwd_i, int old_pwd_i);
 *	description: changes directory
 */
 
-int	ft_cd(char **args, char **env)
+int	ft_cd(t_info *shell_data)
 {
 	int		i;
 	int		op_code;
+	int		pid;
+	int		w_status;
+	char	*folder_path;
 
 	i = 0;
+	op_code = 0;
+	w_status = 0;
+	folder_path = NULL;
 	while (args[i])
 		i++;
 	if (i > 2)
@@ -40,11 +48,31 @@ int	ft_cd(char **args, char **env)
 		op_code = go_home(env);
 		return (op_code);
 	}
-	op_code = chdir(args[1]);
-	if (op_code != 0)
-		set_error("Minishell: cd: ", 1, args);
+	pid = fork();
+	if (pid == 0)
+	{
+		op_code = chdir(args[1]);
+		folder_path = getcwd(NULL, 0);
+		if (!folder_path)
+			exit(errno);
+		else
+			exit(0);
+	}
 	else
 	{
+		wait(&w_status);
+		if (WIFEXITED(w_status))
+			w_status = WEXITSTATUS(w_status);
+	}
+	if (w_status == 0)
+	{
+		chdir(args[1]);
+	}
+	if (w_status != 0)
+		set_cd_error("Minishell: cd: ", w_status, args);
+	else
+	{
+		free(folder_path);
 		update_env_vars(env);
 		g_exit_code = op_code;
 	}
