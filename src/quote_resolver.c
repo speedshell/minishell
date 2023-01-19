@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 18:25:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 20:22:19 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:49:31 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,26 +18,22 @@ int	update_quote(char *str, int i, int *quote_flag)
 {
 	if (str[i] == '\0')
 		return (0);
-	if (*quote_flag == 0 && str[i] == '\'')
+	if ((*quote_flag == 0 && str[i] == '\'') && \
+		search_next_quote(&str[i + 1], str[i], *quote_flag) == 1)
 	{
-		if (search_next_quote(&str[i + 1], str[i], *quote_flag) == 1)
-		{
-			*quote_flag = 1;
-			return (1);
-		}
+		*quote_flag = 1;
+		return (1);
 	}
 	if (*quote_flag == 1 && str[i] == '\'')
 	{
 		*quote_flag = 0;
 		return (1);
 	}
-	if (*quote_flag == 0 && str[i] == '"')
+	if ((*quote_flag == 0 && str[i] == '"') && \
+		search_next_quote(&str[i + 1], str[i], *quote_flag) == 1)
 	{
-		if (search_next_quote(&str[i + 1], str[i], *quote_flag) == 1)
-		{
-			*quote_flag = 2;
-			return (1);
-		}
+		*quote_flag = 2;
+		return (1);
 	}
 	if (*quote_flag == 2 && str[i] == '"')
 	{

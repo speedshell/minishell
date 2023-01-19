@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:48 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/18 17:03:22 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:43:01 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,7 @@ void	command_executor(t_info *shell_data)
 		return ;
 	}
 	else if (pid == 0)
-	{
-		handle_child_signals();
 		exit(exec_forked_cmd(shell_data));
-	}
 	else
 	{
 		lst_pid_add_back(&shell_data->child_pids, pid);
@@ -52,15 +49,14 @@ int	exec_forked_cmd(t_info *shell_data)
 	t_command	*expr;
 	int			op_code;
 
+	handle_child_signals();
 	op_code = 0;
 	cmd_path = shell_data->cmd[0];
 	expr = shell_data->expr;
 	pipes_setup(expr);
 	redirect_setup(expr);
 	if (expr->pipe_chain == 1 && expr->builtin != -1)
-	{
 		op_code = exec_builtin(shell_data, expr->builtin);
-	}
 	else if (execve(cmd_path, shell_data->cmd, shell_data->env) == -1)
 	{
 		if (errno == ENOENT)

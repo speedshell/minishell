@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 18:09:35 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:36:53 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,7 @@ int	eval_tokens(t_info *shell_data)
 {
 	int			prev_pipe[2];
 	t_list		*token_list;
-	int			last_error;	
 
-	last_error = 0;
 	if (check_syntax(shell_data->token_list, shell_data) != 1)
 	{
 		if (g_exit_code == 130)
@@ -38,7 +36,7 @@ int	eval_tokens(t_info *shell_data)
 	prev_pipe[1] = -1;
 	while (token_list != NULL)
 	{
-		last_error = get_next_command(&token_list, shell_data, prev_pipe);
+		get_next_command(&token_list, shell_data, prev_pipe);
 		command_executor(shell_data);
 		copy_pipes_fds(prev_pipe, shell_data->expr->out_pipe);
 		destroy_resources(shell_data);

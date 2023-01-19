@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:02:13 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 18:31:33 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:35:09 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,10 +94,8 @@ int	pipe_rules(t_token *prev_tkn, t_token *curr_token, t_token *next_tkn)
 int	redirect_rules(t_token *curr_token, t_token *next_tkn, t_info *shell_data)
 {
 	int		syntax;
-	char	*temp;
 
 	syntax = 0;
-	temp = NULL;
 	if (curr_token->type == REDIRECT)
 	{
 		if (!next_tkn)
