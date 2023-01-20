@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/19 19:34:42 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/20 17:04:38 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int		go_home(char **env);
 int		find_env(char *env_name, char **env);
 void	update_env_vars(char **env);
 int		no_pwd(char **env, int pwd_i, int old_pwd_i);
+void	cd_sandbox(t_info *shell_data, int *w_status);
 
 /*
 *	description: changes directory
@@ -27,12 +28,10 @@ int		no_pwd(char **env, int pwd_i, int old_pwd_i);
 int	ft_cd(t_info *shell_data)
 {
 	int		i;
-	int		op_code;
 	int		w_status;
 
 	i = 0;
-	op_code = 0;
-	while (args[i])
+	while (shell_data->cmd[i])
 		i++;
 	if (i > 2)
 	{
@@ -40,22 +39,16 @@ int	ft_cd(t_info *shell_data)
 		return (g_exit_code);
 	}
 	if (i == 1)
-	{
-		op_code = go_home(env);
-		return (op_code);
-	}
-	cd_sandbox(shell_data);
+		return (go_home(shell_data->env));
+	cd_sandbox(shell_data, &w_status);
 	if (w_status == 0)
 	{
-		chdir(args[1]);
+		chdir(shell_data->cmd[1]);
+		update_env_vars(shell_data->env);
+		g_exit_code = 0;
 	}
-	if (w_status != 0)
-		set_cd_error("Minishell: cd: ", w_status, args);
-	else
-	{
-		update_env_vars(env);
-		g_exit_code = op_code;
-	}
+	else if (w_status != 0)
+		set_cd_error("Minishell: cd: ", w_status, shell_data->cmd);
 	return (g_exit_code);
 }
 
@@ -87,6 +80,7 @@ void	cd_sandbox(t_info *shell_data, int *w_status)
 			*w_status = WEXITSTATUS(*w_status);
 	}
 }
+
 /*
 *	description: Will update both PWD and OLDPWD if cd is successeful
 *	notes: PWD and OLDPWD will only be updated if they exist on env
@@ -166,23 +160,4 @@ int	go_home(char **env)
 	else
 		update_env_vars(env);
 	return (op_code);
-}
-
-/*
-*	description: finds the index of env_name in env
-*	return: if env_name exists on env, return 1, if not return -1
-*/
-
-int	find_env(char *env_name, char **env)
-{
-	int	i;
-	int	env_name_len;
-
-	env_name_len = ft_strlen(env_name);
-	i = 0;
-	while (env[i] && ft_strncmp(env_name, env[i], env_name_len) != 0)
-		i++;
-	if (env[i] != NULL)
-		return (i);
-	return (-1);
 }

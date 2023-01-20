@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:32:39 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/19 18:34:31 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/20 17:04:03 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	set_cd_error(char *error_message, int error_code, char **args)
 	print_error(": ");
 	ft_putendl_fd(strerror(error_code), 2);
 	return (g_exit_code);
-
 }
 
 /*void	set_exit_code(int errno)
