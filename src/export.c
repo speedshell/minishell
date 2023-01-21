@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:28:50 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/18 15:23:10 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 16:52:44 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,18 @@ void	export_err_msg(char *str)
 	ft_putstr_fd("Minishell: export: `", 2);
 	ft_putstr_fd(str, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
+	g_exit_code = 1;
 }
 
 int	ft_export(t_info *shell_data)
 {
 	int		j;
-	int		exit_code;
 	char	**args;
 
 	j = 0;
 	args = shell_data->cmd;
 	if (!args[1])
 		return (ft_env(shell_data->cmd, shell_data->env));
-	exit_code = 0;
 	while (args[++j])
 	{
 		if (valid_variable(args[j]) && (ft_strchr(args[j], '=')))
@@ -102,11 +101,8 @@ int	ft_export(t_info *shell_data)
 			if (ft_strchr(args[j], '='))
 				extract(shell_data, args[j], 1);
 			else
-			{
 				export_err_msg(args[j]);
-				exit_code = 1;
-			}
 		}
 	}
-	return (exit_code);
+	return (g_exit_code);
 }

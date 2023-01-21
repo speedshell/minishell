@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:10:02 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 12:05:43 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 16:49:38 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,13 @@ int	ft_unset(t_info *shell_data)
 		{
 			printf("Minishell: unset: `%s': not a valid identifier\n", *vars);
 			vars++;
+			g_exit_code = 1;
 			continue ;
 		}
 		shell_data->env = del_variable(*vars, shell_data->env);
 		vars++;
 	}
-	return (0);
+	return (g_exit_code);
 }
 
 char	**del_variable(char *var_name, char **old_env)
