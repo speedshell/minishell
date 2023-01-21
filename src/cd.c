@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/21 18:47:28 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 19:17:57 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	ft_cd(t_info *shell_data)
 	int		w_status;
 
 	i = 0;
+	w_status = 0;
 	while (shell_data->cmd[i])
 		i++;
 	if (i > 2)
@@ -47,7 +48,6 @@ int	ft_cd(t_info *shell_data)
 		free(shell_data->pwd);
 		shell_data->pwd = getcwd(NULL, 0);
 		update_env_vars(shell_data->env);
-		g_exit_code = 0;
 	}
 	else if (w_status != 0)
 		set_cd_error("Minishell: cd: ", w_status, shell_data->cmd);
@@ -59,12 +59,12 @@ void	cd_sandbox(t_info *shell_data, int *w_status)
 	int		pid;
 	char	*folder_path;
 
-	*w_status = 0;
 	folder_path = NULL;
 	pid = fork();
 	if (pid == 0)
 	{
-		chdir(shell_data->cmd[1]);
+		if (chdir(shell_data->cmd[1]) == -1)
+			*w_status = errno;
 		folder_path = getcwd(NULL, 0);
 		destroy_shell(shell_data);
 		if (!folder_path)
@@ -72,7 +72,7 @@ void	cd_sandbox(t_info *shell_data, int *w_status)
 		else
 		{
 			free(folder_path);
-			exit(0);
+			exit(*w_status);
 		}
 	}
 	else
@@ -126,6 +126,7 @@ int	no_pwd(char **env, int pwd_i, int old_pwd_i)
 {
 	char	*aux;
 
+	g_exit_code = 0;
 	if (pwd_i == -1 && old_pwd_i != -1)
 	{
 		aux = ft_strdup("OLDPWD=");
