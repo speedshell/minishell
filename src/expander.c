@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/18 15:08:28 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 17:07:24 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int	valid_variable(char *c)
 			return (i);
 		if (c[i] == '=' && i == 0)
 			return (0);
-		else if (c[i] == '=' && i != 0)
+		else if (c[i + 1] == '=' && i != 0)
 			break ;
 		else if ((!ft_isalpha(c[i]) && !(c[i] == '_')) && i == 0)
 			return (0);
