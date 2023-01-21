@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/21 19:17:57 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 20:43:37 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 #include <sys/types.h>
 #include <dirent.h>
 
-int		go_home(char **env);
+int		go_home(t_info *shell_data);
 int		find_env(char *env_name, char **env);
-void	update_env_vars(char **env);
-int		no_pwd(char **env, int pwd_i, int old_pwd_i);
+void	update_env_vars(t_info *shell_data);
+int		no_pwd(char **env, int pwd_i, int old_pwd_i, t_info *shell_data);
 void	cd_sandbox(t_info *shell_data, int *w_status);
 
 /*
@@ -40,14 +40,12 @@ int	ft_cd(t_info *shell_data)
 		return (g_exit_code);
 	}
 	if (i == 1)
-		return (go_home(shell_data->env));
+		return (go_home(shell_data));
 	cd_sandbox(shell_data, &w_status);
 	if (w_status == 0)
 	{
 		chdir(shell_data->cmd[1]);
-		free(shell_data->pwd);
-		shell_data->pwd = getcwd(NULL, 0);
-		update_env_vars(shell_data->env);
+		update_env_vars(shell_data);
 	}
 	else if (w_status != 0)
 		set_cd_error("Minishell: cd: ", w_status, shell_data->cmd);
@@ -89,32 +87,29 @@ void	cd_sandbox(t_info *shell_data, int *w_status)
 *	args: the env vars table
 */
 
-void	update_env_vars(char **env)
+void	update_env_vars(t_info *shell_data)
 {
 	int		pwd_i;
 	int		old_pwd_i;
-	char	*aux;
 	char	*aux1;
 
-	pwd_i = find_env("PWD=", env);
-	old_pwd_i = find_env("OLDPWD=", env);
-	if (no_pwd(env, pwd_i, old_pwd_i))
+	pwd_i = find_env("PWD=", shell_data->env);
+	old_pwd_i = find_env("OLDPWD=", shell_data->env);
+	if (no_pwd(shell_data->env, pwd_i, old_pwd_i, shell_data))
 		return ;
 	if (old_pwd_i != -1)
 	{
-		aux = ft_strdup(&env[pwd_i][4]);
-		aux1 = ft_strjoin("OLDPWD=", aux);
-		free(aux);
-		free(env[old_pwd_i]);
-		env[old_pwd_i] = aux1;
+		aux1 = ft_strjoin("OLDPWD=", shell_data->pwd);
+		free(shell_data->env[old_pwd_i]);
+		shell_data->env[old_pwd_i] = aux1;
 	}
+	free(shell_data->pwd);
+	shell_data->pwd = getcwd(NULL, 0);
 	if (pwd_i != -1)
 	{
-		aux = getcwd(NULL, 0);
-		aux1 = ft_strjoin("PWD=", aux);
-		free(aux);
-		free(env[pwd_i]);
-		env[pwd_i] = aux1;
+		aux1 = ft_strjoin("PWD=", shell_data->pwd);
+		free(shell_data->env[pwd_i]);
+		shell_data->env[pwd_i] = aux1;
 	}
 }
 
@@ -122,16 +117,18 @@ void	update_env_vars(char **env)
 *	description: if there's no PWD but OLDPWD exists then OLDPWD will be empty
 */
 
-int	no_pwd(char **env, int pwd_i, int old_pwd_i)
+int	no_pwd(char **env, int pwd_i, int old_pwd_i, t_info *shell_data)
 {
 	char	*aux;
 
 	g_exit_code = 0;
-	if (pwd_i == -1 && old_pwd_i != -1)
+	if (pwd_i == -1 && old_pwd_i >= 0)
 	{
 		aux = ft_strdup("OLDPWD=");
 		free(env[old_pwd_i]);
 		env[old_pwd_i] = aux;
+		free(shell_data->pwd);
+		shell_data->pwd = getcwd(NULL, 0);
 		return (1);
 	}
 	return (0);
@@ -143,24 +140,23 @@ int	no_pwd(char **env, int pwd_i, int old_pwd_i)
 *	args: the env vars table
 */
 
-// TO-DO: print error message
-int	go_home(char **env)
+int	go_home(t_info *shell_data)
 {
 	char	*home_path;
 	int		i;
 	int		op_code;
 
-	i = find_env("HOME=", env);
+	i = find_env("HOME=", shell_data->env);
 	if (i == -1)
 	{
 		set_error("Minishell: cd: HOME not set\n", 1, NULL);
 		return (g_exit_code);
 	}
-	home_path = &env[i][5];
+	home_path = &shell_data->env[i][5];
 	op_code = chdir(home_path);
 	if (op_code != 0)
 		print_err_msg();
 	else
-		update_env_vars(env);
+		update_env_vars(shell_data);
 	return (op_code);
 }

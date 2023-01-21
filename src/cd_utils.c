@@ -6,7 +6,7 @@
 /*   By: lfarias- <leofariasrj25@gmail.com>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:28:18 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/20 17:03:27 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 20:42:46 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ int	find_env(char *env_name, char **env)
 
 	env_name_len = ft_strlen(env_name);
 	i = 0;
+	if (*env[0] == '\0')
+		return (-1);
 	while (env[i] && ft_strncmp(env_name, env[i], env_name_len) != 0)
 		i++;
 	if (env[i] != NULL)
