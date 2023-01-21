@@ -6,12 +6,11 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:14:28 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/19 00:06:51 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 18:29:04 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include "errno.h"
 
 /* 
 *	description: prints a formatted error message to STDERROR

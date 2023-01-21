@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:08:21 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/19 14:37:32 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 18:52:18 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ void	reset_state(t_info *shell_data)
 void	destroy_shell(t_info *shell_data)
 {
 	reset_state(shell_data);
+	free(shell_data->pwd);
 	free2d((void **) shell_data->env);
 	rl_clear_history();
 }

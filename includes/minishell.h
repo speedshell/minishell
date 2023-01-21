@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/19 19:21:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 18:48:03 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ typedef struct s_expression
 typedef struct s_shell_info
 {
 	char		**env;
+	char		*pwd;
 	char		*read_line_buffer;
 	t_list		*token_list;
 	t_command	*expr;
@@ -95,7 +96,7 @@ void		command_executor(t_info *shell_data);
 int			ft_echo(char **args);
 int			ft_exit(t_info *shell_data);
 int			ft_env(char **args, char **env);
-int			ft_pwd(char **args, char **env);
+int			ft_pwd(t_info *shell_data);
 int			ft_cd(t_info *shell_data);
 int			ft_export(t_info *shell_data);
 int			ft_unset(t_info *shell_data);

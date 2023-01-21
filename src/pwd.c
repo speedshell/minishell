@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:21:10 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/06 15:21:40 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 18:48:45 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,22 @@ int	fallback_pwd(char **env);
 */
 
 // TO-DO: print error on STDERROR
-int	ft_pwd(char **args, char **env)
+int	ft_pwd(t_info *shell_data)
 {
-	int		i;
-	int		op_code;
 	char	*curr_dir;
 
-	i = 0;
 	curr_dir = NULL;
-	while (args[i])
-		i++;
-	if (i > 1)
-	{
-		printf("pwd: too many arguments\n");
-		return (1);
-	}
 	curr_dir = getcwd(NULL, 0);
 	if (curr_dir != NULL)
 	{
 		printf("%s\n", curr_dir);
-		free(curr_dir);
+		free(shell_data->pwd);
+		shell_data->pwd = curr_dir;
 		return (0);
 	}
-	op_code = fallback_pwd(env);
-	return (op_code);
+	else
+		printf("%s\n", shell_data->pwd);
+	return (0);
 }
 
 /*

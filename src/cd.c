@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/20 17:04:38 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 18:47:28 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	ft_cd(t_info *shell_data)
 	if (w_status == 0)
 	{
 		chdir(shell_data->cmd[1]);
+		free(shell_data->pwd);
+		shell_data->pwd = getcwd(NULL, 0);
 		update_env_vars(shell_data->env);
 		g_exit_code = 0;
 	}
