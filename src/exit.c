@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 17:47:37 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/15 18:16:49 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/21 17:45:46 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	verification(char **args, t_info *shell_data);
 *			on error it doesn't exit and returns 1
 */
 
-// TO-DO: it should actually print to STDERR
 int	ft_exit(t_info *shell_data)
 {
 	int		i;
@@ -67,6 +66,8 @@ void	verification(char **args, t_info *shell_data)
 	{
 		if ((args[1][0] == '-' && args[1][1] == 0)
 				|| (args[1][0] == '+' && args[1][1] == 0))
+			exit_error(args, i, shell_data);
+		if ((args[1][i] == '-' || args[1][i] == '+') && i)
 			exit_error(args, i, shell_data);
 		if (!args[1][++i])
 			break ;
