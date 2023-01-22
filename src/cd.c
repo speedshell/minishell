@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/30 02:13:07 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/21 20:43:37 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 16:20:28 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	ft_cd(t_info *shell_data)
 		set_error("Minishell: cd: too many arguments\n", 1, NULL);
 		return (g_exit_code);
 	}
+	if (i > 1 && shell_data->cmd[1][0] == '\0')
+		shell_data->cmd[1][0] = '.';
 	if (i == 1)
 		return (go_home(shell_data));
 	cd_sandbox(shell_data, &w_status);
