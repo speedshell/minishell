@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/21 17:07:24 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 11:15:32 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ char	*expand_variable(char *input, char **env, int *variable_size)
 		{
 			while (env[++i])
 			{
-				if (!ft_strncmp(input, env[i], *variable_size))
+				if (!ft_strncmp(input, env[i], *variable_size + 1))
 				{
 					variable = ft_strdup(ft_strchr(env[i], '=') + 1);
 					return (variable);
