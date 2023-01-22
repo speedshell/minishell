@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:28:50 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/21 16:52:44 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/22 16:46:11 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	extract(t_info *shell_data, char *args, int flag)
 		search_and_replace(variable, shell_data, value);
 	if (flag == 1)
 	{
-		export_err_msg(variable);
+		export_err_msg(args);
 	}
 	free(variable);
 	free(value);
