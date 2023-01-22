@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/21 18:48:03 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 18:47:34 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,8 @@ void		redirect_setup(t_command *expr);
 void		redirect_close(t_command *expr);
 void		redirection_builtin_setup(t_command *expr, int *std_backup);
 void		redirection_builtin_close(t_command *expr, int *std_backup);
+int			open_here_doc(char *here_doc_name);
+char		*close_here_doc(char *here_doc_name, int here_doc_fd);
 
 // Quotes
 char		*quote_resolver(char *str);

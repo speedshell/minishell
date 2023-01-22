@@ -6,20 +6,20 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:26:08 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/22 18:24:53 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 18:51:48 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 #include <fcntl.h>
 
-char	*get_line();
+char	*get_line(void);
 void	write_to_heredoc(char *text);
 int		get_heredoc_fd(int *redirect);
-char	*add_line_break(char *line);
 int		open_here_doc(char *here_doc_name);
 char	*close_here_doc(char *here_doc_name, int here_doc_fd);
 char	*delete_quotes(char *delimiter);
+void	setup_vars(char **hd_filename, int *file_id, int *fd, char **delimiter);
 
 char	*here_doc(char *delimiter)
 {
@@ -28,11 +28,8 @@ char	*here_doc(char *delimiter)
 	char			*line;
 	char			*here_doc_name;
 
-	g_exit_code = -42;
 	line = NULL;
-	here_doc_name = gen_name(file_id++);
-	fd = open_here_doc(here_doc_name);
-	delimiter = delete_quotes(delimiter);
+	setup_vars(&here_doc_name, &file_id, &fd, &delimiter);
 	if (fd == -1)
 		return (NULL);
 	while (42)
@@ -52,6 +49,14 @@ char	*here_doc(char *delimiter)
 	return (0);
 }
 
+void	setup_vars(char **hd_filename, int *file_id, int *fd, char **delimiter)
+{
+	g_exit_code = -42;
+	*hd_filename = gen_name(*file_id++);
+	*fd = open_here_doc(*hd_filename);
+	*delimiter = delete_quotes(*delimiter);
+}
+
 char	*delete_quotes(char *delimiter)
 {
 	char	*temp;
@@ -66,21 +71,7 @@ char	*delete_quotes(char *delimiter)
 	return (delimiter);
 }
 
-char	*add_line_break(char *line)
-{
-	char	*temp;
-
-	if (!line)
-		return (NULL);
-	if (line && *line == '\0')
-		return (ft_strdup("\n"));
-	temp = line;
-	line = ft_strjoin(line, "\n");
-	free(temp);
-	return (line);
-}
-
-char	*get_line()
+char	*get_line(void)
 {
 	char	*line;
 
@@ -91,27 +82,4 @@ char	*get_line()
 		return (NULL);
 	}
 	return (line);
-}
-
-int	open_here_doc(char *here_doc_name)
-{
-	int	fd;
-
-	fd = open(here_doc_name, O_RDWR | O_CREAT | O_TRUNC, S_IRWXU);
-	if (fd == -1)
-		print_err_msg();
-	return (fd);
-}
-
-char	*close_here_doc(char *here_doc_name, int here_doc_fd)
-{
-	if (close(here_doc_fd) == -1)
-		print_err_msg();
-	if (g_exit_code == 130)
-	{
-		unlink(here_doc_name);
-		free(here_doc_name);
-		return (NULL);
-	}
-	return (here_doc_name);
 }
