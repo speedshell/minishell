@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/22 11:15:32 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 15:27:02 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ char	*expand_variable(char *input, char **env, int *variable_size)
 			}
 		}	
 	}
-	return (ft_strdup(""));
+	return (NULL);
 }
 
 int	is_expandable(char *input, int i, int *expand)

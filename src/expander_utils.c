@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/08 20:55:20 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/22 01:09:06 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 15:47:37 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,15 @@ char	*str_nodes_join(t_list *str_nodes)
 	node = str_nodes;
 	while (node)
 	{
-		str_sz += ft_strlen(((char *) node->content));
+		if (node->content != NULL)
+			str_sz += ft_strlen(((char *) node->content));
 		node = node->next;
 	}
 	expanded_str = ft_calloc(sizeof(char), (str_sz + 1));
 	while (str_nodes)
 	{
-		ft_strlcat(expanded_str, (char *) str_nodes->content, str_sz + 1);
+		if (str_nodes->content != NULL)
+			ft_strlcat(expanded_str, (char *) str_nodes->content, str_sz + 1);
 		node = str_nodes;
 		str_nodes = str_nodes->next;
 		free(node->content);

@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:10:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/22 00:41:25 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 16:01:47 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,23 +80,28 @@ int	redirect_open(t_command *expr, int *redirect, int *i)
 
 void	add_next_arg(t_info *shell_data, int *i, int *j)
 {
-	t_command	*expr;
-	char		**cmd;
 	char		*arg;
+	char		*temp;
 
-	expr = shell_data->expr;
-	cmd = shell_data->cmd;
-	arg = args_eval(expr->tokens[*i]->value, shell_data->env);
+	arg = expand_str(shell_data->expr->tokens[*i]->value, shell_data->env);
+	temp = NULL;
 	if (arg[0] == '\0')
 	{
 		free(arg);
-		shell_data->expr->tokens[*i]->value = NULL;
 		*i = *i + 1;
-	}
+	}	
 	else
 	{
-		cmd[*j] = arg;
+		free(shell_data->expr->tokens[*i]->value);
 		shell_data->expr->tokens[*i]->value = NULL;
+		temp = quote_resolver(arg);
+		if (temp == NULL)
+			shell_data->cmd[*j] = arg;
+		else
+		{
+			free(arg);
+			shell_data->cmd[*j] = temp;
+		}
 		*i = *i + 1;
 		*j = *j + 1;
 	}
