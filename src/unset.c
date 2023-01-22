@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 19:10:02 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/21 16:49:38 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/22 11:29:28 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ int	ft_unset(t_info *shell_data)
 
 	vars = shell_data->cmd;
 	vars++;
+	if (!*vars)
+		g_exit_code = 0;
 	while (*vars)
 	{
 		if (!is_valid_identifier(*vars))
