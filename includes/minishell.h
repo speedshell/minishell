@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/22 18:47:34 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 20:32:01 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,7 @@ void		print_syntax_err(t_token *curr_token);
 void		print_quote_err(int quote);
 int			set_cd_error(char *error_message, int error_code, char **args);
 int			set_error(char *error_message, int error_code, char **args);
+void		export_err_msg(char *str);
 
 // Signals handling
 void		handle_signals(void);
@@ -152,7 +153,6 @@ char		*quote_resolver(char *str);
 int			update_quote(char *str, int i, int *quote_flag);
 
 // Expand variables
-int			valid_variable(char *c);
 char		*expand_str(char *input, char **env);
 char		*str_nodes_join(t_list *str_nodes);
 char		*expand_exit_variable(int *variable_size);

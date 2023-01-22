@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:32:39 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/20 17:04:03 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 20:31:36 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ int	set_cd_error(char *error_message, int error_code, char **args)
 	print_error(": ");
 	ft_putendl_fd(strerror(error_code), 2);
 	return (g_exit_code);
+}
+
+void	export_err_msg(char *str)
+{
+	ft_putstr_fd("Minishell: export: `", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	g_exit_code = 1;
 }
 
 /*void	set_exit_code(int errno)

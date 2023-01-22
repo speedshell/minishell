@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/22 19:35:05 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 20:22:29 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 char	*expand_variable(char *input, char **env, int *variable_size);
 int		add_var_value(t_list **str_nds, char *input, int *expand, char **env);
-char	*str_nodes_join(t_list *str_nodes);
 int		is_expandable(char *input, int i, int *expand);
 char	*get_exit_str(char *input, int *variable_size);
+int		valid_variable(char *c);
 
 char	*expand_str(char *input, char **env)
 {

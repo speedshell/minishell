@@ -6,13 +6,14 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:28:50 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/22 16:46:11 by mpinna-l         ###   ########.fr       */
+/*   Updated: 2023/01/22 20:32:07 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
 void	export_err_msg(char *str);
+int		valid_variable(char *c);
 
 void	replace(int i, t_info *shell_data, char *variable, char *value)
 {
@@ -75,12 +76,30 @@ void	extract(t_info *shell_data, char *args, int flag)
 	free(value);
 }
 
-void	export_err_msg(char *str)
+int	valid_var(char *c)
 {
-	ft_putstr_fd("Minishell: export: `", 2);
-	ft_putstr_fd(str, 2);
-	ft_putstr_fd("': not a valid identifier\n", 2);
-	g_exit_code = 1;
+	int	i;
+
+	i = 0;
+	while (c[i] && c[i] != '$')
+	{
+		if (c[i + 1] && c[i + 1] == '$')
+			return (i);
+		if (c[i + 1] && c[i + 1] == ' ')
+			return (i);
+		if ((c[i + 1] && c[i + 1] == '"') || (c[i + 1] && c[i + 1] == '\''))
+			return (i);
+		if (c[i] == '=' && i == 0)
+			return (0);
+		else if (c[i] == '=' && i != 0)
+			break ;
+		else if ((!ft_isalpha(c[i]) && !(c[i] == '_')) && i == 0)
+			return (0);
+		else if ((!ft_isalpha(c[i]) && !ft_isdigit(c[i]) && !(c[i] == '_')))
+			return (0);
+		i++;
+	}
+	return (i);
 }
 
 int	ft_export(t_info *shell_data)
@@ -94,7 +113,7 @@ int	ft_export(t_info *shell_data)
 		return (ft_env(shell_data->cmd, shell_data->env));
 	while (args[++j])
 	{
-		if (valid_variable(args[j]) && (ft_strchr(args[j], '=')))
+		if (valid_var(args[j]) && (ft_strchr(args[j], '=')))
 			extract(shell_data, args[j], 0);
 		else
 		{
