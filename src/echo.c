@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:16:14 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/22 15:47:52 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 16:26:04 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,7 @@ int	ft_echo(char **args)
 
 	i = 0;
 	while (args[i])
-	{
-		printf("arg[i] = '%s'\n", args[i]);
 		i++;
-	}
 	i = 1;
 	is_flag_valid = 0;
 	if (args[1] && !ft_strncmp(args[1], "-n", 2))
