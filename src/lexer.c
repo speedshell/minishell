@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/04 18:33:43 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/14 13:15:47 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:32:10 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,81 +103,3 @@ t_list	*make_tokens(char *user_input)
 	}
 	return (tokens);
 }
-
-/*void print_tokens(t_list *token_list)
-{
-	int		token_size;
-	t_token *tkn;
-	t_list	*aux_node;
-
-	printf("====================================\n");
-	while (token_list)
-	{
-		tkn = (t_token *) token_list->content;
-		printf("token type: %d\n", tkn->type);
-		printf("token value: %s\n", tkn->value);
-		free(tkn->value);
-		free(tkn);
-		aux_node = token_list;
-		token_list = token_list->next;
-		free(aux_node);
-	}
-	printf("====================================\n\n");
-}
-
-int main(void)
-{
-	char *cmd = "ls -l";
-	t_list *token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "cat -e";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "ls -l -a -p -m";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "ls | cat -e | cat -e | cat -e";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "echo \"Hello World\"";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "ls|cat -e>outfile";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "ls |||";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "ls<<<<";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "ls<<<<<";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "ls<<<<<>>>";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-
-	cmd = "ls<<<<<>>>echo";
-	printf("cmd: %s\n", cmd);
-	token_lst = make_tokens(cmd);
-	print_tokens(token_lst);
-}*/

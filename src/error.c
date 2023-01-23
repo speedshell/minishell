@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 18:32:39 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/22 20:31:36 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:31:14 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,16 +50,3 @@ void	export_err_msg(char *str)
 	ft_putstr_fd("': not a valid identifier\n", 2);
 	g_exit_code = 1;
 }
-
-/*void	set_exit_code(int errno)
-{
-	int	op_code;
-
-	op_code = 0;
-	if (errno == ENOENT)
-		op_code = 127;
-	else if (errno == EACCES)
-		op_code = 126;
-	else
-		op_code = errno;
-}*/

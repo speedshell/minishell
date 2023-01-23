@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/23 15:47:20 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:30:51 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,28 +151,3 @@ int	valid_variable(char *c)
 	}
 	return (i);
 }
-
-/*int main (int argc, char **argv, char **env)
-{
-	char *var = "$PWD";
-	char *var2 = "$PDW";
-	char *var3 = "$#sp";
-	char *var4 = "$123";
-	char *var5 = "$HOME";
-	char *var6 = "$HOME$";
-	char *var7 = "$HOME abc $ABC $abc";
-	char *var8 = "$HOME abc $ABC $abc bca";
-	char *var9 = "$HOME$HOME";
-	char *var10 = "Hello $HOME";
-
-	printf("%s expanded -> %s\n", var, expand_str(var, env));
-	printf("%s expanded -> %s\n", var2, expand_str(var2, env));
-	printf("%s expanded -> %s\n", var3, expand_str(var3, env));
-	printf("%s expanded -> %s\n", var4, expand_str(var4, env));
-	printf("%s expanded -> %s\n", var5, expand_str(var5, env));
-	printf("%s expanded -> %s\n", var6, expand_str(var6, env));
-	printf("%s expanded -> %s\n", var7, expand_str(var7, env));
-	printf("%s expanded -> %s\n", var8, expand_str(var8, env));
-	printf("%s expanded -> %s\n", var9, expand_str(var9, env));
-	printf("%s expanded -> %s\n", var10, expand_str(var10, env));
-}*/

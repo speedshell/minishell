@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/17 16:09:00 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/17 19:02:07 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:32:21 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,3 @@ char	*convert_id(int id)
 		return (number_suffix);
 	}
 }
-
-/*int main(void)
-{
-	printf("file name: %s\n", gen_name(20));
-	printf("file name: %s\n", gen_name(0));
-	printf("file name: %s\n", gen_name(300));
-	printf("file name: %s\n", gen_name(2000));
-	printf("file name: %s\n", gen_name(20001));
-}*/

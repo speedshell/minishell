@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 18:25:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/23 00:57:21 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:33:05 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,26 +113,3 @@ int	search_next_quote(char *str, char c, int quote_flag)
 	}
 	return (0);
 }
-
-/*int	main(void)
-{
-
-	char *test1 = "\"'\"Hello\"'\"";
-	char *test2 = "\'\"\"Hello\"\"\'";	
-	char *test3 = "\'\"\'Hello\'\"\'";
-	char *test4 = "\'\"\'\'Hello\'\'\"\'";
-	char *test5 = "\'Hello\'";
-	char *test6 = "\"\"Hello\"\"";
-	test1 = quote_resolver(test1);
-	test2 = quote_resolver(test2);
-	test3 = quote_resolver(test3);
-	test4 = quote_resolver(test4);
-	test5 = quote_resolver(test5);
-	test5 = quote_resolver(test6);
-	printf("%s\n", test1);
-	printf("%s\n", test2);
-	printf("%s\n", test3);
-	printf("%s\n", test4);
-	printf("%s\n", test5);
-	printf("%s\n", test6);
-}*/

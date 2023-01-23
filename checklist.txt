@@ -24,7 +24,7 @@ command execution
 		exit code = 0
 
 	minishell> /bin/ls ou /sbin/ping 
-		comando é invocado
+ 		comando é invocado
 		exit code = 0
 
 	
@@ -37,6 +37,20 @@ command execution
 		erro no stderror
 		exit code = 126
 
+echo
+	echo "Hello World"
+		Hello World no stdout
+		exit code = 0
+
+	echo (puro)
+		insere uma linha em branco
+		exit code = 0
+
+	echo -n (puro)
+		
+	echo Hello World
+		Hello World
+		exit code = 0 
 cd	
 	cd (puro)
 		deve voltar para o diretorio em HOME
