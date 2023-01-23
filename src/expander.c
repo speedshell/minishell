@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/23 15:25:17 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:47:20 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	add_var_value(t_list **str_nds, char *input, int *expand, char **env)
 	int		i;
 
 	str_size = ft_strlen(input);
-	vsize = 0;
 	i = 0;
 	if (i < str_size)
 	{
@@ -73,7 +72,6 @@ int	add_var_value(t_list **str_nds, char *input, int *expand, char **env)
 			i = i + vsize + 2;
 		else
 			i = i + 1;
-		vsize = 0;
 	}
 	return (i);
 }
@@ -83,6 +81,7 @@ char	*expand_variable(char *input, char **env, int *variable_size)
 	int		i;
 	char	*variable;
 
+	*variable_size = 0;
 	i = -1;
 	if (!input)
 		return (NULL);
@@ -90,8 +89,7 @@ char	*expand_variable(char *input, char **env, int *variable_size)
 	{
 		if (*(input + 1) == '?')
 			return (expand_exit_variable(variable_size));
-		input++;
-		*variable_size = valid_variable(input);
+		*variable_size = valid_variable(++input);
 		if (*variable_size != 0 && *input)
 		{
 			while (env[++i])
