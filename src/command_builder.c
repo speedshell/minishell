@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:10:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/23 01:06:26 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 13:49:12 by mpinna-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,28 +89,6 @@ void	add_next_arg(t_info *shell_data, int *i, int *j)
 		*i = *i + 1;
 		*j = *j + 1;
 	}
-	/*arg = expand_str(shell_data->expr->tokens[*i]->value, shell_data->env);
-	temp = NULL;
-	if (arg[0] == '\0')
-	{
-		free(arg);
-		*i = *i + 1;
-	}	
-	else
-	{
-		free(shell_data->expr->tokens[*i]->value);
-		shell_data->expr->tokens[*i]->value = NULL;
-		temp = quote_resolver(arg);
-		if (temp == NULL)
-			shell_data->cmd[*j] = arg;
-		else
-		{
-			free(arg);
-			shell_data->cmd[*j] = temp;
-		}
-		*i = *i + 1;
-		*j = *j + 1;
-	}*/
 }
 
 void	init_vars(char ***cmd, t_command **expr, t_info *shell_data)
