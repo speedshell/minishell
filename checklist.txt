@@ -1,5 +1,13 @@
 MINIHELL
 
+cd	
+	cd (puro)
+		deve voltar para o diretorio em HOME
+		exit code = 0
+
+	cd .
+		deve ficar na mesma pasta
+		PWD e OLDPWD ficam com o valor do diretorio atual.
 
 export
 

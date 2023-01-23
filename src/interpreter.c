@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/23 01:43:41 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 14:16:26 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 char	**command_builder(t_info *shell_data);
 int		wait_children(t_info *shell_data);
 int		get_next_command(t_list **token_list, t_info *shell_data, int *p_pipe);
+void	expand_and_resolve(t_info *shell_data, t_token *token);
 
 int	eval_tokens(t_info *shell_data)
 {
@@ -84,13 +85,9 @@ int	wait_children(t_info *shell_data)
 void	transform_token_values(t_info *shell_data)
 {
 	t_list	*node;
-	char	*temp;
-	char	*arg;
 	t_token	*token;
 
-	temp = NULL;
 	token = NULL;
-	arg = NULL;
 	node = shell_data->token_list;
 	while (node)
 	{
@@ -100,23 +97,33 @@ void	transform_token_values(t_info *shell_data)
 			node = node->next;
 			continue ;
 		}
-		temp = expand_str(token->value, shell_data->env);
-		if (temp[0] == '\0')
-		{
-			free(temp);
-			temp = NULL;
-			free(token->value);
-			token->value = NULL;
-		}
-		arg = quote_resolver(temp);
-		free(token->value);
-		if (arg != NULL)
-		{
-			free(temp);
-			token->value = arg;
-		}
-		else
-			token->value = temp;
+		expand_and_resolve(shell_data, token);
 		node = node->next;
 	}
+}
+
+void	expand_and_resolve(t_info *shell_data, t_token *token)
+{
+	char	*temp;
+	char	*arg;
+
+	temp = NULL;
+	arg = NULL;
+	temp = expand_str(token->value, shell_data->env);
+	if (temp[0] == '\0')
+	{
+		free(temp);
+		temp = NULL;
+		free(token->value);
+		token->value = NULL;
+	}
+	arg = quote_resolver(temp);
+	free(token->value);
+	if (arg != NULL)
+	{
+		free(temp);
+		token->value = arg;
+	}
+	else
+		token->value = temp;
 }
