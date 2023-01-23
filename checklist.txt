@@ -1,5 +1,42 @@
 MINIHELL
 
+command execution
+
+	minishell> "" (ou) ''
+		error no stderr
+		exit code = 127
+
+
+	minishell> "        " (ou) '       '
+		erro no stderr
+		exit code = 127
+
+	minishell> "''" (ou) '""'
+		erro no stderr
+		exit code = 127
+
+	minishell> $key
+		nada deve ser feito na tela
+		exit code = 0
+
+	minishell> ls
+		comando é invocado
+		exit code = 0
+
+	minishell> /bin/ls ou /sbin/ping 
+		comando é invocado
+		exit code = 0
+
+	
+	minishell> chmod -x ./minishell
+	minishell> ./minishell
+		erro no stderror
+		exit code = 126
+
+	minishell> "echo Hello World"
+		erro no stderror
+		exit code = 126
+
 cd	
 	cd (puro)
 		deve voltar para o diretorio em HOME

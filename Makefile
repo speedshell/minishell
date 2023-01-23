@@ -6,7 +6,7 @@
 #    By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/27 14:14:19 by lfarias-          #+#    #+#              #
-#    Updated: 2023/01/23 14:19:41 by lfarias-         ###   ########.fr        #
+#    Updated: 2023/01/23 15:28:11 by lfarias-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -104,4 +104,6 @@ fclean: clean
 
 re:	fclean all
 
+val:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./minishell
 .PHONY: all name clean fclean re

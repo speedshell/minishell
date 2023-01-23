@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/07 09:29:03 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/22 20:22:29 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 15:25:17 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ int	add_var_value(t_list **str_nds, char *input, int *expand, char **env)
 
 	str_size = ft_strlen(input);
 	vsize = 0;
-	variable = NULL;
 	i = 0;
 	if (i < str_size)
 	{
@@ -64,7 +63,10 @@ int	add_var_value(t_list **str_nds, char *input, int *expand, char **env)
 		if (is_expandable(input, i, expand))
 			ft_lstadd_back(str_nds, ft_lstnew(variable));
 		else
+		{
+			free(variable);
 			ft_lstadd_back(str_nds, ft_lstnew(ft_substr(input, i, vsize + 2)));
+		}
 		if (input[i] == '$' && vsize == 0)
 			ft_lstadd_back(str_nds, ft_lstnew(ft_substr(input, i, 1)));
 		if (vsize != 0)
