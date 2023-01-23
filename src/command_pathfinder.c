@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 15:24:36 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/19 00:15:03 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 21:28:03 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ int	check_state(char *ment)
 	if (!*ment)
 	{
 		ft_putendl_fd("minishell: :command not found", STDOUT_FILENO);
+		free(ment);
 		g_exit_code = 127;
 		return (0);
 	}

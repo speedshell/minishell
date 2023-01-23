@@ -1,0 +1,17 @@
+MINIHELL
+
+
+export
+
+	export (puro)
+		deve exibir o env
+		exit code = 0
+
+	export key=val key1=val1 key2=val2
+		env | grep key (deve exibir todas as variavéis acima)
+		exit code = 0
+
+	export 1=a
+		err no stderr
+		exit code = 1
+
