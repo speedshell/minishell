@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/02 18:25:25 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/19 00:30:50 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 00:57:21 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*quote_resolver(char *str)
 	int		i;
 	int		j;
 
-	if (check_for_quotes(str) == 0)
+	if (!str || check_for_quotes(str) == 0)
 		return (NULL);
 	parsed_str = ft_calloc(sizeof(char), ft_strlen(str) + 1);
 	if (!parsed_str)

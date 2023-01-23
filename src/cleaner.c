@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/13 11:08:21 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/21 18:52:18 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 01:37:09 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,10 @@ void	destroy_tmp_file(t_list **tmp_files)
 	while (node)
 	{
 		if (node->content)
+		{
+			printf("%s\n", (char *) node->content);
 			unlink((char *) node->content);
+		}
 		tmp_node = node;
 		node = node->next;
 		free(tmp_node);

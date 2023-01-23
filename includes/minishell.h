@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 16:38:01 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/22 20:32:01 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/22 22:23:15 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_shell_info
 char		**command_builder(t_info *shell_data);
 char		*command_find_path(char *statement, char **env, int *builtin);
 void		command_executor(t_info *shell_data);
+void		transform_token_values(t_info *shell_data);
 
 // builtin
 int			ft_echo(char **args);

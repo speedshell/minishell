@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/18 14:26:08 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/22 18:51:48 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 01:13:41 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,6 @@
 #include <fcntl.h>
 
 char	*get_line(void);
-void	write_to_heredoc(char *text);
-int		get_heredoc_fd(int *redirect);
-int		open_here_doc(char *here_doc_name);
-char	*close_here_doc(char *here_doc_name, int here_doc_fd);
 char	*delete_quotes(char *delimiter);
 void	setup_vars(char **hd_filename, int *file_id, int *fd, char **delimiter);
 

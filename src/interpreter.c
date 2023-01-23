@@ -6,7 +6,7 @@
 /*   By: lfarias- <lfarias-@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 22:43:16 by lfarias-          #+#    #+#             */
-/*   Updated: 2023/01/18 23:54:52 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/01/23 01:43:41 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	eval_tokens(t_info *shell_data)
 			g_exit_code = 2;
 		return (g_exit_code);
 	}
+	transform_token_values(shell_data);
 	token_list = shell_data->token_list;
 	prev_pipe[0] = -1;
 	prev_pipe[1] = -1;
@@ -78,4 +79,44 @@ int	wait_children(t_info *shell_data)
 			g_exit_code = 128 + WTERMSIG(w_status);
 	}
 	return (g_exit_code);
+}
+
+void	transform_token_values(t_info *shell_data)
+{
+	t_list	*node;
+	char	*temp;
+	char	*arg;
+	t_token	*token;
+
+	temp = NULL;
+	token = NULL;
+	arg = NULL;
+	node = shell_data->token_list;
+	while (node)
+	{
+		token = (t_token *) node->content;
+		if (ft_strncmp(token->value, ".here_doc", 9) == 0)
+		{
+			node = node->next;
+			continue ;
+		}
+		temp = expand_str(token->value, shell_data->env);
+		if (temp[0] == '\0')
+		{
+			free(temp);
+			temp = NULL;
+			free(token->value);
+			token->value = NULL;
+		}
+		arg = quote_resolver(temp);
+		free(token->value);
+		if (arg != NULL)
+		{
+			free(temp);
+			token->value = arg;
+		}
+		else
+			token->value = temp;
+		node = node->next;
+	}
 }
