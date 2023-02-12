@@ -6,7 +6,7 @@
 /*   By: mpinna-l <mpinna-l@student.42.rio>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/27 08:46:06 by mpinna-l          #+#    #+#             */
-/*   Updated: 2023/01/23 16:26:38 by lfarias-         ###   ########.fr       */
+/*   Updated: 2023/02/10 11:43:35 by lfarias-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	handle_eof(t_info *shell_data)
 {
 	if (!shell_data->read_line_buffer)
 	{
-		destroy_shell(shell_data);
+		//destroy_shell(shell_data);
 		printf("exit\n");
 		exit(0);
 	}
